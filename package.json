@@ -1,0 +1,14 @@
+{
+  "name": "ui5.ogarpt",
+  "version": "1.0.0",
+  "description": "Outward Goods Advice Report",
+  "keywords": [
+    "ui5",
+    "openui5",
+    "sapui5"
+  ],
+  "scripts": {
+      "start": "ui5 serve -o index.html",
+      "build": "ui5 build"
+  }
+}

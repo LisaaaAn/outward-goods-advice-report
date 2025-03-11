@@ -1,0 +1,160 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns:smartTable="sap.ui.comp.smarttable"
+    controllerName="ui5.ogarpt.controller.formSections.SectionA"
+>
+    <smartForm:SmartForm
+        id="_IDGenSmartForm"
+        validationMode="Async"
+        editable="true"
+    >
+        <smartForm:Group id="_IDGenGroup">
+            <smartForm:GroupElement id="_IDGenGroupElement1">
+                <smartField:SmartField
+                    id="_IDGenSmartField2"
+                    value="{ProductId}"
+                />
+            </smartForm:GroupElement>
+            <smartForm:GroupElement id="_IDGenGroupElement2">
+                <smartField:SmartField
+                    id="_IDGenSmartField"
+                    value="{ProductName}"
+                />
+            </smartForm:GroupElement>
+        </smartForm:Group>
+        <smartForm:Group id="_IDGenGroup1">
+            <smartForm:GroupElement id="_IDGenGroupElement3">
+                <smartField:SmartField
+                    id="_IDGenSmartField1"
+                    value="{Price}"
+                />
+            </smartForm:GroupElement>
+            <smartForm:GroupElement id="_IDGenGroupElement4">
+                <smartField:SmartField
+                    id="_IDGenSmartField3"
+                    value="{CurrencyCode}"
+                />
+            </smartForm:GroupElement>
+        </smartForm:Group>
+    </smartForm:SmartForm>
+
+    <!-- SimpleForm 代码备份 -->
+    <!-- <form:SimpleForm id="_IDGenSimpleForm1" editable="true" layout="ColumnLayout" adjustLabelSpan="false" columnsXL="3" columnsL="2" columnsM="2" singleContainerFullSize="false">
+        <form:content>
+            <Label id="_IDGenLabel" text="Type Of Movement"/>
+            <Input id="_IDGenInput" value="{/firstName}" valueLiveUpdate="true" width="" />
+            <Label id="_IDGenLabel1" text="Plant"/>
+            <Input id="_IDGenInput1" value="{/firstName}" valueLiveUpdate="true" />
+            <Label id="_IDGenLabel10" text="Vendor Number"/>
+            <Input id="_IDGenInput2" value="{/lastName}" valueLiveUpdate="true" />
+            <Label id="_IDGenLabel11" text="Vendor Name"/>
+            <Input id="_IDGenInput3" value="{/lastName}" valueLiveUpdate="true" />
+            <Label id="_IDGenLabel12" text="Vendor Number"/>
+            <Input id="_IDGenInput4" value="{/lastName}" valueLiveUpdate="true" />
+            <Label id="_IDGenLabel13" text="Vendor Name"/>
+            <Input id="_IDGenInput5" value="{/lastName}" valueLiveUpdate="true" />
+        </form:content>
+    </form:SimpleForm> -->
+
+    <!-- 可编辑表格 -->
+    <Table
+        id="EditableTable"
+        growing="true"
+        growingThreshold="10"
+        paste="onPaste"
+    >
+        <headerToolbar>
+            <OverflowToolbar id="otbSubheader">
+                <Title
+                    id="_IDGenTitle1"
+                    text="Products Items"
+                    level="H2"
+                />
+                <ToolbarSpacer id="_IDGenToolbarSpacer" />
+                <Button
+                    id="addButton"
+                    text="Add"
+                    type="Transparent"
+                    press="handleAdd"
+                />
+                <Button
+                    id="editButton"
+                    text="Edit"
+                    type="Transparent"
+                    press="handleEdit"
+                />
+                <!-- <Button
+                    id="saveButton"
+                    text="Save"
+                    type="Transparent"
+                    press="onSave"
+                    visible="false"
+                />
+                <Button
+                    id="cancelButton"
+                    text="Cancel"
+                    type="Transparent"
+                    press="onCancel"
+                    visible="false"
+                /> -->
+            </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+            <Column id="_IDGenColumn">
+                <Text
+                    id="_IDGenText"
+                    text="Product ID"
+                />
+            </Column>
+            <Column
+                id="_IDGenColumn1"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+                hAlign="End"
+            >
+                <Text
+                    id="_IDGenText1"
+                    text="Product Name"
+                />
+            </Column>
+            <Column
+                id="_IDGenColumn2"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+                hAlign="Center"
+            >
+                <Text
+                    id="_IDGenText2"
+                    text="Price"
+                />
+            </Column>
+            <Column
+                id="_IDGenColumn4"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+                hAlign="Center"
+            >
+                <Text
+                    id="_IDGenText3"
+                    text="Currency"
+                />
+            </Column>
+        </columns>
+        <items>
+            <ColumnListItem
+                id="_IDGenColumnListItem"
+                vAlign="Middle"
+            >
+                <!-- <Input id="_IDGenInput1" value="{ProductId}" editable="false" />
+                <Input id="_IDGenInput2" value="{ProductName}" />
+                <Input id="_IDGenInput3" value="{Price}" type="Number" />
+                <Input id="_IDGenInput4" value="{CurrencyCode}" type="Number" /> -->
+            </ColumnListItem>
+        </items>
+    </Table>
+</mvc:View>

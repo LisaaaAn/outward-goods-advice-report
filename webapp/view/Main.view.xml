@@ -1,0 +1,181 @@
+<mvc:View
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:table="sap.ui.table"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    controllerName="ui5.ogarpt.controller.Main"
+>
+    <Panel
+        id="_IDGenPanel1"
+        headerText="{i18n>formTitle}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        height="100%"
+    >
+        <NavContainer
+            id="navCon"
+            width="98%"
+            height="calc(100% - 160px)"
+            class="sapUiSmallMarginBottom"
+        >
+            <Page
+                id="p1"
+                showHeader="false"
+                backgroundDesign="Transparent"
+            >
+                <mvc:XMLView
+                    id="_IDGenXMLView"
+                    viewName="ui5.ogarpt.view.formSections.SectionA"
+                />
+            </Page>
+            <Page
+                id="p2"
+                showHeader="false"
+                backgroundDesign="Transparent"
+            >
+                <mvc:XMLView
+                    id="_IDGenXMLView1"
+                    viewName="ui5.ogarpt.view.formSections.SectionB"
+                />
+            </Page>
+            <Page
+                id="p3"
+                showHeader="false"
+                backgroundDesign="Transparent"
+            >
+                <mvc:XMLView
+                    id="_IDGenXMLView2"
+                    viewName="ui5.ogarpt.view.formSections.SectionC"
+                />
+            </Page>
+        </NavContainer>
+        <!-- <table:Table
+			id="table"
+			selectionMode="MultiToggle"
+			enableSelectAll="false"
+            rows="{
+                path: '/Products',
+                parameters: {operationMode: 'Server'}
+            }"
+            threshold="15"
+            scrollThreshold="50"
+            enableBusyIndicator="true"
+            ariaLabelledBy="title">
+				<table:noData>
+					<BusyIndicator class="sapUiMediumMargin"/>
+				</table:noData>
+				<extension>
+					<OverflowToolbar style="Clear">
+						<Title id="title" text="Products"/>
+						<ToolbarSpacer/>
+						<Button
+							icon="sap-icon://refresh"
+							tooltip="Reinitialize Model"
+							press="onModelRefresh"/>
+					</OverflowToolbar>
+				</extension>
+				<table:columns>
+					<table:Column
+						sortProperty="Name"
+						filterProperty="Name"
+						autoResizable="true"
+						width="11rem">
+						<Label text="{/#Products/ProductName/@sap:label}" />
+						<table:template>
+							<Text text="{ProductName}" wrapping="false" />
+						</table:template>
+					</table:Column>
+					<table:Column
+						sortProperty="ProductID"
+						filterProperty="ProductID"
+						autoResizable="true"
+						width="6rem">
+						<Label text="{/#Products/ProductID/@sap:label}" />
+						<table:template>
+							<Text text="{ProductID}" wrapping="false" />
+						</table:template>
+					</table:Column>
+					<table:Column
+						sortProperty="ProductName"
+						filterProperty="ProductName"
+						autoResizable="true"
+						width="11rem">
+						<Label text="{/#Products/ProductName/@sap:label}" />
+						<table:template>
+							<Text text="{ProductName}" wrapping="false" />
+						</table:template>
+					</table:Column>
+				</table:columns>
+				<footer>
+					<OverflowToolbar id="infobar">
+						<Label text="OData Model Operation Mode:" labelFor="operationMode"/>
+						<SegmentedButton
+							id="operationMode"
+							selectionChange="onOperationModeChange"
+							selectedKey="{ui>selectedOperationMode}"
+							items="{ui>/operationModes}">
+							<items>
+								<SegmentedButtonItem text="{ui>name}" key="{ui>name}"/>
+							</items>
+						</SegmentedButton>
+					</OverflowToolbar>
+				</footer>
+			</table:Table> -->
+        <FlexBox
+            id="_IDGenFlexBox"
+            height="100px"
+            alignItems="Start"
+            justifyContent="Center"
+        >
+            <Button
+                id="JumpButton"
+                text="JumpToList"
+                press="handleJumpToList"
+                class="sapUiSmallMarginEnd"
+            />
+            <Button
+                id="PreviousButton"
+                text="Previous"
+                press="handleNavigate"
+                class="sapUiSmallMarginEnd"
+                visible="{= ${formState>/currentStep} !== 1}"
+            />
+            <Button
+                id="NextButton1"
+                text="Next"
+                press="handleNavigate"
+                class="sapUiSmallMarginEnd"
+                visible="{= ${formState>/currentStep} === 1}"
+            >
+                <customData>
+                    <core:CustomData
+                        key="target"
+                        value="p2"
+                    />
+                </customData>
+            </Button>
+            <Button
+                id="NextButton2"
+                text="Next"
+                press="handleNavigate"
+                class="sapUiSmallMarginEnd"
+                visible="{= ${formState>/currentStep} === 2}"
+            >
+                <customData>
+                    <core:CustomData
+                        key="target"
+                        value="p3"
+                    />
+                </customData>
+            </Button>
+            <Button
+                id="SaveButton"
+                text="Save"
+                press="handleSubmit"
+                visible="{= ${formState>/currentStep} === 3}"
+            />
+        </FlexBox>
+    </Panel>
+</mvc:View>

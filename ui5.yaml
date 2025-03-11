@@ -1,0 +1,15 @@
+specVersion: "3.2"
+metadata:
+  name: ui5.ogarpt
+type: application
+framework:
+  name: SAPUI5
+  version: "1.133.0"
+  libraries:
+    - name: sap.f
+    - name: sap.m
+    - name: sap.tnt
+    - name: sap.ui.comp
+    - name: sap.ui.core
+    - name: sap.ui.layout
+    - name: themelib_sap_horizon
