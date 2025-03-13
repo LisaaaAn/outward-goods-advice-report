@@ -51,78 +51,6 @@
                 />
             </Page>
         </NavContainer>
-        <!-- <table:Table
-			id="table"
-			selectionMode="MultiToggle"
-			enableSelectAll="false"
-            rows="{
-                path: '/Products',
-                parameters: {operationMode: 'Server'}
-            }"
-            threshold="15"
-            scrollThreshold="50"
-            enableBusyIndicator="true"
-            ariaLabelledBy="title">
-				<table:noData>
-					<BusyIndicator class="sapUiMediumMargin"/>
-				</table:noData>
-				<extension>
-					<OverflowToolbar style="Clear">
-						<Title id="title" text="Products"/>
-						<ToolbarSpacer/>
-						<Button
-							icon="sap-icon://refresh"
-							tooltip="Reinitialize Model"
-							press="onModelRefresh"/>
-					</OverflowToolbar>
-				</extension>
-				<table:columns>
-					<table:Column
-						sortProperty="Name"
-						filterProperty="Name"
-						autoResizable="true"
-						width="11rem">
-						<Label text="{/#Products/ProductName/@sap:label}" />
-						<table:template>
-							<Text text="{ProductName}" wrapping="false" />
-						</table:template>
-					</table:Column>
-					<table:Column
-						sortProperty="ProductID"
-						filterProperty="ProductID"
-						autoResizable="true"
-						width="6rem">
-						<Label text="{/#Products/ProductID/@sap:label}" />
-						<table:template>
-							<Text text="{ProductID}" wrapping="false" />
-						</table:template>
-					</table:Column>
-					<table:Column
-						sortProperty="ProductName"
-						filterProperty="ProductName"
-						autoResizable="true"
-						width="11rem">
-						<Label text="{/#Products/ProductName/@sap:label}" />
-						<table:template>
-							<Text text="{ProductName}" wrapping="false" />
-						</table:template>
-					</table:Column>
-				</table:columns>
-				<footer>
-					<OverflowToolbar id="infobar">
-						<Label text="OData Model Operation Mode:" labelFor="operationMode"/>
-						<SegmentedButton
-							id="operationMode"
-							selectionChange="onOperationModeChange"
-							selectedKey="{ui>selectedOperationMode}"
-							items="{ui>/operationModes}">
-							<items>
-								<SegmentedButtonItem text="{ui>name}" key="{ui>name}"/>
-							</items>
-						</SegmentedButton>
-					</OverflowToolbar>
-				</footer>
-			</table:Table> -->
         <FlexBox
             id="_IDGenFlexBox"
             height="100px"
@@ -130,21 +58,21 @@
             justifyContent="Center"
         >
             <Button
-                id="JumpButton"
-                text="JumpToList"
-                press="handleJumpToList"
+                id="OpenButton"
+                text="{i18n>button.open}"
                 class="sapUiSmallMarginEnd"
+                visible="{= ${formState>/currentStep} === 1}"
             />
             <Button
                 id="PreviousButton"
-                text="Previous"
+                text="{i18n>button.back}"
                 press="handleNavigate"
                 class="sapUiSmallMarginEnd"
                 visible="{= ${formState>/currentStep} !== 1}"
             />
             <Button
                 id="NextButton1"
-                text="Next"
+                text="{i18n>button.next}"
                 press="handleNavigate"
                 class="sapUiSmallMarginEnd"
                 visible="{= ${formState>/currentStep} === 1}"
@@ -158,7 +86,7 @@
             </Button>
             <Button
                 id="NextButton2"
-                text="Next"
+                text="{i18n>button.next}"
                 press="handleNavigate"
                 class="sapUiSmallMarginEnd"
                 visible="{= ${formState>/currentStep} === 2}"
@@ -172,7 +100,7 @@
             </Button>
             <Button
                 id="SaveButton"
-                text="Save"
+                text="{i18n>button.save}"
                 press="handleSubmit"
                 visible="{= ${formState>/currentStep} === 3}"
             />

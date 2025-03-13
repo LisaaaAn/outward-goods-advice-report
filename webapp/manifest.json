@@ -80,11 +80,6 @@
           "pattern": "",
           "name": "RouteMain",
           "target": "main"
-        },
-        {
-          "pattern": "listDemo",
-          "name": "listDemo",
-          "target": "listDemo"
         }
       ],
       "targets": {
@@ -100,10 +95,6 @@
           "transition": "show",
           "viewId": "notFound",
           "viewName": "NotFound"
-        },
-        "listDemo": {
-          "id": "listDemo",
-          "name": "ListDemo"
         }
       }
     },

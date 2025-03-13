@@ -21,9 +21,6 @@ sap.ui.define([
     onDisplayNotFound: function () {
       this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
     },
-    handleJumpToList: function () {
-			this.getOwnerComponent().getRouter().navTo("listDemo", {category: "all"});
-    },
     handleNavigate: function (evt) {
       const navCon = this.byId("navCon");
       const target = evt.getSource().data("target");
