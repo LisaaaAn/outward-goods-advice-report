@@ -17,18 +17,18 @@
             <smartForm:GroupElement id="_IDGenGroupElement1">
                 <smartField:SmartField
                     id="_IDGenSmartField2"
-                    value="{ProductId}"
+                    value="{Vbeln}"
                 />
             </smartForm:GroupElement>
             <smartForm:GroupElement id="_IDGenGroupElement2">
                 <smartField:SmartField
                     id="_IDGenSmartField"
-                    value="{ProductName}"
+                    value="{Ztype}"
                 />
             </smartForm:GroupElement>
         </smartForm:Group>
         <smartForm:Group id="_IDGenGroup1">
-            <smartForm:GroupElement id="_IDGenGroupElement3">
+            <!-- <smartForm:GroupElement id="_IDGenGroupElement3">
                 <smartField:SmartField
                     id="_IDGenSmartField1"
                     value="{Price}"
@@ -39,7 +39,7 @@
                     id="_IDGenSmartField3"
                     value="{CurrencyCode}"
                 />
-            </smartForm:GroupElement>
+            </smartForm:GroupElement> -->
         </smartForm:Group>
     </smartForm:SmartForm>
 </mvc:View>

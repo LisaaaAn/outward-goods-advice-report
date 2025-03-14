@@ -13,3 +13,12 @@ framework:
     - name: sap.ui.core
     - name: sap.ui.layout
     - name: themelib_sap_horizon
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        backend:
+          - path: /sap/opu/odata/SAP
+            url: https://vhicwds4ci.sap.gm3global.com:44300/

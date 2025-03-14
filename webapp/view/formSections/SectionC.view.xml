@@ -28,11 +28,11 @@
         </smartForm:Group>
     </smartForm:SmartForm>
     
-    <Table
+    <!-- <Table
         id="EditableTable"
         growing="true"
         growingThreshold="10"
-        paste="onPaste"
+        items="{path: '/ProductItem'}"
     >
         <headerToolbar>
             <OverflowToolbar id="otbSubheader">
@@ -54,20 +54,6 @@
                     type="Transparent"
                     press="handleEdit"
                 />
-                <!-- <Button
-                    id="saveButton"
-                    text="Save"
-                    type="Transparent"
-                    press="onSave"
-                    visible="false"
-                />
-                <Button
-                    id="cancelButton"
-                    text="Cancel"
-                    type="Transparent"
-                    press="onCancel"
-                    visible="false"
-                /> -->
             </OverflowToolbar>
         </headerToolbar>
         <columns>
@@ -116,11 +102,11 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <!-- <Input id="_IDGenInput1" value="{ProductId}" editable="false" />
+                <Input id="_IDGenInput1" value="{ProductId}" editable="false" />
                 <Input id="_IDGenInput2" value="{ProductName}" />
                 <Input id="_IDGenInput3" value="{Price}" type="Number" />
-                <Input id="_IDGenInput4" value="{CurrencyCode}" type="Number" /> -->
+                <Input id="_IDGenInput4" value="{CurrencyCode}" type="Number" />
             </ColumnListItem>
         </items>
-    </Table>
+    </Table> -->
 </mvc:View>

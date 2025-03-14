@@ -8,7 +8,10 @@
     "sapui5"
   ],
   "scripts": {
-      "start": "ui5 serve -o index.html",
-      "build": "ui5 build"
+    "start": "ui5 serve -o index.html",
+    "build": "ui5 build"
+  },
+  "devDependencies": {
+    "@sap/ux-ui5-tooling": "^1.16.5"
   }
 }

@@ -6,17 +6,27 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("ui5.ogarpt.controller.Main", {
     onBeforeRendering: function () {
-      const oModel = this.getView().getModel();
       this.getView().setModel(new JSONModel({ currentStep: 1 }), "formState");
-      const oParameterContext = oModel.createEntry("/Products", {
-        properties: {
-          ProductId: "12",
-          ProductName: "",
-          Price: "",
-          CurrencyCode: "",
+    },
+    onAfterRendering: function () {
+      const oModel = this.getView().getModel();
+      oModel.create("/ZQUERYLIKPSet", {
+        "Vbeln": "1",
+        "NP_ASQUERYH2I": [
+          {
+            "Posnr": "22"
+          }
+        ]
+      }, {
+        success: function (res) {
+          const data = res?.NP_ASQUERYH2I?.results[0];
+          const oParameterContext = oModel.createEntry('/ZQUERYLIKPSet', { properties: data })
+          this.getView().setBindingContext(oParameterContext);
+        }.bind(this),
+        error: function (oError) {
+          console.error("Request failed", oError);
         }
       });
-      this.getView().setBindingContext(oParameterContext);
     },
     onDisplayNotFound: function () {
       this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
@@ -52,8 +62,8 @@ sap.ui.define([
     handleSubmit: function () {
       this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').check().then((list) => {
         if (list.length === 0) {
-          const submitData = this.getView().getBindingContext().getObject() // 获取表单数据
-          console.log('Form Data: ' + JSON.stringify(submitData))
+          const submitData = this.getView().getBindingContext().getObject();
+          console.log('Form Data: ' + JSON.stringify(submitData));
           MessageToast.show('Save Successfully!');
         }
       });

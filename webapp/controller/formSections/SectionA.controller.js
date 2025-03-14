@@ -12,12 +12,12 @@ sap.ui.define([
             this.rebindTable();
         },
         rebindTable: function (oTemplate) {
-            this.byId("EditableTable").bindItems({
-                path: "/ProductItems",
-                key: "ProductId",
-                template: oTemplate,
-                templateShareable: true
-            });
+            // this.byId("EditableTable").bindItems({
+            //     path: "/ProductItems",
+            //     key: "ProductId",
+            //     template: oTemplate,
+            //     templateShareable: true
+            // });
         },
     });
 });

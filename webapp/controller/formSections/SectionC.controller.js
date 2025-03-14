@@ -3,6 +3,6 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
     return BaseController.extend("ui5.ogarpt.controller.formSections.SectionB", {
-        onInit: function() {}
+        onInit: function () {}
     });
 });

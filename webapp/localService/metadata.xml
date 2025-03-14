@@ -1,66 +1,54 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
-    <edmx:DataServices m:DataServiceVersion="2.0">
-        <Schema Namespace="EPM_REF_APPS_PROD_MAN_SRV" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-            <EntityType Name="Product">
-                <Key>
-                    <PropertyRef Name="ProductId" />
-                </Key>
-                <Property Name="ProductId" Type="Edm.String" sap:label="Product ID" Nullable="false" />
-                <Property Name="ProductName" Type="Edm.String" sap:label="Product Name" Nullable="false" />
-                <Property Name="Price" Type="Edm.String" MaxLength="3" sap:label="Price" sap:updatable="true" />
-                <Property Name="CurrencyCode" Type="Edm.String" MaxLength="3" sap:label="Currency Code" sap:semantics="currency-code" sap:updatable="true" Nullable="false" />
-                <NavigationProperty Name="ProductItems" Relationship="EPM_REF_APPS_PROD_MAN_SRV.Product_ProductItems" ToRole="ProductItems" FromRole="Product" />
-            </EntityType>
-            <EntityType Name="ProductItem">
-                <Key>
-                    <PropertyRef Name="ProductId" />
-                </Key>
-                <Property Name="ProductId" Type="Edm.String" sap:label="Product ID" Nullable="false" />
-                <Property Name="ProductName" Type="Edm.String" sap:label="Product Name" Nullable="false" />
-                <Property Name="Price" Type="Edm.String" MaxLength="3" sap:label="Price" sap:updatable="true" />
-                <Property Name="CurrencyCode" Type="Edm.String" MaxLength="3" sap:label="Currency Code" sap:semantics="currency-code" sap:updatable="true" Nullable="false" />
-            </EntityType>
-            <EntityType Name="Currency">
-                <Key>
-                    <PropertyRef Name="CURR" />
-                </Key>
-                <Property Name="CURR" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:text="DESCR" sap:label="Currency Code" sap:filterable="false" />
-                <Property Name="DESCR" Type="Edm.String" MaxLength="25" sap:label="Description" />
-            </EntityType>
-            <Association Name="Product_ProductItems">
-                <End Type="EPM_REF_APPS_PROD_MAN_SRV.Product" Role="Product" Multiplicity="1" />
-                <End Type="EPM_REF_APPS_PROD_MAN_SRV.ProductItem" Role="ProductItems" Multiplicity="*" />
-            </Association>
-            <EntityContainer Name="DefaultContainer" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json">
-                <EntitySet Name="Products" EntityType="EPM_REF_APPS_PROD_MAN_SRV.Product" />
-                <EntitySet Name="Currency" EntityType="EPM_REF_APPS_PROD_MAN_SRV.Currency" />
-                <EntitySet Name="ProductItems" EntityType="EPM_REF_APPS_PROD_MAN_SRV.ProductItem" />
-                <AssociationSet Name="Product_ProductItems" Association="EPM_REF_APPS_PROD_MAN_SRV.Product_ProductItems">
-                    <End Role="Product" EntitySet="Products" />
-                    <End Role="ProductItems" EntitySet="ProductItems" />
-                </AssociationSet>
-            </EntityContainer>
-            <Annotations Target="EPM_REF_APPS_PROD_MAN_SRV.Product/CurrencyCode" xmlns="http://docs.oasis-open.org/odata/ns/edm">
-                <Annotation Term="com.sap.vocabularies.Common.v1.ValueList">
-                    <Record>
-                        <PropertyValue Property="Label" String="Currency" />
-                        <PropertyValue Property="CollectionPath" String="Currency" />
-                        <PropertyValue Property="SearchSupported" Bool="true" />
-                        <PropertyValue Property="Parameters">
-                            <Collection>
-                                <Record Type="com.sap.vocabularies.Common.v1.ValueListParameterOut">
-                                    <PropertyValue Property="LocalDataProperty" PropertyPath="CurrencyCode" />
-                                    <PropertyValue Property="ValueListProperty" String="CURR" />
-                                </Record>
-                                <Record Type="com.sap.vocabularies.Common.v1.ValueListParameterDisplayOnly">
-                                    <PropertyValue Property="ValueListProperty" String="DESCR" />
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-            </Annotations>
-        </Schema>
-    </edmx:DataServices>
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:DataServices m:DataServiceVersion="2.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="Z_QUERY_LIKP_SRV" xml:lang="en" sap:schema-version="1">
+<EntityType Name="ZQUERYLIKP" sap:content-version="1">
+<Key>
+<PropertyRef Name="Vbeln"/>
+</Key>
+<Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Delivery" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Ztype" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="TYPE" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<NavigationProperty Name="NP_ASQUERYH2I" Relationship="Z_QUERY_LIKP_SRV.ASQUERYH2I" FromRole="FromRole_ASQUERYH2I" ToRole="ToRole_ASQUERYH2I"/>
+</EntityType>
+<EntityType Name="ZQUERYLIKPITEM" sap:content-version="1">
+<Key>
+<PropertyRef Name="Vbeln"/>
+<PropertyRef Name="Posnr"/>
+</Key>
+<Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Delivery" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Posnr" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="Item" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Pstyv" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:label="Item Category" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Erzet" Type="Edm.Time" Precision="0" sap:unicode="false" sap:label="Time" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Erdat" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created On" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Matnr" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Matwa" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="MaterialEntered" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Matkl" Type="Edm.String" MaxLength="9" sap:unicode="false" sap:label="Material Group" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Werks" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Lgort" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:label="Location" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+</EntityType>
+<Association Name="ASQUERYH2I" sap:content-version="1">
+<End Type="Z_QUERY_LIKP_SRV.ZQUERYLIKP" Multiplicity="0..1" Role="FromRole_ASQUERYH2I"/>
+<End Type="Z_QUERY_LIKP_SRV.ZQUERYLIKPITEM" Multiplicity="*" Role="ToRole_ASQUERYH2I"/>
+<ReferentialConstraint>
+<Principal Role="FromRole_ASQUERYH2I">
+<PropertyRef Name="Vbeln"/>
+</Principal>
+<Dependent Role="ToRole_ASQUERYH2I">
+<PropertyRef Name="Vbeln"/>
+</Dependent>
+</ReferentialConstraint>
+</Association>
+<EntityContainer Name="Z_QUERY_LIKP_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+<EntitySet Name="ZQUERYLIKPSet" EntityType="Z_QUERY_LIKP_SRV.ZQUERYLIKP" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+<EntitySet Name="ZQUERYLIKPITEMSet" EntityType="Z_QUERY_LIKP_SRV.ZQUERYLIKPITEM" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+<AssociationSet Name="ASQUERYH2ISet" Association="Z_QUERY_LIKP_SRV.ASQUERYH2I" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
+<End EntitySet="ZQUERYLIKPSet" Role="FromRole_ASQUERYH2I"/>
+<End EntitySet="ZQUERYLIKPITEMSet" Role="ToRole_ASQUERYH2I"/>
+</AssociationSet>
+</EntityContainer>
+<Annotation xmlns="http://docs.oasis-open.org/odata/ns/edm" Term="Core.SchemaVersion" String="1.0.0"/>
+<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="https://vhicwds4ci.sap.gm3global.com:44300/sap/opu/odata/SAP/Z_QUERY_LIKP_SRV/$metadata"/>
+<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="https://vhicwds4ci.sap.gm3global.com:44300/sap/opu/odata/SAP/Z_QUERY_LIKP_SRV/$metadata"/>
+</Schema>
+</edmx:DataServices>
 </edmx:Edmx>
