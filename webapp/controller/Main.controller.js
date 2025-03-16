@@ -18,10 +18,28 @@ sap.ui.define([
           }
         ]
       }, {
-        success: function (res) {
-          const data = res?.NP_ASQUERYH2I?.results[0];
-          const oParameterContext = oModel.createEntry('/ZQUERYLIKPSet', { properties: data })
-          this.getView().setBindingContext(oParameterContext);
+        success: function (data) {
+          console.log('HeaderData:', data);
+          // const oParameterContext = oModel.createEntry('/ZQUERYLIKPSet', { properties: data })
+          // this.getView().setBindingContext(oParameterContext);
+          this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/ZQUERYLIKPSet('1')")
+          this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/ZQUERYLIKPSet('1')")
+          this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/ZQUERYLIKPSet('1')")
+          // const oModel = this.getView().getModel();
+          // const oTable = this.byId('_IDGenXMLView2').byId('EditableTable');
+          let itemsData = { results: [] }
+          if (data?.NP_ASQUERYH2I?.results && data?.NP_ASQUERYH2I?.results.length) {
+            itemsData = data.NP_ASQUERYH2I;
+          }
+          console.log('ItemsData:', itemsData);
+          this.getView().setModel(new JSONModel(itemsData), 'items');
+          // oModel.metadataLoaded().then(() => {
+          //   // const oContext = this.byId('_IDGenXMLView').byId('_IDGenSmartForm').getBindingContext();
+          //   oTable.bindItems({
+          //     path: '{items>/results}',
+          //     template: oTable.getAggregation("items")
+          //   });
+          // });
         }.bind(this),
         error: function (oError) {
           console.error("Request failed", oError);

@@ -7,17 +7,5 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
     return BaseController.extend("ui5.ogarpt.controller.formSections.SectionA", {
-        handleAdd: function () {},
-        handleEdit: function () {
-            this.rebindTable();
-        },
-        rebindTable: function (oTemplate) {
-            // this.byId("EditableTable").bindItems({
-            //     path: "/ProductItems",
-            //     key: "ProductId",
-            //     template: oTemplate,
-            //     templateShareable: true
-            // });
-        },
     });
 });

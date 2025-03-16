@@ -28,31 +28,32 @@
         </smartForm:Group>
     </smartForm:SmartForm>
     
-    <!-- <Table
+    <Table
         id="EditableTable"
         growing="true"
         growingThreshold="10"
-        items="{path: '/ProductItem'}"
+        items="{items>/results}"
+        mode="SingleSelectLeft"
     >
         <headerToolbar>
             <OverflowToolbar id="otbSubheader">
                 <Title
                     id="_IDGenTitle1"
-                    text="Products Items"
+                    text="{i18n>tableTitle}"
                     level="H2"
                 />
                 <ToolbarSpacer id="_IDGenToolbarSpacer" />
                 <Button
                     id="addButton"
-                    text="Add"
+                    text="{i18n>button.add}"
                     type="Transparent"
                     press="handleAdd"
                 />
                 <Button
-                    id="editButton"
-                    text="Edit"
+                    id="deleteButton"
+                    text="{i18n>button.delete}"
                     type="Transparent"
-                    press="handleEdit"
+                    press="handleDelete"
                 />
             </OverflowToolbar>
         </headerToolbar>
@@ -102,11 +103,11 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <Input id="_IDGenInput1" value="{ProductId}" editable="false" />
-                <Input id="_IDGenInput2" value="{ProductName}" />
-                <Input id="_IDGenInput3" value="{Price}" type="Number" />
-                <Input id="_IDGenInput4" value="{CurrencyCode}" type="Number" />
+                <Input id="_IDGenInput1" value="{items>Vbeln}" editable="false" />
+                <Input id="_IDGenInput2" value="{items>Posnr}" />
+                <Input id="_IDGenInput3" value="{items>Matnr}" />
+                <Input id="_IDGenInput4" value="{items>Werks}" />
             </ColumnListItem>
         </items>
-    </Table> -->
+    </Table>
 </mvc:View>

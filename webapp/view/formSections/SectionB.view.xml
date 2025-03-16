@@ -12,31 +12,17 @@
         validationMode="Async"
         editable="true"
     >
-        <smartForm:Group id="_IDGenGroup2">
-            <smartForm:GroupElement id="_IDGenGroupElement5">
-                <smartField:SmartField
-                    id="_IDGenSmartField4"
-                    value="{Price}"
-                />
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement6">
-                <smartField:SmartField
-                    id="_IDGenSmartField6"
-                    value="{CurrencyCode}"
-                />
-            </smartForm:GroupElement>
-        </smartForm:Group>
         <smartForm:Group id="_IDGenGroup3">
-            <smartForm:GroupElement id="_IDGenGroupElement7">
+            <smartForm:GroupElement id="_IDGenGroupElement3">
                 <smartField:SmartField
-                    id="_IDGenSmartField7"
-                    value="{Price}"
+                    id="_IDGenSmartField1"
+                    value="{Vbeln}"
                 />
             </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement8">
+            <smartForm:GroupElement id="_IDGenGroupElement4">
                 <smartField:SmartField
-                    id="_IDGenSmartField5"
-                    value="{CurrencyCode}"
+                    id="_IDGenSmartField3"
+                    value="{Ztype}"
                 />
             </smartForm:GroupElement>
         </smartForm:Group>
