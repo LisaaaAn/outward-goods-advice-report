@@ -19,43 +19,53 @@
 <Property Name="ZDOC_NO" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 <Property Name="ZDOC_ITEM" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 </EntityType>
+<EntityType Name="PLANT" sap:content-version="1">
+<Key>
+<PropertyRef Name="Werks"/>
+</Key>
+<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Name 1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Bwkey" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Valuation Area" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer No Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sppl. No. Plnt" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+</EntityType>
 <EntityType Name="HEAD" sap:content-version="1">
 <Key>
 <PropertyRef Name="ShipPoint"/>
 </Key>
-<Property Name="Delivery" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Delivery" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="DistrChan" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Distr. Channel" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Division" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Division" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="NumDeliveries" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Created docs" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="DlvType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Delivery Type" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Salesorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Org." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ShipPoint" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Shipping Point" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ShipTo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Ship-to Party" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZTYPE_MOVEMENT" Type="Edm.String" Nullable="false" MaxLength="99" sap:unicode="false" sap:label="Type Of Movement" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZGM3_CONTACT" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Contact" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZGM3_TELEPHONE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Telephone" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZGM3_FAX" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Fax" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZGM3_EMAIL" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:label="Email" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZVENDOR_CONTACT" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Contact (Vendor)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZVENDOR_TELEPHONE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Telephone (Vendor)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZVENDOR_FAX" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Fax (Vendor)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZVENDOR_EMAIL" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:label="Email (Vendor)" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZFREIGHT_CHARGED_TO" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Freight Charged To" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZFREIGHT_METHOD" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Freight Method" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZTHIRD_PARTY" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Third Party"sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZVENDOR_RETREF" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:label="Vendor Return Reference" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZSENDER_NAME" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Sender’s Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZWEIGHT" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:label="Weight" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZSTORED_ENERGY" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Stored Energy" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZDANGEROUS_GOODS" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Dangerous Goods" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZMSDS_ATTACHED" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="MSDS Attached" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZCUSTOM_LETTER" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:label="Custom Letter Attached" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZSPEC_INST" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:label="Special Instructions" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZCARRIER_NAME" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:label="Carrier Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="ZCARRIER_CONSIGN" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Carrier Consignment Note" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<NavigationProperty Name="NP_ASH2DATES" Relationship="ZIM_OGA_SRV.ASH2DATES" FromRole="FromRole_ASH2DATES" ToRole="ToRole_ASH2DATES"/>
-<NavigationProperty Name="NP_ASH2RETURN" Relationship="ZIM_OGA_SRV.ASH2RETURN" FromRole="FromRole_ASH2RETURN" ToRole="ToRole_ASH2RETURN"/>
+<Property Name="Delivery" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Delivery" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="DistrChan" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Distr. Channel" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Division" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Division" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="NumDeliveries" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Created docs" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="DlvType" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Delivery Type" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Salesorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Org." sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ShipPoint" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Shipping Point" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ShipTo" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Ship-to Party" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZTYPE_MOVEMENT" Type="Edm.String" Nullable="false" MaxLength="99" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZGM3_CONTACT" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZGM3_TELEPHONE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZGM3_FAX" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZGM3_EMAIL" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZVENDOR_CONTACT" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZVENDOR_TELEPHONE" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZVENDOR_FAX" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZVENDOR_EMAIL" Type="Edm.String" Nullable="false" MaxLength="241" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZFREIGHT_CHARGED_TO" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZFREIGHT_METHOD" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZTHIRD_PARTY" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZVENDOR_RETREF" Type="Edm.String" Nullable="false" MaxLength="100" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZSENDER_NAME" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZWEIGHT" Type="Edm.String" Nullable="false" MaxLength="15" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZSTORED_ENERGY" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZDANGEROUS_GOODS" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZMSDS_ATTACHED" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZCUSTOM_LETTER" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZSPEC_INST" Type="Edm.String" Nullable="false" MaxLength="255" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZCARRIER_NAME" Type="Edm.String" Nullable="false" MaxLength="80" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="ZCARRIER_CONSIGN" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:creatable="false" sap:sortable="false" sap:filterable="false"/>
 <NavigationProperty Name="NP_ASH2DLVTI" Relationship="ZIM_OGA_SRV.ASH2DLVTI" FromRole="FromRole_ASH2DLVTI" ToRole="ToRole_ASH2DLVTI"/>
+<NavigationProperty Name="NP_ASH2RETURN" Relationship="ZIM_OGA_SRV.ASH2RETURN" FromRole="FromRole_ASH2RETURN" ToRole="ToRole_ASH2RETURN"/>
+<NavigationProperty Name="NP_ASH2DATES" Relationship="ZIM_OGA_SRV.ASH2DATES" FromRole="FromRole_ASH2DATES" ToRole="ToRole_ASH2DATES"/>
 </EntityType>
 <EntityType Name="Dates" sap:content-version="1">
 <Key>
@@ -80,16 +90,6 @@
 <Property Name="MessageV2" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Message Variable" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 <Property Name="MessageV3" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Message Variable" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 <Property Name="MessageV4" Type="Edm.String" Nullable="false" MaxLength="50" sap:unicode="false" sap:label="Message Variable" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-</EntityType>
-<EntityType Name="PLANT" sap:content-version="1">
-<Key>
-<PropertyRef Name="Werks"/>
-</Key>
-<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Name1" Type="Edm.String" Nullable="false" MaxLength="30" sap:unicode="false" sap:label="Name 1" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Bwkey" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Valuation Area" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer No Plant" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
-<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sppl. No. Plnt" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 </EntityType>
 <EntityType Name="VENDOR" sap:content-version="1">
 <Key>
@@ -157,10 +157,10 @@
 </Association>
 <EntityContainer Name="ZIM_OGA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
 <EntitySet Name="DlvItemsSet" EntityType="ZIM_OGA_SRV.DlvItems" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+<EntitySet Name="PLANTSet" EntityType="ZIM_OGA_SRV.PLANT" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 <EntitySet Name="HEADSet" EntityType="ZIM_OGA_SRV.HEAD" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 <EntitySet Name="DatesSet" EntityType="ZIM_OGA_SRV.Dates" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 <EntitySet Name="RETURNSet" EntityType="ZIM_OGA_SRV.RETURN" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-<EntitySet Name="PLANTSet" EntityType="ZIM_OGA_SRV.PLANT" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 <EntitySet Name="VENDORSet" EntityType="ZIM_OGA_SRV.VENDOR" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 <AssociationSet Name="ASH2RETURNSet" Association="ZIM_OGA_SRV.ASH2RETURN" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1">
 <End EntitySet="HEADSet" Role="FromRole_ASH2RETURN"/>

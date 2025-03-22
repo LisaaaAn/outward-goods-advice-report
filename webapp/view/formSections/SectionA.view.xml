@@ -20,75 +20,32 @@
                     value="{ZTYPE_MOVEMENT}"
                 />
             </smartForm:GroupElement>
-            <smartForm:GroupElement id="deliveryGroupElement" label="Plant">
+            <smartForm:GroupElement id="deliveryGroupElement" label="Freight Charged To">
                 <smartField:SmartField 
                     id="deliveryField1"
-                    value="{ZGM3_CONTACT}"
-                />
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement1">
-                <smartField:SmartField id="_IDGenSmartField4" value="{DistrChan}"></smartField:SmartField>
-                <smartField:SmartField id="_IDGenSmartField17" value="{DistrChan}"></smartField:SmartField>     
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement2">
-                <smartField:SmartField
-                    id="_IDGenSmartField"
                     value="{ZFREIGHT_CHARGED_TO}"
                 />
+            </smartForm:GroupElement>
+            <smartForm:GroupElement id="_IDGenGroupElement1" label="Purchasing Doc">
+                <smartField:SmartField id="_IDGenSmartField4" value="{ZDOC_NO}"></smartField:SmartField>          
+            </smartForm:GroupElement>
+            <smartForm:GroupElement id="_IDGenGroupElement2" label="Material Doc No">
                 <smartField:SmartField
-                    id="_IDGenSmartField6"
-                    value="{ZFREIGHT_METHOD}"
+                    id="_IDGenSmartField"
+                    value="{ZDOC_NO}"
                 />
             </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement7">
+            <smartForm:GroupElement id="_IDGenGroupElement7" label="Mat.Doc.year">
                 <smartField:SmartField
                     id="_IDGenSmartField7"
                     value="{ZDOC_NO}"
                 />
-                <smartField:SmartField
-                    id="_IDGenSmartField15"
-                    value="{ZDOC_ITEM}"
-                />
             </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement8">
-                <smartField:SmartField
-                    id="_IDGenSmartField16"
-                    value="{ZDOC_NO}"
-                />
-                <smartField:SmartField
-                    id="_IDGenSmartField10"
-                    value="{ZDOC_ITEM}"
-                />
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement5">
-                <smartField:SmartField
-                    id="_IDGenSmartField11"
-                    value="{dateModel>/currentYear}"
-                    editable="false"
-                    textLabel="Mat.Doc.year"
-                />
-                <smartField:SmartField
-                    id="_IDGenSmartField12"
-                    value="{dateModel>/currentDate}"
-                    editable="false"
-                    textLabel="date"
-                />
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="_IDGenGroupElement6">
-                <smartField:SmartField
-                    id="_IDGenSmartField13"
-                    value="{ZSTORED_ENERGY}"
-                />
-                <smartField:SmartField
-                    id="_IDGenSmartField14"
-                    value="{ZDANGEROUS_GOODS}"
-                />
-            </smartForm:GroupElement>
-            <smartForm:GroupElement id="dangerousGoodsGroup" label="Dangerous Goods" layoutData="{span: 'XL6 L6 M6 S6'}">
+            <smartForm:GroupElement id="dangerousGoodsGroup" label="Stored Energy">
                 <RadioButtonGroup
                     id="dangerousGoodsRadioGroup"
                     selectedIndex="{
-                        path: 'ZDANGEROUS_GOODS',
+                        path: 'ZSTORED_ENERGY',
                         formatter: '.formatter.toRadioButtonIndex'
                     }"
                     columns="2"
