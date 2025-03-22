@@ -11,7 +11,7 @@
     },
 		"dataSources": {
 			"mainService": {
-				"uri": "/sap/opu/odata/SAP/Z_QUERY_LIKP_SRV",
+				"uri": "/sap/opu/odata/sap/ZIM_OGA_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",

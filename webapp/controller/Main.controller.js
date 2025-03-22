@@ -6,30 +6,51 @@ sap.ui.define([
   "use strict";
   return BaseController.extend("ui5.ogarpt.controller.Main", {
     onBeforeRendering: function () {
+      // 创建日期模型
+      const today = new Date();
+      const dateModel = new JSONModel({
+        currentYear: today.getFullYear(),
+        currentDate: today.getDate().toString().padStart(2, '0') + '.' + 
+                    (today.getMonth() + 1).toString().padStart(2, '0') + '.' + 
+                    today.getFullYear()
+      });
+      this.getView().setModel(dateModel, "dateModel");
       this.getView().setModel(new JSONModel({ currentStep: 1 }), "formState");
     },
     onAfterRendering: function () {
       const oModel = this.getView().getModel();
-      oModel.create("/ZQUERYLIKPSet", {
-        "Vbeln": "1",
-        "NP_ASQUERYH2I": [
-          {
-            "Posnr": "22"
-          }
-        ]
+      oModel.create("/HEADSet", {
+          "DistrChan": "10",
+          "Division": "00",
+          "DlvType": "LO",
+          "Salesorg": "1310",
+          "ShipPoint": "1310",
+          "ShipTo": "0001000155",
+          "ZTYPE_MOVEMENT":"1234567",
+          "ZGM3_CONTACT":"1234567",
+          "ZGM3_TELEPHONE":"1234567",
+          "NP_ASH2DLVTI": [{
+                  "RefItem": "000010"
+                  }],
+          "NP_ASH2DATES": [{
+                  "Timetype": "WS GOODS ISSUE  LIKP"
+              }
+          ],
+          "NP_ASH2RETURN":[{}]
+    
       }, {
         success: function (data) {
           console.log('HeaderData:', data);
-          // const oParameterContext = oModel.createEntry('/ZQUERYLIKPSet', { properties: data })
-          // this.getView().setBindingContext(oParameterContext);
-          this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/ZQUERYLIKPSet('1')")
-          this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/ZQUERYLIKPSet('1')")
-          this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/ZQUERYLIKPSet('1')")
+          const oParameterContext = oModel.createEntry('/HEADSet', { properties: data })
+          this.getView().setBindingContext(oParameterContext);
+          // this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/HEADSet('1310')")
+          // this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/HEADSet('1310')")
+          // this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/HEADSet('1310')")
           // const oModel = this.getView().getModel();
           // const oTable = this.byId('_IDGenXMLView2').byId('EditableTable');
           let itemsData = { results: [] }
-          if (data?.NP_ASQUERYH2I?.results && data?.NP_ASQUERYH2I?.results.length) {
-            itemsData = data.NP_ASQUERYH2I;
+          if (data?.NP_ASH2DLVTI?.results && data?.NP_ASH2DLVTI?.results.length) {
+            itemsData = data.NP_ASH2DLVTI;
           }
           console.log('ItemsData:', itemsData);
           this.getView().setModel(new JSONModel(itemsData), 'items');
