@@ -14,20 +14,16 @@
         editable="true"
     >
         <smartForm:Group id="_IDGenGroup">
-            <smartForm:GroupElement id="_IDGenGroupElement">
+            <smartForm:GroupElement id="_IDGenGroupElement" label="Type Of Movement">
                 <smartField:SmartField
                     id="_IDGenSmartField2"
                     value="{ZTYPE_MOVEMENT}"
                 />
-                <smartField:SmartField 
-                    id="deliveryField"
-                    value="{ZGM3_TELEPHONE}"
-                />
             </smartForm:GroupElement>
-            <smartForm:GroupElement id="deliveryGroupElement">
+            <smartForm:GroupElement id="deliveryGroupElement" label="Plant">
                 <smartField:SmartField 
                     id="deliveryField1"
-                    value="{Delivery}"
+                    value="{ZGM3_CONTACT}"
                 />
             </smartForm:GroupElement>
             <smartForm:GroupElement id="_IDGenGroupElement1">
