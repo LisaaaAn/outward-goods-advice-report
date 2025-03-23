@@ -16,56 +16,70 @@ sap.ui.define([
       });
       this.getView().setModel(dateModel, "dateModel");
       this.getView().setModel(new JSONModel({ currentStep: 1 }), "formState");
-    },
-    onAfterRendering: function () {
+
+      // 打开空白表单页
       const oModel = this.getView().getModel();
-      oModel.create("/HEADSet", {
-          "DistrChan": "10",
-          "Division": "00",
-          "DlvType": "LO",
-          "Salesorg": "1310",
-          "ShipPoint": "1310",
-          "ShipTo": "0001000155",
-          "ZTYPE_MOVEMENT":"1234567",
-          "ZGM3_CONTACT":"1234567",
-          "ZGM3_TELEPHONE":"1234567",
-          "NP_ASH2DLVTI": [{
-                  "RefItem": "000010"
-                  }],
-          "NP_ASH2DATES": [{
-                  "Timetype": "WS GOODS ISSUE  LIKP"
-              }
-          ],
-          "NP_ASH2RETURN":[{}]
-    
-      }, {
-        success: function (data) {
-          console.log('HeaderData:', data);
-          const oParameterContext = oModel.createEntry('/HEADSet', { properties: data })
-          this.getView().setBindingContext(oParameterContext);
-          // this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/HEADSet('1310')")
-          // this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/HEADSet('1310')")
-          // this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/HEADSet('1310')")
-          // const oModel = this.getView().getModel();
-          // const oTable = this.byId('_IDGenXMLView2').byId('EditableTable');
-          let itemsData = { results: [] }
-          if (data?.NP_ASH2DLVTI?.results && data?.NP_ASH2DLVTI?.results.length) {
-            itemsData = data.NP_ASH2DLVTI;
-          }
-          console.log('ItemsData:', itemsData);
-          this.getView().setModel(new JSONModel(itemsData), 'items');
-          // oModel.metadataLoaded().then(() => {
-          //   // const oContext = this.byId('_IDGenXMLView').byId('_IDGenSmartForm').getBindingContext();
-          //   oTable.bindItems({
-          //     path: '{items>/results}',
-          //     template: oTable.getAggregation("items")
-          //   });
-          // });
-        }.bind(this),
-        error: function (oError) {
-          console.error("Request failed", oError);
+      const oParameterContext = oModel.createEntry('/HEADSet', { properties: {
+          "ZTYPE_MOVEMENT": ""
         }
-      });
+      })
+      this.getView().setBindingContext(oParameterContext);
+    },
+    onInit: function () {
+      // const oModel = this.getView().getModel();
+      // const oParameterContext = oModel.createEntry('/HEADSet', { properties: {
+      //     "ZTYPE_MOVEMENT": ""
+      //   }
+      // })
+      // this.getView().setBindingContext(oParameterContext);
+      // const oModel = this.getView().getModel();
+      // oModel.create("/HEADSet", {
+      //     "DistrChan": "10",
+      //     "Division": "00",
+      //     "DlvType": "LO",
+      //     "Salesorg": "1310",
+      //     "ShipPoint": "1310",
+      //     "ShipTo": "0001000155",
+      //     "ZTYPE_MOVEMENT":"1234567",
+      //     "ZGM3_CONTACT":"1234567",
+      //     "ZGM3_TELEPHONE":"1234567",
+      //     "NP_ASH2DLVTI": [{
+      //             "RefItem": "000010"
+      //             }],
+      //     "NP_ASH2DATES": [{
+      //             "Timetype": "WS GOODS ISSUE  LIKP"
+      //         }
+      //     ],
+      //     "NP_ASH2RETURN":[{}]
+    
+      // }, {
+      //   success: function (data) {
+      //     console.log('HeaderData:', data);
+      //     const oParameterContext = oModel.createEntry('/HEADSet', { properties: data })
+      //     this.getView().setBindingContext(oParameterContext);
+      //     // this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/HEADSet('1310')")
+      //     // this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/HEADSet('1310')")
+      //     // this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/HEADSet('1310')")
+      //     // const oModel = this.getView().getModel();
+      //     // const oTable = this.byId('_IDGenXMLView2').byId('EditableTable');
+      //     let itemsData = { results: [] }
+      //     if (data?.NP_ASH2DLVTI?.results && data?.NP_ASH2DLVTI?.results.length) {
+      //       itemsData = data.NP_ASH2DLVTI;
+      //     }
+      //     console.log('ItemsData:', itemsData);
+      //     this.getView().setModel(new JSONModel(itemsData), 'items');
+      //     // oModel.metadataLoaded().then(() => {
+      //     //   // const oContext = this.byId('_IDGenXMLView').byId('_IDGenSmartForm').getBindingContext();
+      //     //   oTable.bindItems({
+      //     //     path: '{items>/results}',
+      //     //     template: oTable.getAggregation("items")
+      //     //   });
+      //     // });
+      //   }.bind(this),
+      //   error: function (oError) {
+      //     console.error("Request failed", oError);
+      //   }
+      // });
     },
     onDisplayNotFound: function () {
       this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
