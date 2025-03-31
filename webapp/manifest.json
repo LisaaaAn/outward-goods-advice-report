@@ -11,11 +11,21 @@
     },
 		"dataSources": {
 			"mainService": {
-				"uri": "/sap/opu/odata/sap/ZIM_OGA_SRV/",
+				"uri": "/sap/opu/odata/sap/ZIM_OGA_SRV?saml2=disabled",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "localService/metadata.xml"
+					"localUri": "localService/metadata.xml/",
+          "disableCache": true,
+                      "annotations": [
+                          "com.sap.vocabularies.Common.v1",
+                          "com.sap.vocabularies.UI.v1"
+                      ],
+                      "headers": {
+                          "Access-Control-Allow-Origin": "*",
+                          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                          "Access-Control-Allow-Headers": "Content-Type, Authorization"
+                      }
 				}
 			}
 		}
@@ -29,7 +39,7 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
     "handleValidation": true,
     "dependencies": {
       "minUI5Version": "1.108.0",

@@ -18,7 +18,8 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false
+        ignoreCertError: true
         backend:
-          - path: /sap/opu/odata/SAP
+          - path: /sap
             url: https://vhicwds4ci.sap.gm3global.com:44300/
+            strictSSR: false

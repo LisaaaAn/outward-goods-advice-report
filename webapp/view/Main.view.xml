@@ -30,7 +30,7 @@
                     viewName="ui5.ogarpt.view.formSections.SectionA"
                 />
             </Page>
-            <Page
+            <!-- <Page
                 id="p2"
                 showHeader="false"
                 backgroundDesign="Transparent"
@@ -39,9 +39,9 @@
                     id="_IDGenXMLView1"
                     viewName="ui5.ogarpt.view.formSections.SectionB"
                 />
-            </Page>
+            </Page> -->
             <Page
-                id="p3"
+                id="p2"
                 showHeader="false"
                 backgroundDesign="Transparent"
             >
@@ -57,12 +57,12 @@
             alignItems="Start"
             justifyContent="Center"
         >
-            <Button
+            <!-- <Button
                 id="OpenButton"
                 text="{i18n>button.open}"
                 class="sapUiSmallMarginEnd"
                 visible="{= ${formState>/currentStep} === 1}"
-            />
+            /> -->
             <Button
                 id="PreviousButton"
                 text="{i18n>button.back}"
@@ -84,7 +84,7 @@
                     />
                 </customData>
             </Button>
-            <Button
+            <!-- <Button
                 id="NextButton2"
                 text="{i18n>button.next}"
                 press="handleNavigate"
@@ -97,12 +97,12 @@
                         value="p3"
                     />
                 </customData>
-            </Button>
+            </Button> -->
             <Button
                 id="SaveButton"
                 text="{i18n>button.save}"
                 press="handleSubmit"
-                visible="{= ${formState>/currentStep} === 3}"
+                visible="{= ${formState>/currentStep} === 2}"
             />
         </FlexBox>
     </Panel>
