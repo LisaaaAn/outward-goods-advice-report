@@ -260,9 +260,10 @@ sap.ui.define([
                         })
                     ],
                     selectionChange: function(oEvent2) {
+                        debugger 
                         var selectItems = oEvent2.getParameter("listItem");
                         var selectCells = selectItems.getCells();
-                        oInput.setValue(selectCells[0].getText());
+                        // oInput.setValue(selectCells[0].getText());
                         // 获取选中的物料数据并设置相关信息
                         const oContext = selectItems.getBindingContext("MaterialModel");
                         const oItemsModel = that.getView().getModel("items");
@@ -271,9 +272,24 @@ sap.ui.define([
 
                         if (oSelectedItem) {
                             const sPath = oSelectedItem.getBindingContext("items").getPath();
+                            const Matnr = oContext.getProperty("Matnr");
+                            oItemsModel.setProperty(sPath + "/MaterialNo", Matnr);
                             const meins = oContext.getProperty("Meins");
-                            oItemsModel.setProperty(sPath + "/Unit2", meins);
+                            oItemsModel.setProperty(sPath + "/Unit2", meins);                          
+                            const Brgew = oContext.getProperty("Brgew");
+                            oItemsModel.setProperty(sPath + "/Brgew2", Brgew);
                         }
+                        var aInput = oEvent.getSource();
+                        var oBindingContext = aInput.getBindingContext("items");
+                        var aPath = oBindingContext.getPath();
+                        var oData = oItemsModel.getProperty(aPath);
+                        // 获取数量值
+                        var quantity = parseFloat(oData.Quantity) || 0;
+                        var brgew = parseFloat(oData.Brgew2) || 0;
+                        // 计算重量
+                        var weight = quantity * brgew;
+                        // 更新重量字段
+                        oItemsModel.setProperty(aPath + "/Weight", weight);
                         that._materialValueHelpDialog.close();
                     }
                 })
@@ -414,29 +430,14 @@ sap.ui.define([
             var sPath = oBindingContext.getPath();
             var oModel = this.getView().getModel("items");
             var oData = oModel.getProperty(sPath);
-            
             // 获取数量值
             var quantity = parseFloat(oData.Quantity) || 0;
-            
-            // 获取物料的Brgew值
-            var materialNo = oData.MaterialNo;
-            if (materialNo) {
-                // 这里需要调用后端API获取物料的Brgew值
-                // 假设我们有一个OData服务可以获取物料信息
-                var oODataModel = this.getView().getModel();
-                oODataModel.read("/MaterialSet('" + materialNo + "')", {
-                    success: function(oResult) {
-                        var brgew = parseFloat(oResult.Brgew) || 0;
+            var brgew = parseFloat(oData.Brgew2) || 0;
                         // 计算重量
                         var weight = quantity * brgew;
                         // 更新重量字段
                         oModel.setProperty(sPath + "/Weight", weight);
-                    }.bind(this),
-                    error: function(oError) {
-                        console.error("Error fetching material data:", oError);
-                    }
-                });
-            }
+            
         }
     });
 });

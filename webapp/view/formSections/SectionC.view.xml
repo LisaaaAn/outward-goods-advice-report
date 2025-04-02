@@ -393,7 +393,7 @@
                 vAlign="Middle"
             >
                 <Input id="srNoInput" value="{items>Vbeln}" editable="true" />
-                <Input id="quantityInput" value="{items>Quantity}" change=".onQuantityChange"/>
+                <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange"/>
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
                 <Input id="materialNoInput" 
@@ -402,7 +402,7 @@
                     valueHelpRequest=".onMaterialValueHelpRequest"
                     valueHelpOnly="true"
                 />
-                <Input id="weightInput" value="{items>Weight}" />
+                <Input id="weightInput" value="{items>Weight}" type="Number" />
                 <Input id="materialDescInput" value="{items>MaterialDesc}" />
                 <Input id="aacInput" value="{items>AAC}" />
                 <Input id="accountAssignInput" value="{items>AccountAssign}" />
