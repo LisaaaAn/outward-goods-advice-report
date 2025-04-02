@@ -209,6 +209,102 @@ sap.ui.define([
             this._plantValueHelpDialog.open();
         },
 
+        onMaterialValueHelpRequest: function (oEvent) {
+            const oInput = oEvent.getSource();
+            var that = this;
+            // 创建对话框
+            if (!this._materialValueHelpDialog) {
+                this._materialValueHelpDialog = new Dialog({
+                    title: "Choose Material",
+                    type: "Standard",
+                    state: "None",
+                    stretchOnPhone: true,
+                    contentWidth: "600px",
+                    contentHeight: "400px",
+                    buttons: [
+                        new Button({
+                            text: "Confirm",
+                            press: function () {
+                                const oTable = this._materialValueHelpDialog.getContent()[1];
+                                const oSelectedItem = oTable.getSelectedItem();
+                                if (oSelectedItem) {
+                                    const oContext = oSelectedItem.getBindingContext("MaterialModel");
+                                    const sValue = oContext.getProperty("Matnr");
+                                    oInput.setValue(sValue);
+                                    // 获取工厂地址信息并设置到 submitData
+                                    const oSubmitModel = this.getView().getModel("submitData");
+                                    const matrialUnit1 = oContext.getProperty("Gewei"); 
+                                    oSubmitModel.setProperty("/plantAddress1", matrialUnit1);
+                                }
+                                this._materialValueHelpDialog.close();
+                            }.bind(this)
+                        }),
+                        new Button({
+                            text: "Cancel",
+                            press: function () {
+                                this._materialValueHelpDialog.close();
+                            }.bind(this)
+                        })
+                    ],
+                    content: [
+                        new Input({
+                            placeholder: "Enter Material No",
+                            liveChange: function (oEvent) {
+                                const sValue = oEvent.getSource().getValue();
+                                this._filterPlants(sValue);
+                            }.bind(this)
+                        }),
+                        new sap.m.Table({
+                            mode: "SingleSelectMaster",
+                            items: {
+                                path: "MaterialModel>/results",
+                                template: new sap.m.ColumnListItem({
+                                    cells: [
+                                        new sap.m.Text({text: "{MaterialModel>Matnr}"}),
+                                        new sap.m.Text({text: "{MaterialModel>Brgew}"}),
+                                        new sap.m.Text({text: "{MaterialModel>Ntgew}"}),
+                                        new sap.m.Text({text: "{MaterialModel>Meins}"}),
+                                    ]
+                                })
+                            },
+                            columns: [
+                                new sap.m.Column({
+                                    header: new Text({ text: "No" })
+                                }),
+                                new sap.m.Column({
+                                    header: new Text({ text: "Gross Weight" })
+                                }),
+                                new sap.m.Column({
+                                    header: new Text({ text: "Net Weight" })
+                                }),
+                                new sap.m.Column({
+                                    header: new Text({ text: "Unit" })
+                                })
+                            ],
+                            selectionChange: function(oEvent2) {
+                                var selectItems = oEvent2.getParameter("listItem");
+                                var selectCells = selectItems.getCells();
+                                oInput.setValue(selectCells[0].getText());
+                                that._materialValueHelpDialog.close();
+                            }
+                        })
+                    ]
+                });
+
+                // 添加数据加载事件处理
+                // const oTable = this._plantValueHelpDialog.getContent()[1];
+                // oTable.attachRowsUpdated(function() {
+                //     console.log("表格数据已更新");
+                //     const iRowCount = oTable.getRows().length;
+                //     console.log("当前行数:", iRowCount);
+                // });
+                this.getView().addDependent(this._materialValueHelpDialog);
+            }
+
+            // 打开对话框
+            this._materialValueHelpDialog.open();
+        },
+
         handleAdd: function () {
             const oModel = this.getView().getModel('items');
             const aData = oModel.getProperty("/results") || [];

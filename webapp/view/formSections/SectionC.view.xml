@@ -396,7 +396,12 @@
                 <Input id="quantityInput" value="{items>Quantity}" />
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
-                <Input id="materialNoInput" value="{items>MaterialNo}" />
+                <Input id="materialNoInput" 
+                    value="{items>MaterialNo}" 
+                    showValueHelp="true"
+                    valueHelpRequest=".onMaterialValueHelpRequest"
+                    valueHelpOnly="true"
+                />
                 <Input id="weightInput" value="{items>Weight}" />
                 <Input id="materialDescInput" value="{items>MaterialDesc}" />
                 <Input id="aacInput" value="{items>AAC}" />

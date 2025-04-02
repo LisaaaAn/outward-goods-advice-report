@@ -86,6 +86,17 @@ sap.ui.define([
                         sap.m.MessageToast.show("获取供应商数据失败: " + oError.message);
                     }
                 });
+                //获取物料数据
+                oPlantModel.read("/MATNRSet", {
+                  success: function(oData) {   
+                    console.log("成功获取物料数据:", oData);
+                      that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "MaterialModel");
+                  },
+                  error: function(oError) {
+                      console.error("获取物料数据失败:", oError);
+                      sap.m.MessageToast.show("获取物料数据失败: " + oError.message);
+                  }
+              });
     },
     
     onBeforeRendering: function () {
