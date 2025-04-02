@@ -392,8 +392,13 @@ sap.ui.define([
         handleAdd: function () {
             const oModel = this.getView().getModel('items');
             const aData = oModel.getProperty("/results") || [];
+            let sNewNo = '10';
+            if (aData.length) {
+                const sLastNo = aData[aData.length - 1].Vbeln;
+                sNewNo = String(Number(sLastNo) + 10);
+            }
             const oNewRow = {
-                Vbeln: "",
+                Vbeln: sNewNo,
                 Quantity: "",
                 Unit: "",
                 PurchaseOrderNo: "",
