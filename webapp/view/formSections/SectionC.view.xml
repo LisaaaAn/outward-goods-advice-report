@@ -569,7 +569,7 @@
             >
                 <Input id="srNoInput" value="{items>Vbeln}" editable="true" required="true"/>
                 <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange" required="true"/>
-                <Input id="unit1Input" value="{items>Unit1}" required="true"/>
+                <Input id="unit1Input" value="{items>Unit}" required="true"/>
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
                 <Input id="materialNoInput" 

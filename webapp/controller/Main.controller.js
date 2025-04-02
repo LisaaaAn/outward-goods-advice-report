@@ -238,7 +238,7 @@ sap.ui.define([
           if (!item.Quantity) {
             allEmptyFields.push(`Line${index + 1}: Quantity`);
           }
-          if (!item.Unit1) {
+          if (!item.Unit) {
             allEmptyFields.push(`Line${index + 1}: Unit`);
           }
         });
@@ -270,9 +270,10 @@ sap.ui.define([
             // "MaterialDesc": item.MaterialDesc || "",
             // "AAC": item.AAC || "",
             // "AccountAssign": item.AccountAssign || "",
-            "SalesUnit": item.Unit1 || "",
+            "SalesUnit": item.Unit || "",
             // "Unit2": item.Unit2 || "",
-            "Plant": submitData.Plant || ""
+            "Plant": submitData.Plant || "",
+            "BRGEW": item.Weight
           })),
           "NP_ASH2DATES": [{
             "Timetype": "WS GOODS ISSUE  LIKP",
