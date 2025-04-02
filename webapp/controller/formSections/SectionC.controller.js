@@ -221,7 +221,115 @@ sap.ui.define([
             // 打开对话框
             this._plantValueHelpDialog.open();
         },
+        onPurchaseValueHelpRequest: function (oEvent) {
+            const oInput = oEvent.getSource();
+            var that = this;
+             // 获取当前行并选中它
+             const oTable = this.byId("EditableTable");
+             const oRow = oInput.getParent();
+             if (oRow) {
+                 oTable.setSelectedItem(oRow);
+             }
+            const createTable = function() {
+                return new sap.m.Table({
+                    mode: "SingleSelectMaster",
+                    items: {
+                        path: "PurchaseModel>/results",
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({text: "{PurchaseModel>Ebeln}"})
+                                // new sap.m.Text({text: "{PurchaseModel>Ebelp}"})
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new Text({ text: "Purchase Order No" })
+                        })
+                        // new sap.m.Column({
+                        //     header: new Text({ text: "PO Item No" })
+                        // })
+                    ],
+                    selectionChange: function(oEvent2) {
+                        var selectItems = oEvent2.getParameter("listItem");
+                        var selectCells = selectItems.getCells();
+                        // oInput.setValue(selectCells[0].getText());
+                        // 获取选中的物料数据并设置相关信息
+                        const oContext = selectItems.getBindingContext("PurchaseModel");
+                        const oItemsModel = that.getView().getModel("items");
+                        const oTable = that.byId("EditableTable");
+                        const oSelectedItem = oTable.getSelectedItem();
 
+                        if (oSelectedItem) {
+                            const sPath = oSelectedItem.getBindingContext("items").getPath();
+                            const PurchaseOrderNo = oContext.getProperty("Ebeln");
+                            oItemsModel.setProperty(sPath + "/PurchaseOrderNo", PurchaseOrderNo);
+                        }
+
+                        that._purchaseValueHelpDialog.close();
+                    }
+                })
+            }
+            // 创建对话框
+            if (!this._purchaseValueHelpDialog) {
+                this._oTable = createTable();
+                this._purchaseValueHelpDialog = new Dialog({
+                    title: "Choose Purchase Order No",
+                    type: "Standard",
+                    state: "None",
+                    stretchOnPhone: true,
+                    contentWidth: "600px",
+                    contentHeight: "400px",
+                    buttons: [
+                        new Button({
+                            text: "Confirm",
+                            press: function () {
+                                const oTable = this._purchaseValueHelpDialog.getContent()[1];
+                                const oSelectedItem = oTable.getSelectedItem();
+                                if (oSelectedItem) {
+                                    const oContext = oSelectedItem.getBindingContext("PurchaseModel");
+                                    const sValue = oContext.getProperty("Ebeln");
+                                    oInput.setValue(sValue);
+                                    
+                                    // 获取当前表格的选中行
+                                    const oItemsTable = that.byId("EditableTable");
+                                    const oItemsSelectedItem = oItemsTable.getSelectedItem();
+                                    if (oItemsSelectedItem) {
+                                        const oItemsModel = that.getView().getModel("items");
+                                        
+                                        // 同时更新submitModel中的NP_ASH2DLVTI
+                                        const oSubmitModel = that.getView().getModel("submitData");
+                                        const aData = oItemsModel.getProperty("/results");
+                                        oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+                                    }
+                                }
+                                this._purchaseValueHelpDialog.close();
+                            }.bind(this)
+                        }),
+                        new Button({
+                            text: "Cancel",
+                            press: function () {
+                                this._purchaseValueHelpDialog.close();
+                            }.bind(this)
+                        })
+                    ],
+                    content: [
+                        new Input({
+                            placeholder: "Enter Purchase Order No",
+                            liveChange: function (oEvent) {
+                                const sValue = oEvent.getSource().getValue();
+                                this._filterPO(sValue);
+                            }.bind(this)
+                        }),
+                        this._oTable
+                    ]
+                });
+                this.getView().addDependent(this._purchaseValueHelpDialog);
+            }
+
+            // 打开对话框
+            this._purchaseValueHelpDialog.open();
+        },
         onMaterialValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
@@ -381,6 +489,13 @@ sap.ui.define([
             this._oTable.getBinding("items").filter(aFilter)
         },
 
+        _filterPO: function (sValue) {
+            const aFilter = [];
+            if (sValue) {
+                aFilter.push(new Filter("Ebeln", FilterOperator.Contains, sValue))
+            }
+            this._oTable.getBinding("items").filter(aFilter)
+        },
         _filterMaterial: function (sValue) {
             const aFilter = [];
             if (sValue) {

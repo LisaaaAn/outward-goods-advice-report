@@ -567,10 +567,17 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <Input id="srNoInput" value="{items>Vbeln}" editable="true" required="true"/>
+                <Input id="srNoInput" value="{items>Vbeln}" editable="false" required="true"/>
                 <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange" required="true"/>
                 <Input id="unit1Input" value="{items>Unit1}" required="true"/>
-                <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
+                <!-- <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" /> -->
+                <Input id="purchaseOrderNoInput" 
+                    value="{items>PurchaseOrderNo}" 
+                    showValueHelp="true"
+                    valueHelpRequest=".onPurchaseValueHelpRequest"
+                    valueHelpOnly="true"
+                    required="true"
+                />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
                 <Input id="materialNoInput" 
                     value="{items>MaterialNo}" 

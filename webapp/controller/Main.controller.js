@@ -97,6 +97,19 @@ sap.ui.define([
           sap.m.MessageToast.show("获取物料数据失败: " + oError.message);
         }
       });
+
+      // 测试获取 PO No 数据
+      oPlantModel.read("/PurNoDocSet", {
+        success: function (oData) {
+          console.log("成功 PO No 数据:", oData);
+
+          that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "PurchaseModel");
+        },
+        error: function (oError) {
+          console.error("获取工厂数据失败:", oError);
+          sap.m.MessageToast.show("获取工厂数据失败: " + oError.message);
+        }
+      });
     },
 
     onBeforeRendering: function () {
@@ -233,12 +246,12 @@ sap.ui.define([
       };
 
       console.log('提交数据:', JSON.stringify(oData, null, 2));
-
+      const that = this;
       oModel.create("/HEADSet", oData, {
         success: function (data) {
           console.log('提交成功:', data);
           if (data.Delivery) {
-            MessageBox.success('Save successfully!', {
+            MessageBox.success(`Save successfully! \n Document No: ${data.Delivery}`, {
               actions: MessageBox.Action.OK,
               onClose: function (action) {
                 if (action === MessageBox.Action.OK) {
@@ -286,12 +299,12 @@ sap.ui.define([
                   });
 
                   // 重置步骤到第一步
-                  const oFormStateModel = this.getView().getModel("formState");
+                  const oFormStateModel = that.getView().getModel("formState");
                   oFormStateModel.setProperty("/currentStep", 1);
 
                   // 返回到第一个页面
-                  const navCon = this.byId("navCon");
-                  navCon.to(this.byId("p1"), "slide");
+                  const navCon = that.byId("navCon");
+                  navCon.to(that.byId("p1"), "slide");
                 }
               }
             });
