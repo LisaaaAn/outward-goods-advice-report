@@ -1,0 +1,2 @@
+sap.ui.define(["ui5/ogarpt/controller/BaseController"],function(t){"use strict";return t.extend("ui5.ogarpt.controller.NotFound",{onInit:function(){var t,a;t=this.getRouter();a=t.getTarget("notFound");a.attachDisplay(function(t){this._oData=t.getParameter("data")},this)},onNavBack:function(){if(this._oData&&this._oData.fromTarget){this.getRouter().getTargets().display(this._oData.fromTarget);delete this._oData.fromTarget;return}t.prototype.onNavBack.apply(this,arguments)}})});
+//# sourceMappingURL=NotFound.controller.js.map

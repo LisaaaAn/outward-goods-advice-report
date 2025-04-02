@@ -1,0 +1,10 @@
+.underline-title .sapUiFormContainerTitle::after {
+    content: "";
+    display: block;
+    width: 100%; /* 下划线横跨整个容器 */
+    height: 2px; /* 下划线高度 */
+    background-color: #000; /* 黑色 */
+    margin-top: 5px; /* 标题与下划线的间距 */
+   }
+   
+ 

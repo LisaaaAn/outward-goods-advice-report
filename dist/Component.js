@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/UIComponent","sap/ui/model/json/JSONModel"],t=>{"use strict";return t.extend("ui5.ogarpt.Component",{metadata:{interfaces:["sap.ui.core.IAsyncContentCreation"],manifest:"json"},init(){t.prototype.init.apply(this,arguments);this.getRouter().initialize()}})});
+//# sourceMappingURL=Component.js.map

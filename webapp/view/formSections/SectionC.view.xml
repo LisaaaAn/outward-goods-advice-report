@@ -393,7 +393,7 @@
                 vAlign="Middle"
             >
                 <Input id="srNoInput" value="{items>Vbeln}" editable="true" />
-                <Input id="quantityInput" value="{items>Quantity}" />
+                <Input id="quantityInput" value="{items>Quantity}" change=".onQuantityChange"/>
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
                 <Input id="materialNoInput" 

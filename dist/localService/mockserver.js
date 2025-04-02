@@ -1,0 +1,2 @@
+sap.ui.define(["sap/ui/core/util/MockServer"],function(t){"use strict";return{init:function(){const a=new t({rootUri:"/sap/opu/odata/sap/EPM_REF_APPS_PROD_MAN_SRV/"});t.config({autoRespond:true,autoRespondAfter:500});const e=sap.ui.require.toUrl("ui5/ogarpt/localService");a.simulate(e+"/metadata.xml",{sMockdataBaseUrl:e+"/mockdata",bGenerateMissingMockData:true});a.start()}}});
+//# sourceMappingURL=mockserver.js.map

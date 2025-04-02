@@ -8,8 +8,10 @@ sap.ui.define([
     "sap/m/Column",
     "sap/m/Text",
     "sap/m/ColumnListItem",
-    "sap/ui/core/mvc/Controller"
-], function (BaseController, JSONModel, Dialog, Button, Input, Table, Column, Text, ColumnListItem, Controller) {
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (BaseController, JSONModel, Dialog, Button, Input, Table, Column, Text, ColumnListItem, Controller, Filter, FilterOperator) {
     "use strict";
     return Controller.extend("ui5.ogarpt.controller.formSections.SectionC", {
         onInit:function(){
@@ -28,10 +30,58 @@ sap.ui.define([
         onValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
+            const createTable = function() {
+                return new sap.m.Table({
+                    mode: "SingleSelectMaster",
+                    items: {
+                        path: "VendorModel>/results",
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({text: "{VendorModel>Kunnr}"}),
+                                new sap.m.Text({text: "{VendorModel>Name1}"}),
+                                new sap.m.Text({text: "{VendorModel>Land1}"}),
+                                new sap.m.Text({text: "{VendorModel>Stras}"})
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new Text({ text: "No" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Name" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Country" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Address" })
+                        })
+                    ],
+                    selectionChange: function(oEvent2) {
+                        var selectItems = oEvent2.getParameter("listItem");
+                        var selectCells = selectItems.getCells();
+                        oInput.setValue(selectCells[0].getText());
+                        // 获取选中的供应商数据并设置相关信息
+                        const oContext = selectItems.getBindingContext("VendorModel");
+                        const oSubmitModel = that.getView().getModel("submitData");
+                        const VendorName = oContext.getProperty("Name1");                                
+                        oSubmitModel.setProperty("/VendorName", VendorName);
+                        const VendorAddress1 = oContext.getProperty("Stras");
+                        oSubmitModel.setProperty("/VendorAddress1", VendorAddress1);
+                        const ZVENDOR_TELEPHONE = oContext.getProperty("Telf1");
+                        oSubmitModel.setProperty("/ZVENDOR_TELEPHONE", ZVENDOR_TELEPHONE);
+                        const ZVENDOR_FAX = oContext.getProperty("Telfx");
+                        oSubmitModel.setProperty("/ZVENDOR_FAX", ZVENDOR_FAX);                                
+                        that._VendorValueHelpDialog.close();
+                    }
+                })
+            }
             // 创建对话框
             if (!this._VendorValueHelpDialog) {
+                this._oTable = createTable();
                 this._VendorValueHelpDialog = new Dialog({
-                    title: "Choose Vendor",
+                    title: "Select Vendor",
                     type: "Standard",
                     state: "None",
                     stretchOnPhone: true,
@@ -47,6 +97,10 @@ sap.ui.define([
                                     const oContext = oSelectedItem.getBindingContext("VendorModel");
                                     const sValue = oContext.getProperty("lifnr");
                                     oInput.setValue(sValue);
+                                    // 获取供应商名称信息并设置到 submitData                                   
+                                    const oSubmitModel = this.getView().getModel("submitData");
+                                    const plantAddress = oContext.getProperty("Name1"); 
+                                    oSubmitModel.setProperty("/VendorName", plantAddress);
                                 }
                                 this._VendorValueHelpDialog.close();
                             }.bind(this)
@@ -66,50 +120,10 @@ sap.ui.define([
                                 this._filterVendors(sValue);
                             }.bind(this)
                         }),
-                        new sap.m.Table({
-                            mode: "SingleSelectMaster",
-                            items: {
-                                path: "VendorModel>/results",
-                                template: new sap.m.ColumnListItem({
-                                    cells: [
-                                        new sap.m.Text({text: "{VendorModel>Lifnr}"}),
-                                        new sap.m.Text({text: "{VendorModel>Name1}"}),
-                                        new sap.m.Text({text: "{VendorModel>Land1}"}),
-                                        new sap.m.Text({text: "{VendorModel>Adrnr}"})
-                                    ]
-                                })
-                            },
-                            columns: [
-                                new sap.m.Column({
-                                    header: new Text({ text: "No" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Name" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Country" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Address" })
-                                })
-                            ],
-                            selectionChange: function(oEvent2) {
-                                var selectItems = oEvent2.getParameter("listItem");
-                                var selectCells = selectItems.getCells();
-                                oInput.setValue(selectCells[0].getText());
-                                that._VendorValueHelpDialog.close();
-                            }
-                        })
+                        this._oTable
                     ]
                 });
 
-                // 添加数据加载事件处理
-                // const oTable = this._plantValueHelpDialog.getContent()[1];
-                // oTable.attachRowsUpdated(function() {
-                //     console.log("表格数据已更新");
-                //     const iRowCount = oTable.getRows().length;
-                //     console.log("当前行数:", iRowCount);
-                // });
                 this.getView().addDependent(this._VendorValueHelpDialog);
             }
 
@@ -120,8 +134,47 @@ sap.ui.define([
         onPlantValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
+            const createTable = function() {
+                return new sap.m.Table({
+                    mode: "SingleSelectMaster",
+                    items: {
+                        path: "plantModel>/results",
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({text: "{plantModel>Werks}"}),
+                                new sap.m.Text({text: "{plantModel>Name1}"}),
+                                new sap.m.Text({text: "{plantModel>Stras}"})
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new Text({ text: "No" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Name" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Address" })
+                        })
+                    ],
+                    selectionChange: function(oEvent2) {
+                        var selectItems = oEvent2.getParameter("listItem");
+                        var selectCells = selectItems.getCells();
+                        oInput.setValue(selectCells[0].getText());                       
+                        // 获取选中的工厂数据并设置地址
+                        const oContext = selectItems.getBindingContext("plantModel");
+                        const oSubmitModel = that.getView().getModel("submitData");
+                        const plantAddress = oContext.getProperty("Stras");                               
+                        oSubmitModel.setProperty("/plantAddress1", plantAddress);                                
+                        that._plantValueHelpDialog.close();
+                    }
+                })
+            }
+
             // 创建对话框
             if (!this._plantValueHelpDialog) {
+                this._oTable = createTable();
                 this._plantValueHelpDialog = new Dialog({
                     title: "Choose Plant",
                     type: "Standard",
@@ -139,10 +192,6 @@ sap.ui.define([
                                     const oContext = oSelectedItem.getBindingContext("plantModel");
                                     const sValue = oContext.getProperty("Werks");
                                     oInput.setValue(sValue);
-                                    // 获取工厂地址信息并设置到 submitData
-                                    const oSubmitModel = this.getView().getModel("submitData");
-                                    const plantAddress = oContext.getProperty("Name1"); // 使用工厂名称作为地址
-                                    oSubmitModel.setProperty("/plantAddress1", plantAddress);
                                 }
                                 this._plantValueHelpDialog.close();
                             }.bind(this)
@@ -156,52 +205,16 @@ sap.ui.define([
                     ],
                     content: [
                         new Input({
-                            placeholder: "Enter plant number or name",
+                            placeholder: "Enter Plant name",
                             liveChange: function (oEvent) {
                                 const sValue = oEvent.getSource().getValue();
                                 this._filterPlants(sValue);
                             }.bind(this)
                         }),
-                        new sap.m.Table({
-                            mode: "SingleSelectMaster",
-                            items: {
-                                path: "plantModel>/results",
-                                template: new sap.m.ColumnListItem({
-                                    cells: [
-                                        new sap.m.Text({text: "{plantModel>Werks}"}),
-                                        new sap.m.Text({text: "{plantModel>Name1}"}),
-                                        new sap.m.Text({text: "{plantModel>Desc}"})
-                                    ]
-                                })
-                            },
-                            columns: [
-                                new sap.m.Column({
-                                    header: new Text({ text: "No" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Name" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Desc" })
-                                })
-                            ],
-                            selectionChange: function(oEvent2) {
-                                var selectItems = oEvent2.getParameter("listItem");
-                                var selectCells = selectItems.getCells();
-                                oInput.setValue(selectCells[0].getText());
-                                that._plantValueHelpDialog.close();
-                            }
-                        })
+                        this._oTable
+                        
                     ]
                 });
-
-                // 添加数据加载事件处理
-                // const oTable = this._plantValueHelpDialog.getContent()[1];
-                // oTable.attachRowsUpdated(function() {
-                //     console.log("表格数据已更新");
-                //     const iRowCount = oTable.getRows().length;
-                //     console.log("当前行数:", iRowCount);
-                // });
                 this.getView().addDependent(this._plantValueHelpDialog);
             }
 
@@ -212,8 +225,50 @@ sap.ui.define([
         onMaterialValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
+            const createTable = function() {
+                return new sap.m.Table({
+                    mode: "SingleSelectMaster",
+                    items: {
+                        path: "MaterialModel>/results",
+                        template: new sap.m.ColumnListItem({
+                            cells: [
+                                new sap.m.Text({text: "{MaterialModel>Matnr}"}),
+                                new sap.m.Text({text: "{MaterialModel>Maktx}"}),
+                                new sap.m.Text({text: "{MaterialModel>Meins}"}),
+                                new sap.m.Text({text: "{MaterialModel>Brgew}"})
+                            ]
+                        })
+                    },
+                    columns: [
+                        new sap.m.Column({
+                            header: new Text({ text: "Material No" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Description" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Base Unit" })
+                        }),
+                        new sap.m.Column({
+                            header: new Text({ text: "Weight Unit" })
+                        })
+                    ],
+                    selectionChange: function(oEvent2) {
+                        var selectItems = oEvent2.getParameter("listItem");
+                        var selectCells = selectItems.getCells();
+                        oInput.setValue(selectCells[0].getText());
+                        // 获取选中的物料数据并设置相关信息
+                        const oContext = selectItems.getBindingContext("MaterialModel");
+                        const oSubmitModel = that.getView().getModel("items");
+                        const Unit1 = oContext.getProperty("Meins");                                
+                        oSubmitModel.setProperty("/Unit1", Unit1);
+                        that._materialValueHelpDialog.close();
+                    }
+                })
+            }
             // 创建对话框
             if (!this._materialValueHelpDialog) {
+                this._oTable = createTable();
                 this._materialValueHelpDialog = new Dialog({
                     title: "Choose Material",
                     type: "Standard",
@@ -231,10 +286,23 @@ sap.ui.define([
                                     const oContext = oSelectedItem.getBindingContext("MaterialModel");
                                     const sValue = oContext.getProperty("Matnr");
                                     oInput.setValue(sValue);
-                                    // 获取工厂地址信息并设置到 submitData
-                                    const oSubmitModel = this.getView().getModel("submitData");
-                                    const matrialUnit1 = oContext.getProperty("Gewei"); 
-                                    oSubmitModel.setProperty("/plantAddress1", matrialUnit1);
+                                    
+                                    // 获取当前表格的选中行
+                                    const oItemsTable = that.byId("EditableTable");
+                                    const oItemsSelectedItem = oItemsTable.getSelectedItem();
+                                    if (oItemsSelectedItem) {
+                                        const oItemsModel = that.getView().getModel("items");
+                                        const sPath = oItemsSelectedItem.getBindingContext("items").getPath();
+                                        
+                                        // 从MaterialModel中获取单位和描述
+                                        const brgew = oContext.getProperty("Brgew");
+                                        const meins = oContext.getProperty("Meins");
+                                        const maktx = oContext.getProperty("Maktx");
+                                        
+                                        oItemsModel.setProperty(sPath + "/Unit1", brgew);
+                                        oItemsModel.setProperty(sPath + "/Unit2", meins);
+                                        oItemsModel.setProperty(sPath + "/MaterialDesc", maktx);
+                                    }
                                 }
                                 this._materialValueHelpDialog.close();
                             }.bind(this)
@@ -251,58 +319,41 @@ sap.ui.define([
                             placeholder: "Enter Material No",
                             liveChange: function (oEvent) {
                                 const sValue = oEvent.getSource().getValue();
-                                this._filterPlants(sValue);
+                                this._filterMaterial(sValue);
                             }.bind(this)
                         }),
-                        new sap.m.Table({
-                            mode: "SingleSelectMaster",
-                            items: {
-                                path: "MaterialModel>/results",
-                                template: new sap.m.ColumnListItem({
-                                    cells: [
-                                        new sap.m.Text({text: "{MaterialModel>Matnr}"}),
-                                        new sap.m.Text({text: "{MaterialModel>Brgew}"}),
-                                        new sap.m.Text({text: "{MaterialModel>Ntgew}"}),
-                                        new sap.m.Text({text: "{MaterialModel>Meins}"}),
-                                    ]
-                                })
-                            },
-                            columns: [
-                                new sap.m.Column({
-                                    header: new Text({ text: "No" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Gross Weight" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Net Weight" })
-                                }),
-                                new sap.m.Column({
-                                    header: new Text({ text: "Unit" })
-                                })
-                            ],
-                            selectionChange: function(oEvent2) {
-                                var selectItems = oEvent2.getParameter("listItem");
-                                var selectCells = selectItems.getCells();
-                                oInput.setValue(selectCells[0].getText());
-                                that._materialValueHelpDialog.close();
-                            }
-                        })
+                        this._oTable
                     ]
                 });
-
-                // 添加数据加载事件处理
-                // const oTable = this._plantValueHelpDialog.getContent()[1];
-                // oTable.attachRowsUpdated(function() {
-                //     console.log("表格数据已更新");
-                //     const iRowCount = oTable.getRows().length;
-                //     console.log("当前行数:", iRowCount);
-                // });
                 this.getView().addDependent(this._materialValueHelpDialog);
             }
 
             // 打开对话框
             this._materialValueHelpDialog.open();
+        },
+
+        _filterPlants: function (sValue) {
+            const aFilter = [];
+            if (sValue) {
+                aFilter.push(new Filter("Name1", FilterOperator.Contains, sValue))
+            }
+            this._oTable.getBinding("items").filter(aFilter)
+        },
+
+        _filterVendors: function (sValue) {
+            const aFilter = [];
+            if (sValue) {
+                aFilter.push(new Filter("Name1", FilterOperator.Contains, sValue))
+            }
+            this._oTable.getBinding("items").filter(aFilter)
+        },
+
+        _filterMaterial: function (sValue) {
+            const aFilter = [];
+            if (sValue) {
+                aFilter.push(new Filter("Matnr", FilterOperator.Contains, sValue))
+            }
+            this._oTable.getBinding("items").filter(aFilter)
         },
 
         handleAdd: function () {
@@ -338,6 +389,36 @@ sap.ui.define([
              // 同时更新submitModel中的NP_ASH2DLVTI
              const oSubmitModel = this.getView().getModel("submitData");
              oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+        },
+        onQuantityChange: function(oEvent) {
+            var oInput = oEvent.getSource();
+            var oBindingContext = oInput.getBindingContext("items");
+            var sPath = oBindingContext.getPath();
+            var oModel = this.getView().getModel("items");
+            var oData = oModel.getProperty(sPath);
+            
+            // 获取数量值
+            var quantity = parseFloat(oData.Quantity) || 0;
+            
+            // 获取物料的Brgew值
+            var materialNo = oData.MaterialNo;
+            if (materialNo) {
+                // 这里需要调用后端API获取物料的Brgew值
+                // 假设我们有一个OData服务可以获取物料信息
+                var oODataModel = this.getView().getModel();
+                oODataModel.read("/MaterialSet('" + materialNo + "')", {
+                    success: function(oResult) {
+                        var brgew = parseFloat(oResult.Brgew) || 0;
+                        // 计算重量
+                        var weight = quantity * brgew;
+                        // 更新重量字段
+                        oModel.setProperty(sPath + "/Weight", weight);
+                    }.bind(this),
+                    error: function(oError) {
+                        console.error("Error fetching material data:", oError);
+                    }
+                });
+            }
         }
     });
 });

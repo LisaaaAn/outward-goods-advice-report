@@ -97,7 +97,7 @@
                             <Input 
                                 id="purchasingDocInput" 
                                 value="{submitData>/PurchasingDoc}" 
-                                enabled="true"
+                                enabled="false"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -109,7 +109,7 @@
                             <Input 
                                 id="materialDocNoInput" 
                                 value="{submitData>/MaterialDoc}" 
-                                enabled="true"
+                                enabled="false"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -186,7 +186,9 @@
                         <form:fields>
                             <Select
                                 id="poItemNoInput"
-                                selectedKey="{submitData>/Material}">
+                                selectedKey="{submitData>/Material}"
+                                enabled="false"
+                                >
                                 <items>
                                 </items>
                             </Select>
@@ -196,7 +198,9 @@
                         <form:fields>                            
                             <Select
                                 id="materialDocItemNoInput"
-                                selectedKey="{submitData>/MaterialItem}">
+                                selectedKey="{submitData>/MaterialItem}"
+                                enabled="false"
+                                >
                                 <items>
                                 </items>
                             </Select>

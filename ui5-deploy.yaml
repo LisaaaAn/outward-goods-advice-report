@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: zcreateoutwardgoodsadvicereport
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        log: 5
+        target:
+          url: https://vhicwds4ci.sap.gm3global.com:44300
+          client: '100'
+        app:
+          name: ZCreateOGAR
+          description: Create Outward Goods Advice Report
+          package: $TMP
+          transport: ''
+        exclude:
+          - /test/

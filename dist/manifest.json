@@ -1,0 +1,124 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "ui5.ogarpt",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "type": "application",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+		"dataSources": {
+			"mainService": {
+				"uri": "/sap/opu/odata/sap/ZIM_OGA_SRV?saml2=disabled",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml/",
+          "disableCache": true,
+                      "annotations": [
+                          "com.sap.vocabularies.Common.v1",
+                          "com.sap.vocabularies.UI.v1"
+                      ],
+                      "headers": {
+                          "Access-Control-Allow-Origin": "*",
+                          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                          "Access-Control-Allow-Headers": "Content-Type, Authorization"
+                      }
+				}
+			}
+		}
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "handleValidation": true,
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.comp": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "ui5.ogarpt.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
+        }
+      },
+			"": {
+				"dataSource": "mainService",
+				"settings": {
+					"defaultBindingMode": "TwoWay"
+				}
+			}
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "ui5.ogarpt.view",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "transition": "slide",
+        "bypassed": {
+          "target": "notFound"
+        },
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "RouteMain",
+          "target": "main"
+        }
+      ],
+      "targets": {
+        "main": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Main",
+          "viewName": "Main"
+        },
+        "notFound": {
+          "viewType": "XML",
+          "transition": "show",
+          "viewId": "notFound",
+          "viewName": "NotFound"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "ui5.ogarpt.view.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    }
+  }
+}
