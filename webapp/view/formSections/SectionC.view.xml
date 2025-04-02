@@ -80,18 +80,12 @@
             </form:FormContainer>
         </form:formContainers>
     </form:Form>
-             <!-- <Toolbar id="detailsDivider" class="sapUiMediumMarginTop sapUiMediumMarginBottom">
-                <Text id="detailsLabel" text="Vendor Detail" class="sapUiSmallMarginBegin" />
-                <ToolbarSpacer id="_IDGenToolbarSpacer2" />
-                <Text id="detailsLabel2" text="第二个文本" class="sapUiSmallMarginEnd" />
-            </Toolbar> -->
   
     <!-- 两列表单布局 -->
     <form:Form
         id="mainForm"
         editable="true"
-        class="sapUiResponsiveMargin sapUiNoMarginTop"
-    >
+        class="sapUiResponsiveMargin sapUiNoMarginTop">
         <form:layout>
             <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout"
                 labelSpanXL="4"
@@ -109,7 +103,7 @@
                 singleContainerFullSize="false"
             />
         </form:layout>
-            <form:formContainers>
+        <form:formContainers>
             <!-- 左侧 Vendor Details -->
             <form:FormContainer id="_IDGenFormContainer" title="Vendor detail">
                 <form:formElements>
@@ -122,6 +116,7 @@
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
+                                required="true"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -186,6 +181,7 @@
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
                                 valueHelpOnly="true"
+                                required="true"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -239,6 +235,217 @@
         </form:formContainers>
     </form:Form>
     
+<!-- Other Detail布局 -->
+    <form:Form
+        id="otherDetailForm"
+        editable="true"
+        class="sapUiResponsiveMargin sapUiNoMarginTop"
+        title="Other Detail">
+        <form:layout>
+            <form:ResponsiveGridLayout id="otherDeatilLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="4"
+                labelSpanS="12"
+                adjustLabelSpan="false"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="2"
+                columnsL="2"
+                columnsM="2"
+                singleContainerFullSize="false"
+            />
+        </form:layout>
+
+        <form:formContainers>
+            <!-- 左侧 Other Detail -->
+            <form:FormContainer id="_IDGenFormContainer78">
+                <form:formElements>
+                    <form:FormElement id="formElementFreightChargedTo" label="Freight Charged To">
+                        <form:fields>
+                            <Select
+                                id="freightChargedToSelect2"
+                                selectedKey="{submitData>/ZFREIGHT_CHARGED_TO}"
+                                required="true">
+                                <items>
+                                    <core:Item id="sender2" text="Sender" key="SENDER"/>
+                                    <core:Item id="receiver2" text="Receiver" key="RECEIVER"/>
+                                    <core:Item id="ThirdParty2" text="Third Party" key="ThirdParty"/>
+                                </items>
+                            </Select>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementThirdParty" label="Third Party">
+                        <form:fields>
+                            <Input id="ThirdPartyInput" value="{submitData>/ThirdParty}" enabled="true" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementSenderName" label="Sender's Name">
+                        <form:fields>
+                            <Input id="SenderName" value="{submitData>/SenderName}" enabled="true" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementPurchasingDoc" label="Purchasing Doc">                     
+                        <form:fields>
+                            <Input 
+                                id="PurchasingDoc" 
+                                value="{submitData>/PurchasingDoc}" 
+                                enabled="false"
+                                showValueHelp="true"
+                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpOnly="true"
+                            />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementMaterialDoc" label="Material Doc">                      
+                        <form:fields>                
+                            <Input 
+                                id="MaterialDoc" 
+                                value="{submitData>/MaterialDoc}" 
+                                enabled="false"
+                                showValueHelp="true"
+                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpOnly="true"
+                            />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementStoredEnergy" label="Stored Energy">
+                        <form:fields>
+                            <RadioButtonGroup
+                                id="storedEnergyRadioGroup2"
+                                selectedIndex="{
+                                    path: '{submitData>/ZSTORED_ENERGY}',
+                                    formatter: '.formatter.toRadioButtonIndex'
+                                }"
+                                columns="2"
+                                select=".onStoredEnergyChange">
+                                <buttons>
+                                    <RadioButton id="rbStoredEnergyYes2" text="Yes" />
+                                    <RadioButton id="rbStoredEnergyNo2" text="No" />
+                                </buttons>
+                            </RadioButtonGroup>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementMSDSAttached" label="MSDS Attached">
+                        <form:fields>
+                            <RadioButtonGroup
+                                id="MSDSAttached"
+                                selectedIndex="{
+                                    path: '{submitData>/MSDS_Attached}',
+                                    formatter: '.formatter.toRadioButtonIndex'
+                                }"
+                                columns="2"
+                                select=".onStoredEnergyChange">
+                                <buttons>
+                                    <RadioButton id="MSDSAttachedYes" text="Yes" />
+                                    <RadioButton id="MSDSAttachedNo" text="No" />
+                                </buttons>
+                            </RadioButtonGroup>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementSpecialnstructions" label="Special Instructions">
+                        <form:fields>
+                            <Input id="Specialnstructions" value="{submitData>/Special_nstructions}" />
+                        </form:fields>
+                    </form:FormElement>
+                </form:formElements>
+
+            </form:FormContainer>
+
+            <!-- 右侧 Plant Details -->
+            <form:FormContainer id="_IDGenFormContainer100"> 
+                <form:formElements> 
+                    <form:FormElement id="formElementFreightMethod" label="Freight Method">
+                        <form:fields>
+                            <Select
+                                id="freightMethodInput2"
+                                selectedKey="{submitData>/ZFREIGHT_METHOD}">
+                                <items>
+                                    <core:Item id="AirFreight2" text="Air Freight" key="AirFreight"/>
+                                    <core:Item id="Rail2" text="Rail" key="Rail"/>
+                                    <core:Item id="RoadExpress2" text="Road Express" key="RoadExpress"/>
+                                    <core:Item id="RoadGeneral2" text="Road General" key="RoadGeneral"/>
+                                    <core:Item id="Ship2" text="Ship" key="SHIP"/>
+                                </items>
+                            </Select>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementVrr" label="Vendor Return Reference">
+                        <form:fields>
+                            <Input id="Vrr" value="{submitData>/Vendor_Return_Reference}" enabled="true" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementWeight" label="Weight">
+                        <form:fields>
+                            <Input id="Weight" value="{submitData>/Weight}" enabled="false" />
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementPOItemNo" label="PO Item No">
+                        <form:fields>
+                            <Select
+                                id="POItemNo"
+                                selectedKey="{submitData>/Material}"
+                                enabled="false"
+                                >
+                                <items>
+                                </items>
+                            </Select>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementMaterialDocItemNo" label="Material Doc Item No">
+                        <form:fields>                            
+                            <Select
+                                id="MaterialDocItemNo"
+                                selectedKey="{submitData>/MaterialItem}"
+                                enabled="false"
+                                >
+                                <items>
+                                </items>
+                            </Select>
+                        </form:fields>
+                    </form:FormElement>
+                    <form:FormElement id="formElementBhpDangerousGoods" label="Dangerous Goods">
+                        <form:fields>
+                            <RadioButtonGroup
+                                id="dangerousGoodsRadioGroup2"
+                                selectedIndex="{
+                                    path: '{submitData>/ZDANGEROUS_GOODS}',
+                                    formatter: '.formatter.toRadioButtonIndex'
+                                }"
+                                columns="2"
+                                select=".onStoredEnergyChange">
+                                <buttons>
+                                    <RadioButton id="dangerousGoodsGroupYes2" text="Yes" />
+                                    <RadioButton id="dangerousGoodsGroupNo2" text="No" />
+                                </buttons>
+                            </RadioButtonGroup>
+                        </form:fields>
+                    </form:FormElement>
+
+                    <form:FormElement id="formElementCustomsLetterAttached" label="Customs Letter Attached">
+                        <form:fields>
+                            <RadioButtonGroup
+                                id="CustomsLetterAttached"
+                                selectedIndex="{
+                                    path: '{submitData>/ZDANGEROUS_GOODS}',
+                                    formatter: '.formatter.toRadioButtonIndex'
+                                }"
+                                columns="2"
+                                select=".onStoredEnergyChange">
+                                <buttons>
+                                    <RadioButton id="CustomsLetterAttachedYes" text="Yes" />
+                                    <RadioButton id="CustomsLetterAttachedNo" text="No" />
+                                </buttons>
+                            </RadioButtonGroup>
+                        </form:fields>
+                    </form:FormElement>
+                </form:formElements>
+            </form:FormContainer>
+        </form:formContainers>
+    </form:Form>
+
     <!-- 保留原有的表格部分 -->
     <Table
         id="EditableTable"
@@ -274,6 +481,7 @@
                 <Text
                     id="_IDGenText"
                     text="Sr. No"
+                    
                 />
             </Column>
             <Column
@@ -285,6 +493,17 @@
                 <Text
                     id="_IDGenText1"
                     text="Quantity"
+                />
+            </Column>
+            <Column
+                id="_IDGenColumn10"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+                hAlign="Center"
+            >
+                <Text
+                    id="_IDGenText9"
+                    text="Unit"
                 />
             </Column>
             <Column
@@ -321,17 +540,6 @@
                 />
             </Column>
             <Column
-                id="_IDGenColumn6"
-                minScreenWidth="Tablet"
-                demandPopin="true"
-                hAlign="Center"
-            >
-                <Text
-                    id="_IDGenText5"
-                    text="Weight"
-                />
-            </Column>
-            <Column
                 id="_IDGenColumn7"
                 minScreenWidth="Tablet"
                 demandPopin="true"
@@ -343,47 +551,14 @@
                 />
             </Column>
             <Column
-                id="_IDGenColumn8"
+                id="_IDGenColumn6"
                 minScreenWidth="Tablet"
                 demandPopin="true"
                 hAlign="Center"
             >
                 <Text
-                    id="_IDGenText7"
-                    text="AAC"
-                />
-            </Column>
-            <Column
-                id="_IDGenColumn9"
-                minScreenWidth="Tablet"
-                demandPopin="true"
-                hAlign="Center"
-            >
-                <Text
-                    id="_IDGenText8"
-                    text="Account Assign"
-                />
-            </Column>
-            <Column
-                id="_IDGenColumn10"
-                minScreenWidth="Tablet"
-                demandPopin="true"
-                hAlign="Center"
-            >
-                <Text
-                    id="_IDGenText9"
-                    text="Unit"
-                />
-            </Column>
-            <Column
-                id="_IDGenColumn11"
-                minScreenWidth="Tablet"
-                demandPopin="true"
-                hAlign="Center"
-            >
-                <Text
-                    id="_IDGenText10"
-                    text="Unit"
+                    id="_IDGenText5"
+                    text="Weight"
                 />
             </Column>
         </columns>
@@ -392,8 +567,9 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <Input id="srNoInput" value="{items>Vbeln}" editable="false" />
-                <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange"/>
+                <Input id="srNoInput" value="{items>Vbeln}" editable="true" required="true"/>
+                <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange" required="true"/>
+                <Input id="unit1Input" value="{items>Unit1}" required="true"/>
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
                 <Input id="materialNoInput" 
@@ -401,13 +577,10 @@
                     showValueHelp="true"
                     valueHelpRequest=".onMaterialValueHelpRequest"
                     valueHelpOnly="true"
+                    required="true"
                 />
-                <Input id="weightInput" value="{items>Weight}" type="Number" />
                 <Input id="materialDescInput" value="{items>MaterialDesc}" />
-                <Input id="aacInput" value="{items>AAC}" />
-                <Input id="accountAssignInput" value="{items>AccountAssign}" />
-                <Input id="unit1Input" value="{items>Unit1}" />
-                <Input id="unit2Input" value="{items>Unit2}" />
+                <Input id="weightInput" value="{items>Weight}" type="Number" />
             </ColumnListItem>
         </items>
     </Table>

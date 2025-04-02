@@ -275,7 +275,7 @@ sap.ui.define([
                             const Matnr = oContext.getProperty("Matnr");
                             oItemsModel.setProperty(sPath + "/MaterialNo", Matnr);
                             const meins = oContext.getProperty("Meins");
-                            oItemsModel.setProperty(sPath + "/Unit2", meins);                          
+                            oItemsModel.setProperty(sPath + "/Unit", meins);                          
                             const Brgew = oContext.getProperty("Brgew");
                             oItemsModel.setProperty(sPath + "/Brgew2", Brgew);
                         }
@@ -328,8 +328,7 @@ sap.ui.define([
                                         const maktx = oContext.getProperty("Maktx");
                                         
                                         // 设置值到items模型
-                                        oItemsModel.setProperty(sPath + "/Unit1", brgew);
-                                        oItemsModel.setProperty(sPath + "/Unit2", meins);
+                                        oItemsModel.setProperty(sPath + "/Unit", meins);
                                         oItemsModel.setProperty(sPath + "/MaterialDesc", maktx);
                                         
                                         // 同时更新submitModel中的NP_ASH2DLVTI
@@ -401,15 +400,12 @@ sap.ui.define([
             const oNewRow = {
                 Vbeln: sNewNo,
                 Quantity: "",
+                Unit: "",
                 PurchaseOrderNo: "",
                 POItemNo: "",
                 MaterialNo: "",
-                Weight: "",
                 MaterialDesc: "",
-                AAC: "",
-                AccountAssign: "",
-                Unit1: "",
-                Unit2: ""
+                Weight: ""
             };
 
             aData.push(oNewRow);

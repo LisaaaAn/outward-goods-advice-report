@@ -124,19 +124,7 @@ sap.ui.define([
       this.getView().setBindingContext(oParameterContext);
     },
     onAfterRendering: function () {
-      // const oModel = new ODataModel({
-      //   serviceUrl:"/sap/opu/odata/sap/ZIM_OGA_SRV/",
-      //   useBatch:false
-      // });
-      // this.getView().setModel(oModel,"odataModel");
-      // const oModel = this.getView().getModel();
-      // const oParameterContext = oModel.createEntry('/HEADSet', { properties: {
-      //     "ZTYPE_MOVEMENT": ""
-      //   }
-      // })
-      // this.getView().setBindingContext(oParameterContext);
       const oModel = this.getView().getModel();
-      // const oModel = this.getView().getModel('odataModel')
       oModel.create("/HEADSet", {
         "DistrChan": "10",
         "Division": "00",
@@ -159,26 +147,6 @@ sap.ui.define([
       }, {
         success: function (data) {
           console.log('HeaderData:', data);
-          // const oParameterContext = oModel.createEntry('/HEADSet', { properties: data })
-          // this.getView().setBindingContext(oParameterContext);
-          // // this.byId('_IDGenXMLView').byId('_IDGenSmartForm').bindElement("/HEADSet('1310')")
-          // // this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').bindElement("/HEADSet('1310')")
-          // // this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').bindElement("/HEADSet('1310')")
-          // // const oModel = this.getView().getModel();
-          // // const oTable = this.byId('_IDGenXMLView2').byId('EditableTable');
-          // let itemsData = { results: [] }
-          // if (data?.NP_ASH2DLVTI?.results && data?.NP_ASH2DLVTI?.results.length) {
-          //   itemsData = data.NP_ASH2DLVTI;
-          // }
-          // console.log('ItemsData:', itemsData);
-          // this.getView().setModel(new JSONModel(itemsData), 'items');
-          // // oModel.metadataLoaded().then(() => {
-          // //   // const oContext = this.byId('_IDGenXMLView').byId('_IDGenSmartForm').getBindingContext();
-          // //   oTable.bindItems({
-          // //     path: '{items>/results}',
-          // //     template: oTable.getAggregation("items")
-          // //   });
-          // // });
         }.bind(this),
         error: function (oError) {
           console.error("Request failed", oError);
@@ -193,18 +161,30 @@ sap.ui.define([
       const target = evt.getSource().data("target");
       const oModel = this.getView().getModel("formState");
       const step = oModel.getProperty("/currentStep");
-      if (target) {
+      if (target) {   
         if (target === 'p2') {
-          // this.ui.getCore().getEventBus()
-          oModel.setProperty("/currentStep", 2);
-          navCon.to(this.byId(target), 'slide');
-        } else if (target === 'p3') {
-          this.byId('_IDGenXMLView1').byId('_IDGenSmartForm1').check().then((list) => {
-            if (list.length === 0) {
-              oModel.setProperty("/currentStep", 3);
-              navCon.to(this.byId(target), 'slide');
-            }
+          // 获取表单中的所有必填字段
+          const form = this.byId('_IDGenXMLView').byId('_IDGenForm');
+          const requiredFields = form.getFormContainers()[0].getFormElements().filter(element => {
+            const field = element.getFields()[0];
+            return field && field.getRequired && field.getRequired();
           });
+          const requiredFields2 = form.getFormContainers()[1].getFormElements().filter(element => {
+            const field = element.getFields()[0];
+            return field && field.getRequired && field.getRequired();
+          });
+          // 检查必填字段是否都已填写，并收集未填写的字段
+          const emptyFields = [...requiredFields, ...requiredFields2].filter(element => {
+            const field = element.getFields()[0];
+            return field && field.getValue && !field.getValue();
+          }).map(element => element.getLabel());
+          
+          if (emptyFields.length === 0) {
+            oModel.setProperty("/currentStep", 2);
+            navCon.to(this.byId(target), 'slide');
+          } else {
+            sap.m.MessageToast.show("以下字段为必填项：" + emptyFields.join("、"));
+          }
         }
       } else {
         if (step) {
@@ -223,7 +203,7 @@ sap.ui.define([
         "DistrChan": "00",
         "Division": "00",
         "DlvType": "ZLO",
-        "Salesorg": "1310",
+        "Salesorg": " ",
         "ShipPoint": "AU99",
         "ShipTo": submitData.VendorNumber,
 
