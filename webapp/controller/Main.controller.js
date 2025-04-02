@@ -183,7 +183,7 @@ sap.ui.define([
             oModel.setProperty("/currentStep", 2);
             navCon.to(this.byId(target), 'slide');
           } else {
-            sap.m.MessageToast.show("以下字段为必填项：" + emptyFields.join("、"));
+            sap.m.MessageToast.show("Not Filled:  " + emptyFields.join("、"));
           }
         }
       } else {
@@ -194,172 +194,182 @@ sap.ui.define([
       }
     },
     handleSubmit: function () {
-      const oModel = this.getView().getModel();
-      const oSubmitModel = this.getView().getModel("submitData");
-      const submitData = oSubmitModel.getData();
-
-      // 构建提交数据
-      const oData = {
-        "DistrChan": "00",
-        "Division": "00",
-        "DlvType": "ZLO",
-        "Salesorg": " ",
-        "ShipPoint": "AU99",
-        "ShipTo": submitData.VendorNumber,
-
-        "ZTYPE_MOVEMENT": submitData.ZTYPE_MOVEMENT || "1234567",
-        "ZGM3_CONTACT": submitData.ZGM3_CONTACT || "1234567",
-        "ZGM3_TELEPHONE": submitData.ZGM3_TELEPHONE || "1234567",
-        "NP_ASH2DLVTI": submitData.NP_ASH2DLVTI.map(item => ({
-          "RefItem": item.Vbeln || "",
-          "DlvQty": item.Quantity || "",
-          // "ZDOC_NO": item.PurchaseOrderNo || "",
-          // "ZDOC_ITEM": item.POItemNo || "",
-          "Material": item.MaterialNo || "",
-          // "Weight": item.Weight || "",
-          // "MaterialDesc": item.MaterialDesc || "",
-          // "AAC": item.AAC || "",
-          // "AccountAssign": item.AccountAssign || "",
-          "SalesUnit": item.Unit1 || "",
-          // "Unit2": item.Unit2 || "",
-          "Plant": submitData.Plant || ""
-        })),
-        "NP_ASH2DATES": [{
-          "Timetype": "WS GOODS ISSUE  LIKP",
-          "Timezone": "UTC+8",
-          "TimestampUtc": new Date()
-        }],
-        "NP_ASH2RETURN": [{}]
-      };
-
-      console.log('提交数据:', JSON.stringify(oData, null, 2));
-
-      oModel.create("/HEADSet", oData, {
-        success: function (data) {
-          console.log('提交成功:', data);
-          if (data.Delivery) {
-            MessageBox.success('Save successfully!', {
-              actions: MessageBox.Action.OK,
-              onClose: function (action) {
-                if (action === MessageBox.Action.OK) {
-                  console.log('OK');
-                  // 重置表单数据
-                  oSubmitModel.setData({
-                    ZTYPE_MOVEMENT: '',
-                    Plant: "",
-                    VendorNumber: "",
-                    VendorName: "",
-                    ZFREIGHT_CHARGED_TO: "",
-                    ZFREIGHT_METHOD: "",
-                    PurchasingDoc: "",
-                    PoItem: "",
-                    MaterialDoc: "",
-                    MaterialItem: "",
-                    ZSTORED_ENERGY: "N",
-                    ZDANGEROUS_GOODS: "N",
-                    radianceClearance: "N",
-                    year: new Date().getFullYear(),
-                    Date: new Date().toLocaleDateString('de-DE'),
-                    VendorAddress1: "",
-                    VendorAddress2: "",
-                    VendorAddress3: "",
-                    VendorAddress4: "",
-                    ZGM3_CONTACT: "",
-                    ZGM3_TELEPHONE: "",
-                    ZGM3_FAX: "",
-                    ZGM3_EMAIL: "",
-                    ZCARRIER_NAME: "",
-                    plantAddress1: "",
-                    plantAddress2: "",
-                    plantAddress3: "",
-                    plantAddress4: "",
-                    ZVENDOR_CONTACT: "",
-                    ZVENDOR_TELEPHONE: "",
-                    ZVENDOR_FAX: "",
-                    ZVENDOR_EMAIL: "",
-                    ZCARRIER_CONSIGN: "",
-                    NP_ASH2DLVTI: [],
-                    NP_ASH2DATES: [{
-                      Timetype: "WS GOODS ISSUE  LIKP"
-                    }],
-                    NP_ASH2RETURN: [{}]
-                  });
-
-                  // 重置步骤到第一步
-                  const oFormStateModel = this.getView().getModel("formState");
-                  oFormStateModel.setProperty("/currentStep", 1);
-
-                  // 返回到第一个页面
-                  const navCon = this.byId("navCon");
-                  navCon.to(this.byId("p1"), "slide");
-                }
-              }
-            });
-          } else {
-            let sMessage = '';
-            (data.NP_ASH2RETURN?.results || []).forEach(oItem => {
-              if (oItem.Message) {
-                sMessage += '\n' + oItem.Message;
-              }
-            });
-            MessageBox.error(sMessage, {
-              actions: MessageBox.Action.OK,
-              onClose: function (action) {
-                if (action === MessageBox.Action.OK) {
-                  console.log('OK');
-                }
-              }
+      // 获取所有表单的必填字段
+      const formIds = ['headerForm', 'mainForm', 'otherDetailForm'];
+      let allEmptyFields = [];
+      
+      // 验证表单字段
+      formIds.forEach(sId => {
+        const form = this.byId('_IDGenXMLView2').byId(sId);
+        if (form) {
+          // 检查表单类型
+          if (form instanceof sap.ui.layout.form.Form) {
+            // 处理标准表单
+            const containers = form.getFormContainers();
+            containers.forEach(container => {
+              const requiredFields = container.getFormElements().filter(element => {
+                const field = element.getFields()[0];
+                return field && field.getRequired && field.getRequired();
+              });
+              
+              const emptyFields = requiredFields.filter(element => {
+                const field = element.getFields()[0];
+                return field && field.getValue && !field.getValue();
+              }).map(element => element.getLabel());
+              
+              allEmptyFields = [...allEmptyFields, ...emptyFields];
             });
           }
-        }.bind(this),
-        error: function (oError) {
-          console.error("Error:", oError);
-          MessageBox.error("Save failed：" + oError.message);
         }
       });
-      // this.byId('_IDGenXMLView2').byId('_IDGenSmartForm2').check().then((list) => {
-      //   if (list.length === 0) {
-      //     const submitData = this.getView().getBindingContext().getObject();
-      //     console.log('Form Data: ' + JSON.stringify(submitData));
-      //     MessageToast.show('Save Successfully!');
-      //   }
-      // });
-      // const oModel = this.getView().getModel();
-      // oModel.create("/HEADSet", {
-      //     "DistrChan": "10",
-      //     "Division": "00",
-      //     "DlvType": "LO",
-      //     "Salesorg": "1310",
-      //     "ShipPoint": "1310",
-      //     "ShipTo": "0001000155",
-      //     "ZTYPE_MOVEMENT":"1234567",
-      //     "ZGM3_CONTACT":"1234567",
-      //     "ZGM3_TELEPHONE":"1234567",
-      //     "NP_ASH2DLVTI": [{
-      //             "RefItem": "000010"
-      //             }],
-      //     "NP_ASH2DATES": [{
-      //             "Timetype": "WS GOODS ISSUE  LIKP"
-      //         }
-      //     ],
-      //     "NP_ASH2RETURN":[{}]
 
-      // }, {
-      //   success: function (data) { 
-      //   console.log('HeaderData:', data);
-      //   const oParameterContext = oModel.createEntry('/HEADSet', { properties: data })
-      //   this.getView().setBindingContext(oParameterContext);
-      //   let itemsData = { results: [] }
-      //   if (data?.NP_ASH2DLVTI?.results && data?.NP_ASH2DLVTI?.results.length) {
-      //     itemsData = data.NP_ASH2DLVTI;
-      //   }
-      //   console.log('ItemsData:', itemsData);
-      //   this.getView().setModel(new JSONModel(itemsData), 'items');       
-      //     }.bind(this),
-      //     error: function (oError) {
-      //       console.error("Request failed", oError);
-      //     }
-      //   });
+      // 验证表格数据
+      const oSubmitModel = this.getView().getModel("submitData");
+      const tableData = oSubmitModel.getProperty("/NP_ASH2DLVTI") || [];
+      
+      if (tableData.length === 0) {
+        allEmptyFields.push("The table data cannot be left blank");
+      } else {
+        tableData.forEach((item, index) => {
+          // 检查必填字段
+          if (!item.MaterialNo) {
+            allEmptyFields.push(`Line${index + 1}: Material No`);
+          }
+          if (!item.Quantity) {
+            allEmptyFields.push(`Line${index + 1}: Quantity`);
+          }
+          if (!item.Unit1) {
+            allEmptyFields.push(`Line${index + 1}: Unit`);
+          }
+        });
+      }
+      
+      if (allEmptyFields.length === 0) {
+        const oModel = this.getView().getModel();
+        const submitData = oSubmitModel.getData();
+  
+        // 构建提交数据
+        const oData = {
+          "DistrChan": "00",
+          "Division": "00",
+          "DlvType": "ZLO",
+          "Salesorg": " ",
+          "ShipPoint": "AU99",
+          "ShipTo": submitData.VendorNumber,
+  
+          "ZTYPE_MOVEMENT": submitData.ZTYPE_MOVEMENT || "1234567",
+          "ZGM3_CONTACT": submitData.ZGM3_CONTACT || "1234567",
+          "ZGM3_TELEPHONE": submitData.ZGM3_TELEPHONE || "1234567",
+          "NP_ASH2DLVTI": submitData.NP_ASH2DLVTI.map(item => ({
+            "RefItem": item.Vbeln || "",
+            "DlvQty": item.Quantity || "",
+            // "ZDOC_NO": item.PurchaseOrderNo || "",
+            // "ZDOC_ITEM": item.POItemNo || "",
+            "Material": item.MaterialNo || "",
+            // "Weight": item.Weight || "",
+            // "MaterialDesc": item.MaterialDesc || "",
+            // "AAC": item.AAC || "",
+            // "AccountAssign": item.AccountAssign || "",
+            "SalesUnit": item.Unit1 || "",
+            // "Unit2": item.Unit2 || "",
+            "Plant": submitData.Plant || ""
+          })),
+          "NP_ASH2DATES": [{
+            "Timetype": "WS GOODS ISSUE  LIKP",
+            "Timezone": "UTC+8",
+            "TimestampUtc": new Date()
+          }],
+          "NP_ASH2RETURN": [{}]
+        };
+  
+        console.log('提交数据:', JSON.stringify(oData, null, 2));
+  
+        oModel.create("/HEADSet", oData, {
+          success: function (data) {
+            console.log('提交成功:', data);
+            if (data.Delivery) {
+              MessageBox.success('Save successfully!', {
+                actions: MessageBox.Action.OK,
+                onClose: function (action) {
+                  if (action === MessageBox.Action.OK) {
+                    console.log('OK');
+                    // 重置表单数据
+                    oSubmitModel.setData({
+                      ZTYPE_MOVEMENT: '',
+                      Plant: "",
+                      VendorNumber: "",
+                      VendorName: "",
+                      ZFREIGHT_CHARGED_TO: "",
+                      ZFREIGHT_METHOD: "",
+                      PurchasingDoc: "",
+                      PoItem: "",
+                      MaterialDoc: "",
+                      MaterialItem: "",
+                      ZSTORED_ENERGY: "N",
+                      ZDANGEROUS_GOODS: "N",
+                      radianceClearance: "N",
+                      year: new Date().getFullYear(),
+                      Date: new Date().toLocaleDateString('de-DE'),
+                      VendorAddress1: "",
+                      VendorAddress2: "",
+                      VendorAddress3: "",
+                      VendorAddress4: "",
+                      ZGM3_CONTACT: "",
+                      ZGM3_TELEPHONE: "",
+                      ZGM3_FAX: "",
+                      ZGM3_EMAIL: "",
+                      ZCARRIER_NAME: "",
+                      plantAddress1: "",
+                      plantAddress2: "",
+                      plantAddress3: "",
+                      plantAddress4: "",
+                      ZVENDOR_CONTACT: "",
+                      ZVENDOR_TELEPHONE: "",
+                      ZVENDOR_FAX: "",
+                      ZVENDOR_EMAIL: "",
+                      ZCARRIER_CONSIGN: "",
+                      NP_ASH2DLVTI: [],
+                      NP_ASH2DATES: [{
+                        Timetype: "WS GOODS ISSUE  LIKP"
+                      }],
+                      NP_ASH2RETURN: [{}]
+                    });
+  
+                    // 重置步骤到第一步
+                    const oFormStateModel = this.getView().getModel("formState");
+                    oFormStateModel.setProperty("/currentStep", 1);
+  
+                    // 返回到第一个页面
+                    const navCon = this.byId("navCon");
+                    navCon.to(this.byId("p1"), "slide");
+                  }
+                }
+              });
+            } else {
+              let sMessage = '';
+              (data.NP_ASH2RETURN?.results || []).forEach(oItem => {
+                if (oItem.Message) {
+                  sMessage += '\n' + oItem.Message;
+                }
+              });
+              MessageBox.error(sMessage, {
+                actions: MessageBox.Action.OK,
+                onClose: function (action) {
+                  if (action === MessageBox.Action.OK) {
+                    console.log('OK');
+                  }
+                }
+              });
+            }
+          }.bind(this),
+          error: function (oError) {
+            console.error("Error:", oError);
+            MessageBox.error("Save failed：" + oError.message);
+          }
+        });
+      } else {
+        sap.m.MessageToast.show("Not Filled:  " + allEmptyFields.join("、"));
+      }
     }
   });
 });

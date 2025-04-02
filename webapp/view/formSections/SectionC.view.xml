@@ -12,8 +12,7 @@
     <form:Form
         id="headerForm"
         editable="true"
-        class="sapUiSmallMarginBottom"
-    >
+        class="sapUiSmallMarginBottom">
         <form:layout>
             <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout2"
                 labelSpanXL="4"
@@ -452,8 +451,7 @@
         growing="true"
         growingThreshold="10"
         items="{items>/results}"
-        mode="SingleSelectLeft"
-    >
+        mode="SingleSelectLeft">
         <headerToolbar>
             <OverflowToolbar id="otbSubheader">
                 <Title
@@ -477,7 +475,10 @@
             </OverflowToolbar>
         </headerToolbar>
         <columns>
-            <Column id="_IDGenColumn">
+            <Column id="_IDGenColumn"
+                minScreenWidth="Tablet"
+                demandPopin="true"
+                 hAlign="Center">
                 <Text
                     id="_IDGenText"
                     text="Sr. No"
@@ -488,8 +489,7 @@
                 id="_IDGenColumn1"
                 minScreenWidth="Tablet"
                 demandPopin="true"
-                hAlign="End"
-            >
+                hAlign="Center">
                 <Text
                     id="_IDGenText1"
                     text="Quantity"
