@@ -81,10 +81,10 @@ sap.ui.define([
                                 path: "VendorModel>/results",
                                 template: new sap.m.ColumnListItem({
                                     cells: [
-                                        new sap.m.Text({text: "{VendorModel>Lifnr}"}),
+                                        new sap.m.Text({text: "{VendorModel>Kunnr}"}),
                                         new sap.m.Text({text: "{VendorModel>Name1}"}),
                                         new sap.m.Text({text: "{VendorModel>Land1}"}),
-                                        new sap.m.Text({text: "{VendorModel>Adrnr}"})
+                                        new sap.m.Text({text: "{VendorModel>Stras}"})
                                     ]
                                 })
                             },

@@ -392,7 +392,7 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <Input id="srNoInput" value="{items>Vbeln}" editable="false" />
+                <Input id="srNoInput" value="{items>Vbeln}" editable="true" />
                 <Input id="quantityInput" value="{items>Quantity}" />
                 <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" />
                 <Input id="poItemNoInputTable" value="{items>POItemNo}" />
