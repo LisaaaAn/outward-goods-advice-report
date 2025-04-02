@@ -1,2 +1,0 @@
-sap.ui.define(["sap/ui/core/mvc/Controller","sap/ui/core/routing/History","sap/ui/core/UIComponent"],function(e,o,t){"use strict";return e.extend("ui5.ogarpt.controller.BaseController",{getRouter:function(){return t.getRouterFor(this)},onNavBack:function(){var e,t;e=o.getInstance();t=e.getPreviousHash();if(t!==undefined){window.history.go(-1)}else{this.getRouter().navTo("appHome",{},true)}}})});
-//# sourceMappingURL=BaseController.js.map

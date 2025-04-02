@@ -225,6 +225,12 @@ sap.ui.define([
         onMaterialValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
+             // 获取当前行并选中它
+             const oTable = this.byId("EditableTable");
+             const oRow = oInput.getParent();
+             if (oRow) {
+                 oTable.setSelectedItem(oRow);
+             }
             const createTable = function() {
                 return new sap.m.Table({
                     mode: "SingleSelectMaster",
@@ -259,9 +265,15 @@ sap.ui.define([
                         oInput.setValue(selectCells[0].getText());
                         // 获取选中的物料数据并设置相关信息
                         const oContext = selectItems.getBindingContext("MaterialModel");
-                        const oSubmitModel = that.getView().getModel("items");
-                        const Unit1 = oContext.getProperty("Meins");                                
-                        oSubmitModel.setProperty("/Unit1", Unit1);
+                        const oItemsModel = that.getView().getModel("items");
+                        const oTable = that.byId("EditableTable");
+                        const oSelectedItem = oTable.getSelectedItem();
+
+                        if (oSelectedItem) {
+                            const sPath = oSelectedItem.getBindingContext("items").getPath();
+                            const meins = oContext.getProperty("Meins");
+                            oItemsModel.setProperty(sPath + "/Unit2", meins);
+                        }
                         that._materialValueHelpDialog.close();
                     }
                 })
@@ -299,9 +311,15 @@ sap.ui.define([
                                         const meins = oContext.getProperty("Meins");
                                         const maktx = oContext.getProperty("Maktx");
                                         
+                                        // 设置值到items模型
                                         oItemsModel.setProperty(sPath + "/Unit1", brgew);
                                         oItemsModel.setProperty(sPath + "/Unit2", meins);
                                         oItemsModel.setProperty(sPath + "/MaterialDesc", maktx);
+                                        
+                                        // 同时更新submitModel中的NP_ASH2DLVTI
+                                        const oSubmitModel = that.getView().getModel("submitData");
+                                        const aData = oItemsModel.getProperty("/results");
+                                        oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
                                     }
                                 }
                                 this._materialValueHelpDialog.close();
