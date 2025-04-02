@@ -172,7 +172,7 @@ sap.ui.define([
                         const oSubmitModel = that.getView().getModel("submitData");
                         const plantAddress = oContext.getProperty("Stras");                               
                         oSubmitModel.setProperty("/plantAddress1", plantAddress);                                
-                        that._VendorValueHelpDialog.close();
+                        that._plantValueHelpDialog.close();
                     }
                 })
             }
