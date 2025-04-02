@@ -411,7 +411,7 @@ sap.ui.define([
             "SalesUnit": item.Unit || "",
             // "Unit2": item.Unit2 || "",
             "Plant": submitData.Plant || "",
-            "Brgew": item.Weight
+            "Brgew": String(item.Weight || 0)
           })),
           "NP_ASH2DATES": [{
             "Timetype": "WS GOODS ISSUE  LIKP",
