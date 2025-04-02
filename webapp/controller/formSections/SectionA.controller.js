@@ -27,8 +27,6 @@ sap.ui.define([
             }
         },
         onInit: function () {
-            
-
         },
 
         onValueHelpRequest: function (oEvent) {
