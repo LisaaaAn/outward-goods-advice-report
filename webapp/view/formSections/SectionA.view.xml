@@ -13,8 +13,7 @@
     <form:Form
         id="_IDGenForm"
         editable="true"
-        class="sapUiSmallMarginBottom"
-    >
+        class="sapUiSmallMarginBottom">
         <form:layout>
             <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout1"
                 labelSpanXL="4"
@@ -42,7 +41,7 @@
                                         selectedKey="{submitData>/ZTYPE_MOVEMENT}"
                                         change=".onTypeMovementChange"
                                         required="true">
-                                        <items>
+                                <items>
                                     <core:Item id="item1" text="Auction item" key="Auction item"/>
                                     <core:Item id="item2" text="Cash Sale Record Number" key="CASH_SALE"/>
                                     <core:Item id="item3" text="Credit – Do Not Replace" key="CREDIT_NO_REPLACE"/>
@@ -75,6 +74,7 @@
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
+                                required="true"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -155,6 +155,7 @@
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
                                 valueHelpOnly="true"
+                                required="true"
                             />
                         </form:fields>
                     </form:FormElement>
