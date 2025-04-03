@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: zcreateoutwardgoodsadvicereport
+  name: ZCreateOGAReport
 type: application
 builder:
   resources:
@@ -16,11 +16,15 @@ builder:
         log: 5
         target:
           url: https://vhicwds4ci.sap.gm3global.com:44300
-          client: '100'
+          client: '100',
+          auth: 'basic'
+        credentials:
+          username: env:SAP_ABAP_USERNAME
+          password: env:SAP_ABAP_PASSWORD
         app:
-          name: ZCreateOGAR
+          name: YY1_CreateOGAR
           description: Create Outward Goods Advice Report
-          package: $TMP
-          transport: ''
+          package: ZIM_COGAR
+          transport: DS4K901503
         exclude:
           - /test/
