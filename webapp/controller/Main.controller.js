@@ -405,6 +405,7 @@ sap.ui.define([
           "ZWEIGHT": submitData.Weight,
           "ZMSDS_ATTACHED": submitData.MSDS_Attached,
           "ZCARRIER_NAME": submitData.ZCARRIER_CONSIGN,
+          "ZCUSTOM_LETTER": submitData.CustomsLetterAttached,
           "NP_ASH2DLVTI": submitData.NP_ASH2DLVTI.map(item => ({
             "ZDOC_NO": item.PurchaseOrderNo,
             "ZDOC_ITEM": item.POItemNo,
