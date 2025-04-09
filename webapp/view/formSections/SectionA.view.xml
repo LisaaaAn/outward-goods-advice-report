@@ -128,10 +128,7 @@
                         <form:fields>
                             <RadioButtonGroup
                                 id="storedEnergyRadioGroup"
-                                selectedIndex="{
-                                    path: '{submitData>/ZSTORED_ENERGY}',
-                                    formatter: '.formatter.toRadioButtonIndex'
-                                }"
+                                selectedIndex="{= ${submitData>/ZSTORED_ENERGY} === 'Y' ? 0 : 1 }"
                                 columns="2"
                                 select=".onStoredEnergyChange">
                                 <buttons>
@@ -214,49 +211,18 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement>
+                    <form:FormElement id="dangerousGoods" label="Dangerous Goods">
                         <form:fields>
-                            <m:HBox
-                                justifyContent="SpaceBetween"
-                                alignItems="Center"
-                                width="100%">
-                                <m:VBox width="48%" >
-                                    <m:HBox alignItems="Center" justifyContent="SpaceBetween">
-                                        <Label text="Dangerous Goods" required="true"/>
-                                        <RadioButtonGroup
-                                            id="dangerousGoodsRadioGroup"
-                                            selectedIndex="{
-                                                path: 'submitData>/ZDANGEROUS_GOODS',
-                                                formatter: '.formatter.toRadioButtonIndex'
-                                            }"
-                                            columns="2"
-                                            select=".onStoredEnergyChange">
-                                            <buttons>
-                                                <RadioButton id="dangerousGoodsGroupYes" text="Yes" />
-                                                <RadioButton id="dangerousGoodsGroupNo" text="No" />
-                                            </buttons>
-                                        </RadioButtonGroup>
-                                    </m:HBox>
-                                </m:VBox>
-                                <m:VBox width="48%" alignItems="End">
-                                    <m:HBox alignItems="Center" justifyContent="SpaceBetween">
-                                        <Label text="Radiance Clearance"/>
-                                        <RadioButtonGroup
-                                            id="radianceClearanceRadioGroup"
-                                            selectedIndex="{
-                                                path: 'submitData>/radianceClearance',
-                                                formatter: '.formatter.toRadioButtonIndex'
-                                            }"
-                                            columns="2"
-                                            select=".onStoredEnergyChange">
-                                            <buttons>
-                                                <RadioButton id="radianceClearanceYes" text="Yes" />
-                                                <RadioButton id="radianceClearanceNo" text="No" />
-                                            </buttons>
-                                        </RadioButtonGroup>
-                                    </m:HBox>
-                                </m:VBox>
-                            </m:HBox>
+                            <RadioButtonGroup
+                                id="DangerousGoodsRadioGroup"
+                                selectedIndex="{= ${submitData>/ZDANGEROUS_GOODS} === 'Y' ? 0 : 1 }"
+                                columns="2"
+                                select=".onDangerousGoodsChange">
+                                <buttons>
+                                    <RadioButton id="dangerousGoodsGroupYes" text="Yes" />
+                                    <RadioButton id="dangerousGoodsGroupNo" text="No" />
+                                </buttons>
+                            </RadioButtonGroup>
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>

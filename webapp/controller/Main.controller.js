@@ -41,6 +41,8 @@ sap.ui.define([
     ZVENDOR_EMAIL: "",
     ZCARRIER_CONSIGN: "",
     ZCARRIER_CONSIGN: "",
+    CustomsLetterAttached:"N",
+    MSDS_Attached:"N",
     // 表格数据
     NP_ASH2DLVTI: [],
     // 日期数据

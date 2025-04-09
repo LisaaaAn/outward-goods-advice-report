@@ -314,10 +314,7 @@
                         <form:fields>
                             <RadioButtonGroup
                                 id="storedEnergyRadioGroup2"
-                                selectedIndex="{
-                                    path: '{submitData>/ZSTORED_ENERGY}',
-                                    formatter: '.formatter.toRadioButtonIndex'
-                                }"
+                                selectedIndex="{= ${submitData>/ZSTORED_ENERGY} === 'Y' ? 0 : 1 }"
                                 columns="2"
                                 select=".onStoredEnergyChange">
                                 <buttons>
@@ -331,10 +328,7 @@
                         <form:fields>
                             <RadioButtonGroup
                                 id="MSDSAttached"
-                                selectedIndex="{
-                                    path: '{submitData>/MSDS_Attached}',
-                                    formatter: '.formatter.toRadioButtonIndex'
-                                }"
+                                selectedIndex="{= ${submitData>/MSDS_Attached} === 'Y' ? 0 : 1 }"
                                 columns="2"
                                 select=".onStoredEnergyChange">
                                 <buttons>
@@ -409,12 +403,9 @@
                         <form:fields>
                             <RadioButtonGroup
                                 id="dangerousGoodsRadioGroup2"
-                                selectedIndex="{
-                                    path: '{submitData>/ZDANGEROUS_GOODS}',
-                                    formatter: '.formatter.toRadioButtonIndex'
-                                }"
+                                selectedIndex="{= ${submitData>/ZDANGEROUS_GOODS} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onStoredEnergyChange">
+                                select=".onDangerousGoodsChange">
                                 <buttons>
                                     <RadioButton id="dangerousGoodsGroupYes2" text="Yes" />
                                     <RadioButton id="dangerousGoodsGroupNo2" text="No" />
@@ -427,10 +418,7 @@
                         <form:fields>
                             <RadioButtonGroup
                                 id="CustomsLetterAttached"
-                                selectedIndex="{
-                                    path: '{submitData>/ZCUSTOM_LETTER}',
-                                    formatter: '.formatter.toRadioButtonIndex'
-                                }"
+                                selectedIndex="{= ${submitData>/CustomsLetterAttached} === 'Y' ? 0 : 1 }"
                                 columns="2"
                                 select=".onStoredEnergyChange">
                                 <buttons>

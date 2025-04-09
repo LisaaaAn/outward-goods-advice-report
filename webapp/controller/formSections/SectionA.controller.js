@@ -11,8 +11,9 @@ sap.ui.define([
     "sap/ui/table/Column",
     "sap/m/Text",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (BaseController, JSONModel, ODataModel, Dialog, List, StandardListItem, Button, Input, Table, Column, Text, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "sap/m/MessageToast"
+], function (BaseController, JSONModel, ODataModel, Dialog, List, StandardListItem, Button, Input, Table, Column, Text, Filter, FilterOperator,MessageToast) {
     "use strict";
     return BaseController.extend("ui5.ogarpt.controller.formSections.SectionA", {
         formatter: {
@@ -27,6 +28,19 @@ sap.ui.define([
             }
         },
         onInit: function () {
+        },
+
+        onStoredEnergyChange: function(oEvent) {
+            const selectedIndex = oEvent.getParameter("selectedIndex");
+            const oModel = this.getView().getModel("submitData");
+            // 将 0/1 转换为 "Y"/"N"
+            oModel.setProperty("/ZSTORED_ENERGY", selectedIndex === 0 ? "Y" : "N");
+        },
+        onDangerousGoodsChange: function(oEvent) {
+            const selectedIndex = oEvent.getParameter("selectedIndex");
+            const oModel = this.getView().getModel("submitData");
+            // 将 0/1 转换为 "Y"/"N"
+            oModel.setProperty("/ZDANGEROUS_GOODS", selectedIndex === 0 ? "Y" : "N");
         },
 
         onValueHelpRequest: function (oEvent) {
