@@ -228,17 +228,29 @@ sap.ui.define([
         _filterPlants: function (sValue) {
             const aFilter = [];
             if (sValue) {
-                aFilter.push(new Filter("Name1", FilterOperator.Contains, sValue))
+                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
+                const oNoFilter = new Filter("Werks", FilterOperator.Contains, sValue);
+                const oCombinedFilter = new Filter({
+                    filters: [oName1Filter, oNoFilter],
+                    and: false
+                });
+                aFilter.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter)
+            this._oTable.getBinding("items").filter(aFilter);
         },
 
         _filterVendors: function (sValue) {
             const aFilter = [];
             if (sValue) {
-                aFilter.push(new Filter("Name1", FilterOperator.Contains, sValue))
+                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
+                const oNoFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
+                const oCombinedFilter = new Filter({
+                    filters: [oName1Filter, oNoFilter],
+                    and: false
+                });
+                aFilter.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter)
+            this._oTable.getBinding("items").filter(aFilter);
         },
         handleAdd: function () {
             const oModel = this.getView().getModel('items');

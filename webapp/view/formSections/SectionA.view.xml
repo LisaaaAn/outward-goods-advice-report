@@ -69,8 +69,7 @@
                         <form:fields>
                              <Input 
                                 id="vendorNumberInput" 
-                                value="{submitData>/VendorNumber}" 
-                                enabled="true"
+                                value="{submitData>/VendorNumber}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -150,8 +149,7 @@
                         <form:fields>
                             <Input 
                                 id="plantInput" 
-                                value="{submitData>/Plant}" 
-                                enabled="true"
+                                value="{submitData>/Plant}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
                                 valueHelpOnly="true"
