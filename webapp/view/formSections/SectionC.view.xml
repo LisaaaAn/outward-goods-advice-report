@@ -346,7 +346,7 @@
                     </form:FormElement>
                     <form:FormElement id="formElementSpecialnstructions" label="Special Instructions">
                         <form:fields>
-                            <Input id="Specialnstructions" value="{submitData>/Special_nstructions}" />
+                            <Input id="Specialnstructions" value="{submitData>/ZSPEC_INST}" />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
@@ -428,7 +428,7 @@
                             <RadioButtonGroup
                                 id="CustomsLetterAttached"
                                 selectedIndex="{
-                                    path: '{submitData>/ZDANGEROUS_GOODS}',
+                                    path: '{submitData>/ZCUSTOM_LETTER}',
                                     formatter: '.formatter.toRadioButtonIndex'
                                 }"
                                 columns="2"
