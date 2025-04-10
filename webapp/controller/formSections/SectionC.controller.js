@@ -40,6 +40,18 @@ sap.ui.define([
             // 将 0/1 转换为 "Y"/"N"
             oModel.setProperty("/ZDANGEROUS_GOODS", selectedIndex === 0 ? "Y" : "N");
         },
+        onMSDSAttachedChange: function(oEvent) {
+            const selectedIndex = oEvent.getParameter("selectedIndex");
+            const oModel = this.getView().getModel("submitData");
+            // 将 0/1 转换为 "Y"/"N"
+            oModel.setProperty("/MSDS_Attached", selectedIndex === 0 ? "Y" : "N");
+        },
+        onCustomsLetterAttachedChange: function(oEvent) {
+            const selectedIndex = oEvent.getParameter("selectedIndex");
+            const oModel = this.getView().getModel("submitData");
+            // 将 0/1 转换为 "Y"/"N"
+            oModel.setProperty("/CustomsLetterAttached", selectedIndex === 0 ? "Y" : "N");
+        },
 
         onValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();

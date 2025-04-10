@@ -30,16 +30,6 @@
                     viewName="ui5.ogarpt.view.formSections.SectionA"
                 />
             </Page>
-            <!-- <Page
-                id="p2"
-                showHeader="false"
-                backgroundDesign="Transparent"
-            >
-                <mvc:XMLView
-                    id="_IDGenXMLView1"
-                    viewName="ui5.ogarpt.view.formSections.SectionB"
-                />
-            </Page> -->
             <Page
                 id="p2"
                 showHeader="false"
@@ -57,12 +47,6 @@
             alignItems="Start"
             justifyContent="Center"
         >
-            <!-- <Button
-                id="OpenButton"
-                text="{i18n>button.open}"
-                class="sapUiSmallMarginEnd"
-                visible="{= ${formState>/currentStep} === 1}"
-            /> -->
             <Button
                 id="PreviousButton"
                 text="{i18n>button.back}"
@@ -84,20 +68,6 @@
                     />
                 </customData>
             </Button>
-            <!-- <Button
-                id="NextButton2"
-                text="{i18n>button.next}"
-                press="handleNavigate"
-                class="sapUiSmallMarginEnd"
-                visible="{= ${formState>/currentStep} === 2}"
-            >
-                <customData>
-                    <core:CustomData
-                        key="target"
-                        value="p3"
-                    />
-                </customData>
-            </Button> -->
             <Button
                 id="SaveButton"
                 text="{i18n>button.save}"

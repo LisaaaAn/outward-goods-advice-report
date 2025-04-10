@@ -330,7 +330,7 @@
                                 id="MSDSAttached"
                                 selectedIndex="{= ${submitData>/MSDS_Attached} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onStoredEnergyChange">
+                                select=".onMSDSAttachedChange">
                                 <buttons>
                                     <RadioButton id="MSDSAttachedYes" text="Yes" />
                                     <RadioButton id="MSDSAttachedNo" text="No" />
@@ -420,7 +420,7 @@
                                 id="CustomsLetterAttached"
                                 selectedIndex="{= ${submitData>/CustomsLetterAttached} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onStoredEnergyChange">
+                                select=".onCustomsLetterAttachedChange">
                                 <buttons>
                                     <RadioButton id="CustomsLetterAttachedYes" text="Yes" />
                                     <RadioButton id="CustomsLetterAttachedNo" text="No" />
