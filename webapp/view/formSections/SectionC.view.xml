@@ -9,9 +9,11 @@
     <form:Form
         id="headerForm"
         editable="true"
-        class="sapUiSmallMarginBottom">
+        class="sapUiSmallMarginBottom"
+    >
         <form:layout>
-            <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout2"
+            <form:ResponsiveGridLayout
+                id="_IDGenResponsiveGridLayout2"
                 labelSpanXL="4"
                 labelSpanM="4"
                 adjustLabelSpan="false"
@@ -24,32 +26,112 @@
         <form:formContainers>
             <form:FormContainer id="_IDGenFormContainer2">
                 <form:formElements>
-                    <form:FormElement id="formElementTypeMovement" label="Type Of Movement">
+                    <form:FormElement
+                        id="formElementTypeMovement"
+                        label="Type Of Movement"
+                    >
                         <form:fields>
                             <Select
-                                        id="typeMovement"
-                                        selectedKey="{submitData>/ZTYPE_MOVEMENT}"
-                                        change=".onTypeMovementChange">
-                                        <items>
-                                    <core:Item id="item01" text="Auction item" key="Auction item"/>
-                                    <core:Item id="item20" text="Cash Sale Record Number" key="CASH_SALE"/>
-                                    <core:Item id="item30" text="Credit – Do Not Replace" key="CREDIT_NO_REPLACE"/>
-                                    <core:Item id="item40" text="On Load" key="ON_LOAD"/>
-                                    <core:Item id="item50" text="Other – Free Text" key="OTHER_FREE_TEXT"/>
-                                    <core:Item id="item60" text="Over Supplied – Return for Credit" key="OVER_SUPPLIED"/>
-                                    <core:Item id="item70" text="Parts Exchange – Service Exchange" key="PARTS_EXCHANGE"/>
-                                    <core:Item id="item80" text="Property Returned" key="PROPERTY_RETURNED"/>
-                                    <core:Item id="item90" text="Refill and Return" key="REFILL_RETURN"/>
-                                    <core:Item id="item100" text="Remanufactured Part Returned" key="REMANUFACTURED"/>
-                                    <core:Item id="item110" text="Repair and Return" key="REPAIR_RETURN"/>
-                                    <core:Item id="item120" text="Replace with Items as Ordered" key="REPLACE_ORDERED"/>
-                                    <core:Item id="item130" text="Return to Vendor" key="RETURN_VENDOR"/>
-                                    <core:Item id="item140" text="Return for Exchange" key="RETURN_EXCHANGE"/>
-                                    <core:Item id="item150" text="Scrap" key="SCRAP"/>
-                                    <core:Item id="item160" text="Stock Transfer with a material document number" key="STOCK_TRANSFER_DOC"/>
-                                    <core:Item id="item170" text="Stock Transfer with no material document number" key="STOCK_TRANSFER_NO_DOC"/>
-                                    <core:Item id="item180" text="Warranty" key="WARRANTY"/>
-                                    <core:Item id="item190" text="Waste Removal" key="WASTE_REMOVAL"/>
+                                id="typeMovement"
+                                selectedKey="{submitData>/ZTYPE_MOVEMENT}"
+                                change=".onTypeMovementChange"
+                            >
+                                <items>
+                                    <core:Item
+                                        id="item01"
+                                        text="Auction item"
+                                        key="Auction item"
+                                    />
+                                    <core:Item
+                                        id="item20"
+                                        text="Cash Sale Record Number"
+                                        key="CASH_SALE"
+                                    />
+                                    <core:Item
+                                        id="item30"
+                                        text="Credit – Do Not Replace"
+                                        key="CREDIT_NO_REPLACE"
+                                    />
+                                    <core:Item
+                                        id="item40"
+                                        text="On Load"
+                                        key="ON_LOAD"
+                                    />
+                                    <core:Item
+                                        id="item50"
+                                        text="Other – Free Text"
+                                        key="OTHER_FREE_TEXT"
+                                    />
+                                    <core:Item
+                                        id="item60"
+                                        text="Over Supplied – Return for Credit"
+                                        key="OVER_SUPPLIED"
+                                    />
+                                    <core:Item
+                                        id="item70"
+                                        text="Parts Exchange – Service Exchange"
+                                        key="PARTS_EXCHANGE"
+                                    />
+                                    <core:Item
+                                        id="item80"
+                                        text="Property Returned"
+                                        key="PROPERTY_RETURNED"
+                                    />
+                                    <core:Item
+                                        id="item90"
+                                        text="Refill and Return"
+                                        key="REFILL_RETURN"
+                                    />
+                                    <core:Item
+                                        id="item100"
+                                        text="Remanufactured Part Returned"
+                                        key="REMANUFACTURED"
+                                    />
+                                    <core:Item
+                                        id="item110"
+                                        text="Repair and Return"
+                                        key="REPAIR_RETURN"
+                                    />
+                                    <core:Item
+                                        id="item120"
+                                        text="Replace with Items as Ordered"
+                                        key="REPLACE_ORDERED"
+                                    />
+                                    <core:Item
+                                        id="item130"
+                                        text="Return to Vendor"
+                                        key="RETURN_VENDOR"
+                                    />
+                                    <core:Item
+                                        id="item140"
+                                        text="Return for Exchange"
+                                        key="RETURN_EXCHANGE"
+                                    />
+                                    <core:Item
+                                        id="item150"
+                                        text="Scrap"
+                                        key="SCRAP"
+                                    />
+                                    <core:Item
+                                        id="item160"
+                                        text="Stock Transfer with a material document number"
+                                        key="STOCK_TRANSFER_DOC"
+                                    />
+                                    <core:Item
+                                        id="item170"
+                                        text="Stock Transfer with no material document number"
+                                        key="STOCK_TRANSFER_NO_DOC"
+                                    />
+                                    <core:Item
+                                        id="item180"
+                                        text="Warranty"
+                                        key="WARRANTY"
+                                    />
+                                    <core:Item
+                                        id="item190"
+                                        text="Waste Removal"
+                                        key="WASTE_REMOVAL"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
@@ -58,26 +140,32 @@
             </form:FormContainer>
             <form:FormContainer id="_IDGenFormContainer3">
                 <form:formElements>
-                    <form:FormElement id="formElementOGANumber" label="Date">
+                    <form:FormElement
+                        id="formElementOGANumber"
+                        label="Date"
+                    >
                         <form:fields>
-                            <Input 
-                            id="ogaNumber" 
-                            value="{submitData>/Date}" 
-                            editable="false"/>
+                            <Input
+                                id="ogaNumber"
+                                value="{submitData>/Date}"
+                                editable="false"
+                            />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
             </form:FormContainer>
         </form:formContainers>
     </form:Form>
-  
+
     <!-- 两列表单布局 -->
     <form:Form
         id="mainForm"
         editable="true"
-        class="sapUiResponsiveMargin sapUiNoMarginTop">
+        class="sapUiResponsiveMargin sapUiNoMarginTop"
+    >
         <form:layout>
-            <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout"
+            <form:ResponsiveGridLayout
+                id="_IDGenResponsiveGridLayout"
                 labelSpanXL="4"
                 labelSpanM="4"
                 adjustLabelSpan="false"
@@ -89,14 +177,19 @@
         </form:layout>
         <form:formContainers>
             <!-- 左侧 Vendor Details -->
-            <form:FormContainer id="_IDGenFormContainer" title="Vendor detail">
+            <form:FormContainer
+                id="_IDGenFormContainer"
+                title="Vendor detail"
+            >
                 <form:formElements>
-                    <form:FormElement id="formElementVendorNumber" label="Vendor Number">
+                    <form:FormElement
+                        id="formElementVendorNumber"
+                        label="Vendor Number"
+                    >
                         <form:fields>
-                             <Input 
-                                id="vendorNumberInput2" 
-                                value="{submitData>/VendorNumber}" 
-                                
+                            <Input
+                                id="vendorNumberInput2"
+                                value="{submitData>/VendorNumber}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -104,64 +197,122 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementVendorName" label="Vendor Name">
+                    <form:FormElement
+                        id="formElementVendorName"
+                        label="Vendor Name"
+                    >
                         <form:fields>
-                            <Input id="vendorName" value="{submitData>/VendorName}"  />
+                            <Input
+                                id="vendorName"
+                                value="{submitData>/VendorName}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementVendorAddr1" label="Vendor Address Line 1">
+                    <form:FormElement
+                        id="formElementVendorAddr1"
+                        label="Vendor Address Line 1"
+                    >
                         <form:fields>
-                            <Input id="vendorAddr1" value="{submitData>/VendorAddress1}"  />
+                            <Input
+                                id="vendorAddr1"
+                                value="{submitData>/VendorAddress1}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementVendorAddr2" label="Vendor Address Line 2">
+                    <form:FormElement
+                        id="formElementVendorAddr2"
+                        label="Vendor Address Line 2"
+                    >
                         <form:fields>
-                            <Input id="vendorAddr2" value="{submitData>/VendorAddress2}"  />
+                            <Input
+                                id="vendorAddr2"
+                                value="{submitData>/VendorAddress2}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementVendorAddr3" label="Vendor Address Line 3">
+                    <form:FormElement
+                        id="formElementVendorAddr3"
+                        label="Vendor Address Line 3"
+                    >
                         <form:fields>
-                            <Input id="vendorAddr3" value="{submitData>/VendorAddress3}"  />
+                            <Input
+                                id="vendorAddr3"
+                                value="{submitData>/VendorAddress3}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementContact" label="Contact">
+                    <form:FormElement
+                        id="formElementContact"
+                        label="Contact"
+                    >
                         <form:fields>
-                            <Input id="contact" value="{submitData>/ZVENDOR_CONTACT}" />
+                            <Input
+                                id="contact"
+                                value="{submitData>/ZVENDOR_CONTACT}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementTelephone" label="Telephone">
+                    <form:FormElement
+                        id="formElementTelephone"
+                        label="Telephone"
+                    >
                         <form:fields>
-                            <Input id="telephone" value="{submitData>/ZVENDOR_TELEPHONE}" />
+                            <Input
+                                id="telephone"
+                                value="{submitData>/ZVENDOR_TELEPHONE}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementFax" label="Fax">
+                    <form:FormElement
+                        id="formElementFax"
+                        label="Fax"
+                    >
                         <form:fields>
-                            <Input id="fax" value="{submitData>/ZVENDOR_FAX}" />
+                            <Input
+                                id="fax"
+                                value="{submitData>/ZVENDOR_FAX}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementEmail" label="Email">
+                    <form:FormElement
+                        id="formElementEmail"
+                        label="Email"
+                    >
                         <form:fields>
-                            <Input id="email" value="{submitData>/ZVENDOR_EMAIL}" />
+                            <Input
+                                id="email"
+                                value="{submitData>/ZVENDOR_EMAIL}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementCarrierName" label="Carrier Name">
+                    <form:FormElement
+                        id="formElementCarrierName"
+                        label="Carrier Name"
+                    >
                         <form:fields>
-                            <Input id="carrierName" value="{submitData>/ZCARRIER_CONSIGN}" />
+                            <Input
+                                id="carrierName"
+                                value="{submitData>/ZCARRIER_CONSIGN}"
+                            />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
-
             </form:FormContainer>
 
             <!-- 右侧 Plant Details -->
-            <form:FormContainer id="_IDGenFormContainer1" title="Plant detail"> 
-                <form:formElements> 
-                    <form:FormElement id="formElementPlant" label="Plant">
+            <form:FormContainer
+                id="_IDGenFormContainer1"
+                title="Plant detail"
+            >
+                <form:formElements>
+                    <form:FormElement
+                        id="formElementPlant"
+                        label="Plant"
+                    >
                         <form:fields>
-                            <Input 
-                                id="plantInput1" 
-                                value="{submitData>/Plant}" 
-                                
+                            <Input
+                                id="plantInput1"
+                                value="{submitData>/Plant}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
                                 valueHelpOnly="true"
@@ -169,64 +320,121 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPlantAddr1" label="Plant Address Line 1">
+                    <form:FormElement
+                        id="formElementPlantAddr1"
+                        label="Plant Address Line 1"
+                    >
                         <form:fields>
-                            <Input id="plantAddr1" value="{submitData>/plantAddress1}"  />
+                            <Input
+                                id="plantAddr1"
+                                value="{submitData>/plantAddress1}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPlantAddr2" label="Plant Address Line 2">
+                    <form:FormElement
+                        id="formElementPlantAddr2"
+                        label="Plant Address Line 2"
+                    >
                         <form:fields>
-                            <Input id="plantAddr2" value="{submitData>/plantAddress2}" enabled="false" />
+                            <Input
+                                id="plantAddr2"
+                                value="{submitData>/plantAddress2}"
+                                enabled="false"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPlantAddr3" label="Plant Address Line 3">
+                    <form:FormElement
+                        id="formElementPlantAddr3"
+                        label="Plant Address Line 3"
+                    >
                         <form:fields>
-                            <Input id="plantAddr3" value="{submitData>/plantAddress3}"  />
+                            <Input
+                                id="plantAddr3"
+                                value="{submitData>/plantAddress3}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPlantAddr4" label="Plant Address Line 4">
+                    <form:FormElement
+                        id="formElementPlantAddr4"
+                        label="Plant Address Line 4"
+                    >
                         <form:fields>
-                            <Input id="plantAddr4" value="{submitData>/plantAddress4}"  />
+                            <Input
+                                id="plantAddr4"
+                                value="{submitData>/plantAddress4}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementBhpContact" label="BHP Billiton Contact">
+                    <form:FormElement
+                        id="formElementBhpContact"
+                        label="BHP Billiton Contact"
+                    >
                         <form:fields>
-                            <Input id="bhpContact" value="{submitData>/ZGM3_CONTACT}"  />
+                            <Input
+                                id="bhpContact"
+                                value="{submitData>/ZGM3_CONTACT}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementBhpTelephone" label="Telephone">
+                    <form:FormElement
+                        id="formElementBhpTelephone"
+                        label="Telephone"
+                    >
                         <form:fields>
-                            <Input id="bhpTelephone" value="{submitData>/ZGM3_TELEPHONE}"  />
+                            <Input
+                                id="bhpTelephone"
+                                value="{submitData>/ZGM3_TELEPHONE}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementBhpFax"  label="Fax">
+                    <form:FormElement
+                        id="formElementBhpFax"
+                        label="Fax"
+                    >
                         <form:fields>
-                            <Input id="bhpFax" value="{submitData>/ZGM3_FAX}"  />
+                            <Input
+                                id="bhpFax"
+                                value="{submitData>/ZGM3_FAX}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementBhpEmail" label="Email">
+                    <form:FormElement
+                        id="formElementBhpEmail"
+                        label="Email"
+                    >
                         <form:fields>
-                            <Input id="bhpEmail" value="{submitData>/ZGM3_EMAIL}"  />
+                            <Input
+                                id="bhpEmail"
+                                value="{submitData>/ZGM3_EMAIL}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement1" label="Carrier Consignment Note">
+                    <form:FormElement
+                        id="_IDGenFormElement1"
+                        label="Carrier Consignment Note"
+                    >
                         <form:fields>
-                            <Input id="_IDGenInput7" value="{submitData>/ZCARRIER_CONSIGN}"  />
+                            <Input
+                                id="_IDGenInput7"
+                                value="{submitData>/ZCARRIER_CONSIGN}"
+                            />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
             </form:FormContainer>
         </form:formContainers>
     </form:Form>
-    
-<!-- Other Detail布局 -->
+
+    <!-- Other Detail布局 -->
     <form:Form
         id="otherDetailForm"
         editable="true"
         class="sapUiResponsiveMargin sapUiNoMarginTop"
-        title="Other Detail">
+        title="Other Detail"
+    >
         <form:layout>
-            <form:ResponsiveGridLayout id="otherDeatilLayout"
+            <form:ResponsiveGridLayout
+                id="otherDeatilLayout"
                 labelSpanXL="4"
                 labelSpanM="4"
                 adjustLabelSpan="false"
@@ -241,34 +449,65 @@
             <!-- 左侧 Other Detail -->
             <form:FormContainer id="_IDGenFormContainer78">
                 <form:formElements>
-                    <form:FormElement id="formElementFreightChargedTo" label="Freight Charged To">
+                    <form:FormElement
+                        id="formElementFreightChargedTo"
+                        label="Freight Charged To"
+                    >
                         <form:fields>
                             <Select
                                 id="freightChargedToSelect2"
                                 selectedKey="{submitData>/ZFREIGHT_CHARGED_TO}"
-                                required="true">
+                                required="true"
+                            >
                                 <items>
-                                    <core:Item id="sender2" text="Sender" key="SENDER"/>
-                                    <core:Item id="receiver2" text="Receiver" key="RECEIVER"/>
-                                    <core:Item id="ThirdParty2" text="Third Party" key="ThirdParty"/>
+                                    <core:Item
+                                        id="sender2"
+                                        text="Sender"
+                                        key="SENDER"
+                                    />
+                                    <core:Item
+                                        id="receiver2"
+                                        text="Receiver"
+                                        key="RECEIVER"
+                                    />
+                                    <core:Item
+                                        id="ThirdParty2"
+                                        text="Third Party"
+                                        key="ThirdParty"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementThirdParty" label="Third Party">
+                    <form:FormElement
+                        id="formElementThirdParty"
+                        label="Third Party"
+                    >
                         <form:fields>
-                            <Input id="ThirdPartyInput" value="{submitData>/ThirdParty}" />
+                            <Input
+                                id="ThirdPartyInput"
+                                value="{submitData>/ThirdParty}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementSenderName" label="Sender's Name">
+                    <form:FormElement
+                        id="formElementSenderName"
+                        label="Sender's Name"
+                    >
                         <form:fields>
-                            <Input id="SenderName" value="{submitData>/SenderName}" />
+                            <Input
+                                id="SenderName"
+                                value="{submitData>/SenderName}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPurchasingDoc" label="Purchasing Doc">                     
+                    <form:FormElement
+                        id="formElementPurchasingDoc"
+                        label="Purchasing Doc"
+                    >
                         <form:fields>
-                            <Input 
-                                id="PurchasingDoc" 
+                            <Input
+                                id="PurchasingDoc"
                                 value="{submitData>/PurchasingDoc}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
@@ -276,11 +515,14 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementMaterialDoc" label="Material Doc">                      
-                        <form:fields>                
-                            <Input 
-                                id="MaterialDoc" 
-                                value="{submitData>/MaterialDoc}" 
+                    <form:FormElement
+                        id="formElementMaterialDoc"
+                        label="Material Doc"
+                    >
+                        <form:fields>
+                            <Input
+                                id="MaterialDoc"
+                                value="{submitData>/MaterialDoc}"
                                 enabled="false"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
@@ -288,120 +530,206 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementStoredEnergy" label="Stored Energy">
+                    <form:FormElement
+                        id="formElementStoredEnergy"
+                        label="Stored Energy"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="storedEnergyRadioGroup2"
                                 selectedIndex="{= ${submitData>/ZSTORED_ENERGY} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onStoredEnergyChange">
+                                select=".onStoredEnergyChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="rbStoredEnergyYes2" text="Yes" />
-                                    <RadioButton id="rbStoredEnergyNo2" text="No" />
+                                    <RadioButton
+                                        id="rbStoredEnergyYes2"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="rbStoredEnergyNo2"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementMSDSAttached" label="MSDS Attached">
+                    <form:FormElement
+                        id="formElementMSDSAttached"
+                        label="MSDS Attached"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="MSDSAttached"
                                 selectedIndex="{= ${submitData>/MSDS_Attached} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onMSDSAttachedChange">
+                                select=".onMSDSAttachedChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="MSDSAttachedYes" text="Yes" />
-                                    <RadioButton id="MSDSAttachedNo" text="No" />
+                                    <RadioButton
+                                        id="MSDSAttachedYes"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="MSDSAttachedNo"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementSpecialnstructions" label="Special Instructions">
+                    <form:FormElement
+                        id="formElementSpecialnstructions"
+                        label="Special Instructions"
+                    >
                         <form:fields>
-                            <Input id="Specialnstructions" value="{submitData>/ZSPEC_INST}" />
+                            <Input
+                                id="Specialnstructions"
+                                value="{submitData>/ZSPEC_INST}"
+                            />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
-
             </form:FormContainer>
 
             <!-- 右侧 Plant Details -->
-            <form:FormContainer id="_IDGenFormContainer100"> 
-                <form:formElements> 
-                    <form:FormElement id="formElementFreightMethod" label="Freight Method">
+            <form:FormContainer id="_IDGenFormContainer100">
+                <form:formElements>
+                    <form:FormElement
+                        id="formElementFreightMethod"
+                        label="Freight Method"
+                    >
                         <form:fields>
                             <Select
                                 id="freightMethodInput2"
-                                selectedKey="{submitData>/ZFREIGHT_METHOD}">
+                                selectedKey="{submitData>/ZFREIGHT_METHOD}"
+                            >
                                 <items>
-                                    <core:Item id="AirFreight2" text="Air Freight" key="AirFreight"/>
-                                    <core:Item id="Rail2" text="Rail" key="Rail"/>
-                                    <core:Item id="RoadExpress2" text="Road Express" key="RoadExpress"/>
-                                    <core:Item id="RoadGeneral2" text="Road General" key="RoadGeneral"/>
-                                    <core:Item id="Ship2" text="Ship" key="SHIP"/>
+                                    <core:Item
+                                        id="AirFreight2"
+                                        text="Air Freight"
+                                        key="AirFreight"
+                                    />
+                                    <core:Item
+                                        id="Rail2"
+                                        text="Rail"
+                                        key="Rail"
+                                    />
+                                    <core:Item
+                                        id="RoadExpress2"
+                                        text="Road Express"
+                                        key="RoadExpress"
+                                    />
+                                    <core:Item
+                                        id="RoadGeneral2"
+                                        text="Road General"
+                                        key="RoadGeneral"
+                                    />
+                                    <core:Item
+                                        id="Ship2"
+                                        text="Ship"
+                                        key="SHIP"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementVrr" label="Vendor Return Reference">
+                    <form:FormElement
+                        id="formElementVrr"
+                        label="Vendor Return Reference"
+                    >
                         <form:fields>
-                            <Input id="Vrr" value="{submitData>/Vendor_Return_Reference}"  />
+                            <Input
+                                id="Vrr"
+                                value="{submitData>/Vendor_Return_Reference}"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementWeight" label="Weight">
+                    <form:FormElement
+                        id="formElementWeight"
+                        label="Weight"
+                    >
                         <form:fields>
-                            <Input id="Weight" value="{submitData>/Weight}" enabled="false" />
+                            <Input
+                                id="Weight"
+                                value="{submitData>/Weight}"
+                                enabled="false"
+                            />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementPOItemNo" label="PO Item No">
+                    <form:FormElement
+                        id="formElementPOItemNo"
+                        label="PO Item No"
+                    >
                         <form:fields>
                             <Select
                                 id="POItemNo"
                                 selectedKey="{submitData>/Material}"
                                 enabled="false"
-                                >
-                                <items>
-                                </items>
+                            >
+                                <items />
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementMaterialDocItemNo" label="Material Doc Item No">
-                        <form:fields>                            
+                    <form:FormElement
+                        id="formElementMaterialDocItemNo"
+                        label="Material Doc Item No"
+                    >
+                        <form:fields>
                             <Select
                                 id="MaterialDocItemNo"
                                 selectedKey="{submitData>/MaterialItem}"
                                 enabled="false"
-                                >
-                                <items>
-                                </items>
+                            >
+                                <items />
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="formElementBhpDangerousGoods" label="Dangerous Goods">
+                    <form:FormElement
+                        id="formElementBhpDangerousGoods"
+                        label="Dangerous Goods"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="dangerousGoodsRadioGroup2"
                                 selectedIndex="{= ${submitData>/ZDANGEROUS_GOODS} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onDangerousGoodsChange">
+                                select=".onDangerousGoodsChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="dangerousGoodsGroupYes2" text="Yes" />
-                                    <RadioButton id="dangerousGoodsGroupNo2" text="No" />
+                                    <RadioButton
+                                        id="dangerousGoodsGroupYes2"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="dangerousGoodsGroupNo2"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
                     </form:FormElement>
 
-                    <form:FormElement id="formElementCustomsLetterAttached" label="Customs Letter Attached">
+                    <form:FormElement
+                        id="formElementCustomsLetterAttached"
+                        label="Customs Letter Attached"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="CustomsLetterAttached"
                                 selectedIndex="{= ${submitData>/CustomsLetterAttached} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onCustomsLetterAttachedChange">
+                                select=".onCustomsLetterAttachedChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="CustomsLetterAttachedYes" text="Yes" />
-                                    <RadioButton id="CustomsLetterAttachedNo" text="No" />
+                                    <RadioButton
+                                        id="CustomsLetterAttachedYes"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="CustomsLetterAttachedNo"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
@@ -417,7 +745,8 @@
         growing="true"
         growingThreshold="10"
         items="{items>/results}"
-        mode="SingleSelectLeft">
+        mode="SingleSelectLeft"
+    >
         <headerToolbar>
             <OverflowToolbar id="otbSubheader">
                 <Title
@@ -441,21 +770,23 @@
             </OverflowToolbar>
         </headerToolbar>
         <columns>
-            <Column id="_IDGenColumn"
+            <Column
+                id="_IDGenColumn"
                 minScreenWidth="Tablet"
                 demandPopin="true"
-                 hAlign="Center">
+                hAlign="Center"
+            >
                 <Text
                     id="_IDGenText"
                     text="Sr. No"
-                    
                 />
             </Column>
             <Column
                 id="_IDGenColumn1"
                 minScreenWidth="Tablet"
                 demandPopin="true"
-                hAlign="Center">
+                hAlign="Center"
+            >
                 <Text
                     id="_IDGenText1"
                     text="Quantity"
@@ -533,27 +864,54 @@
                 id="_IDGenColumnListItem"
                 vAlign="Middle"
             >
-                <Input id="srNoInput" value="{items>Vbeln}" editable="false" required="true"/>
-                <Input id="quantityInput" value="{items>Quantity}" type="Number" change=".onQuantityChange" required="true"/>
-                <Input id="unit1Input" value="{items>Unit}" required="true"/>
+                <Input
+                    id="srNoInput"
+                    value="{items>Vbeln}"
+                    editable="false"
+                    required="true"
+                />
+                <Input
+                    id="quantityInput"
+                    value="{items>Quantity}"
+                    type="Number"
+                    change=".onQuantityChange"
+                    required="true"
+                />
+                <Input
+                    id="unit1Input"
+                    value="{items>Unit}"
+                    required="true"
+                />
                 <!-- <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" /> -->
-                <Input id="purchaseOrderNoInput" 
-                    value="{items>PurchaseOrderNo}" 
+                <Input
+                    id="purchaseOrderNoInput"
+                    value="{items>PurchaseOrderNo}"
                     showValueHelp="true"
                     valueHelpRequest=".onPurchaseValueHelpRequest"
                     valueHelpOnly="true"
                     required="true"
                 />
-                <Input id="poItemNoInputTable" value="{items>POItemNo}" />
-                <Input id="materialNoInput" 
-                    value="{items>MaterialNo}" 
+                <Input
+                    id="poItemNoInputTable"
+                    value="{items>POItemNo}"
+                />
+                <Input
+                    id="materialNoInput"
+                    value="{items>MaterialNo}"
                     showValueHelp="true"
                     valueHelpRequest=".onMaterialValueHelpRequest"
                     valueHelpOnly="true"
                     required="true"
                 />
-                <Input id="materialDescInput" value="{items>MaterialDesc}" />
-                <Input id="weightInput" value="{items>Weight}" type="Number" />
+                <Input
+                    id="materialDescInput"
+                    value="{items>MaterialDesc}"
+                />
+                <Input
+                    id="weightInput"
+                    value="{items>Weight}"
+                    type="Number"
+                />
             </ColumnListItem>
         </items>
     </Table>
