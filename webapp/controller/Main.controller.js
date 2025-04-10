@@ -8,7 +8,7 @@ sap.ui.define([
 
   var submitData = {
     // 第一屏数据开始
-    ZTYPE_MOVEMENT: '',
+    ZTYPE_MOVEMENT: 'Auction item',
     Plant: "",
     VendorNumber: "",
     VendorName: "",
@@ -43,6 +43,12 @@ sap.ui.define([
     ZCARRIER_CONSIGN: "",
     CustomsLetterAttached:"N",
     MSDS_Attached:"N",
+    ZTHIRD_PARTY: "",
+    ZVENDOR_RETREF: "",
+    ZSENDER_NAME: "",
+    ZWEIGHT: "",
+    ZMSDS_ATTACHED: "",
+    ZCARRIER_NAME: "",
     // 表格数据
     NP_ASH2DLVTI: [],
     // 日期数据
@@ -143,44 +149,44 @@ sap.ui.define([
       const oModel = this.getView().getModel();
       const oParameterContext = oModel.createEntry('/HEADSet', {
         properties: {
-          "ZTYPE_MOVEMENT": ""
+          "ZTYPE_MOVEMENT": "Auction item"
         }
       })
       this.getView().setBindingContext(oParameterContext);
     },
-    onAfterRendering: function () {
-      const oModel = this.getView().getModel();
-      oModel.create("/HEADSet", {
-        "DistrChan": "10",
-        "Division": "00",
-        "DlvType": "LO",
-        "Salesorg": "1310",
-        "ShipPoint": "1310",
-        "ShipTo": "0001000155",
-        "ZTYPE_MOVEMENT": "1234567",
-        "ZGM3_CONTACT": "1234567",
-        "ZGM3_TELEPHONE": "1234567",
-        "NP_ASH2DLVTI": [{
-          "RefItem": "000010"
-        }],
-        "NP_ASH2DATES": [{
-          "Timetype": "WS GOODS ISSUE  LIKP"
-        }
-        ],
-        "NP_ASH2RETURN": [{}]
+    // onAfterRendering: function () {
+    //   const oModel = this.getView().getModel();
+    //   oModel.create("/HEADSet", {
+    //     "DistrChan": "10",
+    //     "Division": "00",
+    //     "DlvType": "LO",
+    //     "Salesorg": "1310",
+    //     "ShipPoint": "1310",
+    //     "ShipTo": "0001000155",
+    //     "ZTYPE_MOVEMENT": "1234567",
+    //     "ZGM3_CONTACT": "1234567",
+    //     "ZGM3_TELEPHONE": "1234567",
+    //     "NP_ASH2DLVTI": [{
+    //       "RefItem": "000010"
+    //     }],
+    //     "NP_ASH2DATES": [{
+    //       "Timetype": "WS GOODS ISSUE  LIKP"
+    //     }
+    //     ],
+    //     "NP_ASH2RETURN": [{}]
 
-      }, {
-        success: function (data) {
-          console.log('HeaderData:', data);
-        }.bind(this),
-        error: function (oError) {
-          console.error("Request failed", oError);
-        }
-      });
-    },
-    onDisplayNotFound: function () {
-      this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
-    },
+    //   }, {
+    //     success: function (data) {
+    //       console.log('HeaderData:', data);
+    //     }.bind(this),
+    //     error: function (oError) {
+    //       console.error("Request failed", oError);
+    //     }
+    //   });
+    // },
+    // onDisplayNotFound: function () {
+    //   this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
+    // },
     handleNavigate: function (evt) {
       const navCon = this.byId("navCon");
       const target = evt.getSource().data("target");
@@ -387,6 +393,7 @@ sap.ui.define([
       if (allEmptyFields.length === 0) {
         const oModel = this.getView().getModel();
         const submitData = oSubmitModel.getData();
+        debugger
   
         // 构建提交数据
         const oData = {
@@ -396,9 +403,16 @@ sap.ui.define([
           "Salesorg": " ",
           "ShipPoint": "AU99",
           "ShipTo": submitData.VendorNumber,
-          // "ZTYPE_MOVEMENT": submitData.ZTYPE_MOVEMENT || "",
-          // "ZGM3_CONTACT": submitData.ZGM3_CONTACT || "",
-          // "ZGM3_TELEPHONE": submitData.ZGM3_TELEPHONE || "",
+          "ZTYPE_MOVEMENT": submitData.ZTYPE_MOVEMENT,
+          "ZGM3_CONTACT": submitData.ZGM3_CONTACT,
+          "ZGM3_TELEPHONE": submitData.ZGM3_TELEPHONE,
+          "ZGM3_FAX": submitData.ZGM3_FAX,
+          "ZGM3_EMAIL": submitData.ZGM3_EMAIL,
+          "ZVENDOR_CONTACT": submitData.ZVENDOR_CONTACT,
+          "ZVENDOR_FAX": submitData.ZVENDOR_FAX,
+          "ZVENDOR_EMAIL": submitData.ZVENDOR_EMAIL,
+          "ZFREIGHT_CHARGED_TO": submitData.ZFREIGHT_CHARGED_TO,
+          "ZFREIGHT_METHOD": submitData.ZFREIGHT_METHOD,
           "ZTHIRD_PARTY": submitData.ThirdParty,
           "ZVENDOR_RETREF": submitData.Vendor_Return_Reference,
           "ZSENDER_NAME": submitData.SenderName,
@@ -406,6 +420,10 @@ sap.ui.define([
           "ZMSDS_ATTACHED": submitData.MSDS_Attached,
           "ZCARRIER_NAME": submitData.ZCARRIER_CONSIGN,
           "ZCUSTOM_LETTER": submitData.CustomsLetterAttached,
+          "ZDANGEROUS_GOODS": submitData.ZDANGEROUS_GOODS,
+          "ZSTORED_ENERGY": submitData.ZSTORED_ENERGY,
+          "ZSPEC_INST": submitData.ZSPEC_INST,
+          "ZCARRIER_CONSIGN": submitData.ZCARRIER_CONSIGN,
           "NP_ASH2DLVTI": submitData.NP_ASH2DLVTI.map(item => ({
             "ZDOC_NO": item.PurchaseOrderNo,
             "ZDOC_ITEM": item.POItemNo,
@@ -445,7 +463,8 @@ sap.ui.define([
                     console.log('OK');
                     // 重置表单数据
                     oSubmitModel.setData({
-                      ZTYPE_MOVEMENT: '',
+                      // 第一屏数据开始
+                      ZTYPE_MOVEMENT: 'Auction item',
                       Plant: "",
                       VendorNumber: "",
                       VendorName: "",
@@ -463,7 +482,6 @@ sap.ui.define([
                       VendorAddress1: "",
                       VendorAddress2: "",
                       VendorAddress3: "",
-                      VendorAddress4: "",
                       ZGM3_CONTACT: "",
                       ZGM3_TELEPHONE: "",
                       ZGM3_FAX: "",
@@ -478,10 +496,23 @@ sap.ui.define([
                       ZVENDOR_FAX: "",
                       ZVENDOR_EMAIL: "",
                       ZCARRIER_CONSIGN: "",
+                      ZCARRIER_CONSIGN: "",
+                      CustomsLetterAttached:"N",
+                      MSDS_Attached:"N",
+                      ZTHIRD_PARTY: "",
+                      ZVENDOR_RETREF: "",
+                      ZSENDER_NAME: "",
+                      ZWEIGHT: "",
+                      ZMSDS_ATTACHED: "",
+                      ZCARRIER_NAME: "",
+                      // 表格数据
                       NP_ASH2DLVTI: [],
+                      // 日期数据
                       NP_ASH2DATES: [{
-                        Timetype: "WS GOODS ISSUE  LIKP"
+                        Timetype: "WS GOODS ISSUE  LIKP",
+                        TimestampUtc: Math.floor(new Date().getTime() / 1000)
                       }],
+                      // 退货数据
                       NP_ASH2RETURN: [{}]
                     });
   
