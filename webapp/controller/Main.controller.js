@@ -393,7 +393,6 @@ sap.ui.define([
       if (allEmptyFields.length === 0) {
         const oModel = this.getView().getModel();
         const submitData = oSubmitModel.getData();
-        debugger
   
         // 构建提交数据
         const oData = {

@@ -3,9 +3,6 @@
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:form="sap.ui.layout.form"
-    xmlns:smartForm="sap.ui.comp.smartform"
-    xmlns:smartField="sap.ui.comp.smartfield"
-    xmlns:l="sap.ui.layout"
     controllerName="ui5.ogarpt.controller.formSections.SectionC"
 >
     <!-- 顶部区域 -->
@@ -16,16 +13,10 @@
         <form:layout>
             <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout2"
                 labelSpanXL="4"
-                labelSpanL="4"
                 labelSpanM="4"
-                labelSpanS="12"
                 adjustLabelSpan="false"
                 emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
                 columnsXL="2"
-                columnsL="2"
                 columnsM="3"
                 singleContainerFullSize="false"
             />
@@ -88,16 +79,10 @@
         <form:layout>
             <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout"
                 labelSpanXL="4"
-                labelSpanL="4"
                 labelSpanM="4"
-                labelSpanS="12"
                 adjustLabelSpan="false"
                 emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
                 columnsXL="2"
-                columnsL="2"
                 columnsM="2"
                 singleContainerFullSize="false"
             />
@@ -111,7 +96,7 @@
                              <Input 
                                 id="vendorNumberInput2" 
                                 value="{submitData>/VendorNumber}" 
-                                enabled="true"
+                                
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -121,22 +106,22 @@
                     </form:FormElement>
                     <form:FormElement id="formElementVendorName" label="Vendor Name">
                         <form:fields>
-                            <Input id="vendorName" value="{submitData>/VendorName}" enabled="true" />
+                            <Input id="vendorName" value="{submitData>/VendorName}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementVendorAddr1" label="Vendor Address Line 1">
                         <form:fields>
-                            <Input id="vendorAddr1" value="{submitData>/VendorAddress1}" enabled="true" />
+                            <Input id="vendorAddr1" value="{submitData>/VendorAddress1}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementVendorAddr2" label="Vendor Address Line 2">
                         <form:fields>
-                            <Input id="vendorAddr2" value="{submitData>/VendorAddress2}" enabled="true" />
+                            <Input id="vendorAddr2" value="{submitData>/VendorAddress2}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementVendorAddr3" label="Vendor Address Line 3">
                         <form:fields>
-                            <Input id="vendorAddr3" value="{submitData>/VendorAddress3}" enabled="true" />
+                            <Input id="vendorAddr3" value="{submitData>/VendorAddress3}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementContact" label="Contact">
@@ -176,7 +161,7 @@
                             <Input 
                                 id="plantInput1" 
                                 value="{submitData>/Plant}" 
-                                enabled="true"
+                                
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
                                 valueHelpOnly="true"
@@ -186,7 +171,7 @@
                     </form:FormElement>
                     <form:FormElement id="formElementPlantAddr1" label="Plant Address Line 1">
                         <form:fields>
-                            <Input id="plantAddr1" value="{submitData>/plantAddress1}" enabled="true" />
+                            <Input id="plantAddr1" value="{submitData>/plantAddress1}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementPlantAddr2" label="Plant Address Line 2">
@@ -196,37 +181,37 @@
                     </form:FormElement>
                     <form:FormElement id="formElementPlantAddr3" label="Plant Address Line 3">
                         <form:fields>
-                            <Input id="plantAddr3" value="{submitData>/plantAddress3}" enabled="true" />
+                            <Input id="plantAddr3" value="{submitData>/plantAddress3}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementPlantAddr4" label="Plant Address Line 4">
                         <form:fields>
-                            <Input id="plantAddr4" value="{submitData>/plantAddress4}" enabled="true" />
+                            <Input id="plantAddr4" value="{submitData>/plantAddress4}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementBhpContact" label="BHP Billiton Contact">
                         <form:fields>
-                            <Input id="bhpContact" value="{submitData>/ZGM3_CONTACT}" enabled="true" />
+                            <Input id="bhpContact" value="{submitData>/ZGM3_CONTACT}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementBhpTelephone" label="Telephone">
                         <form:fields>
-                            <Input id="bhpTelephone" value="{submitData>/ZGM3_TELEPHONE}" enabled="true" />
+                            <Input id="bhpTelephone" value="{submitData>/ZGM3_TELEPHONE}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementBhpFax"  label="Fax">
                         <form:fields>
-                            <Input id="bhpFax" value="{submitData>/ZGM3_FAX}" enabled="true" />
+                            <Input id="bhpFax" value="{submitData>/ZGM3_FAX}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementBhpEmail" label="Email">
                         <form:fields>
-                            <Input id="bhpEmail" value="{submitData>/ZGM3_EMAIL}" enabled="true" />
+                            <Input id="bhpEmail" value="{submitData>/ZGM3_EMAIL}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="_IDGenFormElement1" label="Carrier Consignment Note">
                         <form:fields>
-                            <Input id="_IDGenInput7" value="{submitData>/ZCARRIER_CONSIGN}" enabled="true" />
+                            <Input id="_IDGenInput7" value="{submitData>/ZCARRIER_CONSIGN}"  />
                         </form:fields>
                     </form:FormElement>
                 </form:formElements>
@@ -243,16 +228,10 @@
         <form:layout>
             <form:ResponsiveGridLayout id="otherDeatilLayout"
                 labelSpanXL="4"
-                labelSpanL="4"
                 labelSpanM="4"
-                labelSpanS="12"
                 adjustLabelSpan="false"
                 emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
                 columnsXL="2"
-                columnsL="2"
                 columnsM="2"
                 singleContainerFullSize="false"
             />
@@ -278,20 +257,19 @@
                     </form:FormElement>
                     <form:FormElement id="formElementThirdParty" label="Third Party">
                         <form:fields>
-                            <Input id="ThirdPartyInput" value="{submitData>/ThirdParty}" enabled="true" />
+                            <Input id="ThirdPartyInput" value="{submitData>/ThirdParty}" />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementSenderName" label="Sender's Name">
                         <form:fields>
-                            <Input id="SenderName" value="{submitData>/SenderName}" enabled="true" />
+                            <Input id="SenderName" value="{submitData>/SenderName}" />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementPurchasingDoc" label="Purchasing Doc">                     
                         <form:fields>
                             <Input 
                                 id="PurchasingDoc" 
-                                value="{submitData>/PurchasingDoc}" 
-                                enabled="false"
+                                value="{submitData>/PurchasingDoc}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
                                 valueHelpOnly="true"
@@ -367,7 +345,7 @@
                     </form:FormElement>
                     <form:FormElement id="formElementVrr" label="Vendor Return Reference">
                         <form:fields>
-                            <Input id="Vrr" value="{submitData>/Vendor_Return_Reference}" enabled="true" />
+                            <Input id="Vrr" value="{submitData>/Vendor_Return_Reference}"  />
                         </form:fields>
                     </form:FormElement>
                     <form:FormElement id="formElementWeight" label="Weight">

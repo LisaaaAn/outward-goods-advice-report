@@ -394,7 +394,6 @@ sap.ui.define([
                         })
                     ],
                     selectionChange: function(oEvent2) {
-                        debugger 
                         var selectItems = oEvent2.getParameter("listItem");
                         var selectCells = selectItems.getCells();
                         // oInput.setValue(selectCells[0].getText());
