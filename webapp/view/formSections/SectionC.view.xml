@@ -510,7 +510,7 @@
                                 id="PurchasingDoc"
                                 value="{submitData>/PurchasingDoc}"
                                 showValueHelp="true"
-                                valueHelpRequest=".onPurchaseValueHelpRequest"
+                                valueHelpRequest=".onPurchasingDocValueHelpRequest"
                                 valueHelpOnly="true"
                             />
                         </form:fields>
@@ -524,7 +524,7 @@
                                 id="MaterialDoc"
                                 value="{submitData>/MaterialDoc}"
                                 showValueHelp="true"
-                                valueHelpRequest=".onMaterialValueHelpRequest"
+                                valueHelpRequest=".onMaterialDocValueHelpRequest"
                                 valueHelpOnly="true"
                             />
                         </form:fields>
@@ -776,7 +776,7 @@
             >
                 <Text
                     id="_IDGenText"
-                    text="Sr. No"
+                    text="Item"
                 />
             </Column>
             <Column
@@ -885,7 +885,7 @@
                     id="purchaseOrderNoInput"
                     value="{items>PurchaseOrderNo}"
                     showValueHelp="true"
-                    valueHelpRequest=".onPurchaseValueHelpRequest"
+                    valueHelpRequest=".onPurchasingDocValueHelpRequest"
                     valueHelpOnly="true"
                     required="true"
                 /> -->

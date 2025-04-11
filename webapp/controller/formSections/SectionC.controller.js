@@ -6,8 +6,21 @@ sap.ui.define([
     "sap/m/Text",
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
-], function (JSONModel, Dialog, Button, Input, Text, Controller, Filter, FilterOperator) {
+    "sap/ui/model/FilterOperator",
+    "sap/m/Table",
+    "sap/m/Column"
+], function (
+    JSONModel,
+    Dialog,
+    Button,
+    Input,
+    Text,
+    Controller,
+    Filter,
+    FilterOperator,
+    Table,
+    Column
+) {
     "use strict";
     return Controller.extend("ui5.ogarpt.controller.formSections.SectionC", {
         onInit: function () {
@@ -232,9 +245,8 @@ sap.ui.define([
             // 打开对话框
             this._plantValueHelpDialog.open();
         },
-        onPurchaseValueHelpRequest: function (oEvent) {
+        onPurchasingDocValueHelpRequest: function () {
             const that = this;
-            const oInput = oEvent.getSource();
             const createTable = function () {
                 return new sap.m.Table({
                     mode: "SingleSelectMaster",
@@ -269,7 +281,8 @@ sap.ui.define([
                                     Quantity: oItem.Menge,
                                     Brgew: oItem.Brgew,
                                     Weight: weight,
-                                    MaterialNo: oItem.Matnr
+                                    MaterialNo: oItem.Matnr,
+                                    MaterialDesc: oItem.Txz01
                                 });
                             });
                         }
@@ -318,37 +331,24 @@ sap.ui.define([
             // 打开对话框
             this._purchaseValueHelpDialog.open();
         },
-        onMaterialValueHelpRequest: function (oEvent) {
+        onMaterialDocValueHelpRequest: function () {
             const that = this;
-            const oInput = oEvent.getSource();
 
             const createTable = function () {
-                return new sap.m.Table({
+                return new Table({
                     mode: "SingleSelectMaster",
                     items: {
                         path: "MaterialModel>/results",
                         template: new sap.m.ColumnListItem({
                             cells: [
-                                new sap.m.Text({ text: "{MaterialModel>Matnr}" }),
-                                // new sap.m.Text({text: "{MaterialModel>Maktx}"}),
-                                // new sap.m.Text({text: "{MaterialModel>Meins}"}),
-                                // new sap.m.Text({text: "{MaterialModel>Brgew}"})
+                                new sap.m.Text({ text: "{MaterialModel>Mblnr}" })
                             ]
                         })
                     },
                     columns: [
-                        new sap.m.Column({
-                            header: new Text({ text: "Material No" })
-                        }),
-                        // new sap.m.Column({
-                        //     header: new Text({ text: "Description" })
-                        // }),
-                        // new sap.m.Column({
-                        //     header: new Text({ text: "Base Unit" })
-                        // }),
-                        // new sap.m.Column({
-                        //     header: new Text({ text: "Weight Unit" })
-                        // })
+                        new Column({
+                            header: new Text({ text: "Material Doc No" })
+                        })
                     ],
                     selectionChange: function (oEvent2) {
                         const selectItems = oEvent2.getParameter("listItem");
@@ -368,7 +368,7 @@ sap.ui.define([
                                 });
                             });
                         }
-                        that.getView().getModel('submitData').setProperty('/MaterialDoc', oSelectedData.Matnr);
+                        that.getView().getModel('submitData').setProperty('/MaterialDoc', oSelectedData.Mblnr);
                         that._materialValueHelpDialog.close();
                     }
                 })
@@ -377,7 +377,7 @@ sap.ui.define([
             if (!this._materialValueHelpDialog) {
                 this._oTable = createTable();
                 this._materialValueHelpDialog = new Dialog({
-                    title: "Choose Material",
+                    title: "Choose Material Doc",
                     type: "Standard",
                     state: "None",
                     stretchOnPhone: true,
@@ -393,10 +393,10 @@ sap.ui.define([
                     ],
                     content: [
                         new Input({
-                            placeholder: "Enter Material No",
+                            placeholder: "Enter Material Doc No",
                             liveChange: function (oEvent) {
                                 const sValue = oEvent.getSource().getValue();
-                                this._filterMaterial(sValue);
+                                this._filterMaterialDoc(sValue);
                             }.bind(this)
                         }),
                         this._oTable
@@ -440,53 +440,54 @@ sap.ui.define([
         _filterPO: function (sValue) {
             const aFilter = [];
             if (sValue) {
-                aFilter.push(new Filter("Ebeln", FilterOperator.Contains, sValue))
+                aFilter.push(new Filter("Ebeln", FilterOperator.Contains, sValue));
             }
-            this._oTable.getBinding("items").filter(aFilter)
+            this._oTable.getBinding("items").filter(aFilter);
         },
-        _filterMaterial: function (sValue) {
+        _filterMaterialDoc: function (sValue) {
             const aFilter = [];
             if (sValue) {
-                aFilter.push(new Filter("Matnr", FilterOperator.Contains, sValue))
+                aFilter.push(new Filter("Mblnr", FilterOperator.Contains, sValue));
             }
-            this._oTable.getBinding("items").filter(aFilter)
+            this._oTable.getBinding("items").filter(aFilter);
         },
-
+        // _filterMaterial: function (sValue) {
+        //     const aFilter = [];
+        //     if (sValue) {
+        //         aFilter.push(new Filter("Matnr", FilterOperator.Contains, sValue))
+        //     }
+        //     this._oTable.getBinding("items").filter(aFilter)
+        // },
         handleAdd: function (oInitData = {}) {
             const oModel = this.getView().getModel('items');
-            const aData = oModel.getProperty("/results") || [];
-            let sNewNo = '10';
-            if (aData.length) {
-                const sLastNo = aData[aData.length - 1].Vbeln;
-                sNewNo = String(Number(sLastNo) + 10);
-            }
+            const aItemList = oModel.getProperty("/results") || [];
             const oNewRow = {
-                Vbeln: sNewNo,
+                Vbeln: "",
                 Quantity: "",
                 Unit: "",
-                PurchaseOrderNo: "",
-                POItemNo: "",
+                ZDOCUMENT_NO: "",
+                ZDOCUMENT_ITEM: "",
                 MaterialNo: "",
                 MaterialDesc: "",
                 Weight: "",
                 ...oInitData
             };
-
-            aData.push(oNewRow);
-            oModel.setProperty("/results", aData);
+            aItemList.push(oNewRow);
+            const aResultList = this._generateItemNo(aItemList);
+            oModel.setProperty("/results", aResultList);
             const oSubmitModel = this.getView().getModel("submitData");
-            oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+            oSubmitModel.setProperty("/NP_ASH2DLVTI", aResultList);
         },
         handleDelete: function () {
             const oModel = this.getView().getModel('items');
-            const oTable = this.byId("EditableTable");
-            const iIndex = oTable.getItems().indexOf(oTable.getSelectedItem())
-            const aData = oModel.getProperty("/results")
-            aData.splice(iIndex, 1);
-            oModel.setProperty("/results", aData);
-            // 同时更新submitModel中的NP_ASH2DLVTI
+            const aItemList = oModel.getProperty('/results');
+            const oTable = this.byId('EditableTable');
+            const iIndex = oTable.getItems().indexOf(oTable.getSelectedItem());
+            aItemList.splice(iIndex, 1);
+            const aResultList = this._generateItemNo(aItemList);
+            oModel.setProperty("/results", aResultList);
             const oSubmitModel = this.getView().getModel("submitData");
-            oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+            oSubmitModel.setProperty("/NP_ASH2DLVTI", aResultList);
         },
         onQuantityChange: function (oEvent) {
             var oInput = oEvent.getSource();
@@ -510,5 +511,8 @@ sap.ui.define([
         _computeWeight(quantity = 0, brgew = 0) {
             return (parseFloat(quantity) || 0) * (parseFloat(brgew) || 0);
         },
+        _generateItemNo(aList) {
+            return aList.map((oItem, iIndex) => ({ ...oItem, Vbeln: `${iIndex + 1}0` }));
+        }
     });
 });

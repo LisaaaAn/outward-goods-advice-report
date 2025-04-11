@@ -4,9 +4,14 @@ sap.ui.define([
   "sap/ui/model/json/JSONModel",
   "sap/m/MessageBox",
   "sap/m/MessageToast"
-], function (BaseController, ODataModel, JSONModel, MessageBox, MessageToast) {
+], function (
+  BaseController,
+  ODataModel,
+  JSONModel,
+  MessageBox,
+  MessageToast
+) {
   "use strict";
-
   const oInitSubmitData = {
     ZTYPE_MOVEMENT: "Auction item",
     Plant: "",
@@ -64,8 +69,10 @@ sap.ui.define([
     onInit: function () {
       const that = this;
 
+      // JSONModel
       this.getView().setModel(new JSONModel(oInitSubmitData), "submitData");
 
+      // oDataModel
       const oDataModel = new ODataModel("/sap/opu/odata/sap/ZIM_OGA_SRV/");
 
       // 获取 Plant 数据
@@ -78,7 +85,7 @@ sap.ui.define([
         }
       });
 
-      //获取 Vendor 数据
+      // 获取 Vendor 数据
       oDataModel.read("/VENDORSet", {
         success: function (oData) {
           that.getView().setModel(new JSONModel(oData), "VendorModel");
@@ -88,10 +95,10 @@ sap.ui.define([
         }
       });
 
-      // 获取 Material 数据
-      oDataModel.read("/MATNRSet", {
+      // 获取 Material Doc 数据
+      oDataModel.read("/MaterialSet", {
         success: function (oData) {
-          const aResultList = that._groupList(oData?.results, 'Matnr');
+          const aResultList = that._groupList(oData?.results, 'Mblnr');
           that.getView().setModel(new JSONModel({ results: aResultList }), "MaterialModel");
         },
         error: function (oError) {
@@ -99,7 +106,7 @@ sap.ui.define([
         }
       });
 
-      // 获取 PO 数据
+      // 获取 Purchasing Doc 数据
       oDataModel.read("/PurNoDocSet", {
         success: function (oData) {
           const aResultList = that._groupList(oData?.results, 'Ebeln');
@@ -109,6 +116,18 @@ sap.ui.define([
           MessageToast.show("Failed to get PO Data:" + oError.message);
         }
       });
+
+      // 获取 Material 数据
+      // oDataModel.read("/MATNRSet", {
+      //   success: function (oData) {
+      //     debugger
+      //     const aResultList = that._groupList(oData?.results, 'Matnr');
+      //     that.getView().setModel(new JSONModel({ results: aResultList }), "MaterialModel");
+      //   },
+      //   error: function (oError) {
+      //     MessageToast.show("Failed to get Material Data:" + oError.message);
+      //   }
+      // });
     },
 
     onBeforeRendering: function () {
@@ -171,7 +190,7 @@ sap.ui.define([
     },
     handleSubmit: function () {
       const that = this;
-      debugger
+
       // 获取所有表单的必填字段
       const aFormIds = ['headerForm', 'mainForm', 'otherDetailForm'];
       let aEmptyFields = [];
@@ -203,16 +222,13 @@ sap.ui.define([
 
       // 验证表格数据
       const oSubmitModel = this.getView().getModel("submitData");
-      const tableData = oSubmitModel.getProperty("/NP_ASH2DLVTI") || [];
+      const aTableData = oSubmitModel.getProperty("/NP_ASH2DLVTI") || [];
 
-      if (tableData.length === 0) {
+      if (aTableData.length === 0) {
         aEmptyFields.push("The table data cannot be left blank");
       } else {
-        tableData.forEach((item, index) => {
+        aTableData.forEach((item, index) => {
           // 检查必填字段
-          if (!item.ZDOCUMENT_NO) {
-            aEmptyFields.push(`Line${index + 1}: Document No`);
-          }
           if (!item.Quantity || (item.Quantity && Number(item.Quantity) === 0)) {
             aEmptyFields.push(`Line${index + 1}: Quantity`);
           }
@@ -288,7 +304,6 @@ sap.ui.define([
                 actions: MessageBox.Action.OK,
                 onClose: function (action) {
                   if (action === MessageBox.Action.OK) {
-                    debugger
                     // 重置表单数据
                     oSubmitModel.setData(oInitSubmitData);
                     // 回到第一页
