@@ -5,28 +5,21 @@
     xmlns:form="sap.ui.layout.form"
     xmlns:smartForm="sap.ui.comp.smartform"
     xmlns:smartField="sap.ui.comp.smartfield"
-    xmlns:smartTable="sap.ui.comp.smarttable"
-    xmlns:l="sap.ui.layout"
-    xmlns:m="sap.m"
     controllerName="ui5.ogarpt.controller.formSections.SectionA"
 >
     <form:Form
         id="_IDGenForm"
         editable="true"
-        class="sapUiSmallMarginBottom">
+        class="sapUiSmallMarginBottom"
+    >
         <form:layout>
-            <form:ResponsiveGridLayout id="_IDGenResponsiveGridLayout1"
+            <form:ResponsiveGridLayout
+                id="_IDGenResponsiveGridLayout1"
                 labelSpanXL="4"
-                labelSpanL="4"
                 labelSpanM="4"
-                labelSpanS="12"
                 adjustLabelSpan="false"
                 emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
                 columnsXL="2"
-                columnsL="2"
                 columnsM="3"
                 singleContainerFullSize="false"
             />
@@ -34,41 +27,124 @@
         <form:formContainers>
             <form:FormContainer id="_IDGenFormContainer4">
                 <form:formElements>
-                   <form:FormElement id="_IDGenFormElement2" label="Type Of Movement">
+                    <form:FormElement
+                        id="_IDGenFormElement2"
+                        label="Type Of Movement"
+                    >
                         <form:fields>
                             <Select
-                                        id="_IDGenSelect"
-                                        selectedKey="{submitData>/ZTYPE_MOVEMENT}"
-                                        change=".onTypeMovementChange"
-                                        required="true">
+                                id="_IDGenSelect"
+                                selectedKey="{submitData>/ZTYPE_MOVEMENT}"
+                                change=".onTypeMovementChange"
+                                required="true"
+                            >
                                 <items>
-                                    <core:Item id="item1" text="Auction item" key="Auction item"/>
-                                    <core:Item id="item2" text="Cash Sale Record Number" key="CASH_SALE"/>
-                                    <core:Item id="item3" text="Credit – Do Not Replace" key="CREDIT_NO_REPLACE"/>
-                                    <core:Item id="item4" text="On Load" key="ON_LOAD"/>
-                                    <core:Item id="item5" text="Other – Free Text" key="OTHER_FREE_TEXT"/>
-                                    <core:Item id="item6" text="Over Supplied – Return for Credit" key="OVER_SUPPLIED"/>
-                                    <core:Item id="item7" text="Parts Exchange – Service Exchange" key="PARTS_EXCHANGE"/>
-                                    <core:Item id="item8" text="Property Returned" key="PROPERTY_RETURNED"/>
-                                    <core:Item id="item9" text="Refill and Return" key="REFILL_RETURN"/>
-                                    <core:Item id="item10" text="Remanufactured Part Returned" key="REMANUFACTURED"/>
-                                    <core:Item id="item11" text="Repair and Return" key="REPAIR_RETURN"/>
-                                    <core:Item id="item12" text="Replace with Items as Ordered" key="REPLACE_ORDERED"/>
-                                    <core:Item id="item13" text="Return to Vendor" key="RETURN_VENDOR"/>
-                                    <core:Item id="item14" text="Return for Exchange" key="RETURN_EXCHANGE"/>
-                                    <core:Item id="item15" text="Scrap" key="SCRAP"/>
-                                    <core:Item id="item16" text="Stock Transfer with a material document number" key="STOCK_TRANSFER_DOC"/>
-                                    <core:Item id="item17" text="Stock Transfer with no material document number" key="STOCK_TRANSFER_NO_DOC"/>
-                                    <core:Item id="item18" text="Warranty" key="WARRANTY"/>
-                                    <core:Item id="item19" text="Waste Removal" key="WASTE_REMOVAL"/>
+                                    <core:Item
+                                        id="item1"
+                                        text="Auction item"
+                                        key="Auction item"
+                                    />
+                                    <core:Item
+                                        id="item2"
+                                        text="Cash Sale Record Number"
+                                        key="CASH_SALE"
+                                    />
+                                    <core:Item
+                                        id="item3"
+                                        text="Credit – Do Not Replace"
+                                        key="CREDIT_NO_REPLACE"
+                                    />
+                                    <core:Item
+                                        id="item4"
+                                        text="On Load"
+                                        key="ON_LOAD"
+                                    />
+                                    <core:Item
+                                        id="item5"
+                                        text="Other – Free Text"
+                                        key="OTHER_FREE_TEXT"
+                                    />
+                                    <core:Item
+                                        id="item6"
+                                        text="Over Supplied – Return for Credit"
+                                        key="OVER_SUPPLIED"
+                                    />
+                                    <core:Item
+                                        id="item7"
+                                        text="Parts Exchange – Service Exchange"
+                                        key="PARTS_EXCHANGE"
+                                    />
+                                    <core:Item
+                                        id="item8"
+                                        text="Property Returned"
+                                        key="PROPERTY_RETURNED"
+                                    />
+                                    <core:Item
+                                        id="item9"
+                                        text="Refill and Return"
+                                        key="REFILL_RETURN"
+                                    />
+                                    <core:Item
+                                        id="item10"
+                                        text="Remanufactured Part Returned"
+                                        key="REMANUFACTURED"
+                                    />
+                                    <core:Item
+                                        id="item11"
+                                        text="Repair and Return"
+                                        key="REPAIR_RETURN"
+                                    />
+                                    <core:Item
+                                        id="item12"
+                                        text="Replace with Items as Ordered"
+                                        key="REPLACE_ORDERED"
+                                    />
+                                    <core:Item
+                                        id="item13"
+                                        text="Return to Vendor"
+                                        key="RETURN_VENDOR"
+                                    />
+                                    <core:Item
+                                        id="item14"
+                                        text="Return for Exchange"
+                                        key="RETURN_EXCHANGE"
+                                    />
+                                    <core:Item
+                                        id="item15"
+                                        text="Scrap"
+                                        key="SCRAP"
+                                    />
+                                    <core:Item
+                                        id="item16"
+                                        text="Stock Transfer with a material document number"
+                                        key="STOCK_TRANSFER_DOC"
+                                    />
+                                    <core:Item
+                                        id="item17"
+                                        text="Stock Transfer with no material document number"
+                                        key="STOCK_TRANSFER_NO_DOC"
+                                    />
+                                    <core:Item
+                                        id="item18"
+                                        text="Warranty"
+                                        key="WARRANTY"
+                                    />
+                                    <core:Item
+                                        id="item19"
+                                        text="Waste Removal"
+                                        key="WASTE_REMOVAL"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement3" label="Vendor Number">
+                    <form:FormElement
+                        id="_IDGenFormElement3"
+                        label="Vendor Number"
+                    >
                         <form:fields>
-                             <Input 
-                                id="vendorNumberInput" 
+                            <Input
+                                id="vendorNumberInput"
                                 value="{submitData>/VendorNumber}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onValueHelpRequest"
@@ -77,21 +153,37 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement4" label="Freight Charged To">
+                    <form:FormElement
+                        id="_IDGenFormElement4"
+                        label="Freight Charged To"
+                    >
                         <form:fields>
                             <Select
                                 id="freightChargedToSelect"
                                 selectedKey="{submitData>/ZFREIGHT_CHARGED_TO}"
-                                required="true">
+                                required="true"
+                            >
                                 <items>
-                                    <core:Item id="sender" text="Sender" key="SENDER"/>
-                                    <core:Item id="receiver" text="Receiver" key="RECEIVER"/>
-                                    <core:Item id="ThirdParty" text="Third Party" key="ThirdParty"/>
+                                    <core:Item
+                                        id="sender"
+                                        text="Sender"
+                                        key="SENDER"
+                                    />
+                                    <core:Item
+                                        id="receiver"
+                                        text="Receiver"
+                                        key="RECEIVER"
+                                    />
+                                    <core:Item
+                                        id="ThirdParty"
+                                        text="Third Party"
+                                        key="ThirdParty"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement5" label="Purchasing Doc">
+                    <!-- <form:FormElement id="_IDGenFormElement5" label="Purchasing Doc">
                         <form:fields>
                             <Input 
                                 id="purchasingDocInput" 
@@ -114,8 +206,11 @@
                                 valueHelpOnly="true"
                             />
                         </form:fields>
-                    </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement06" label="Mat.Doc.year">
+                    </form:FormElement> -->
+                    <form:FormElement
+                        id="_IDGenFormElement06"
+                        label="Mat.Doc.year"
+                    >
                         <form:fields>
                             <Input
                                 id="MatDocYear"
@@ -124,16 +219,26 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement7" label="Stored Energy">
+                    <form:FormElement
+                        id="_IDGenFormElement7"
+                        label="Stored Energy"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="storedEnergyRadioGroup"
                                 selectedIndex="{= ${submitData>/ZSTORED_ENERGY} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onStoredEnergyChange">
+                                select=".onStoredEnergyChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="rbStoredEnergyYes" text="Yes" />
-                                    <RadioButton id="rbStoredEnergyNo" text="No" />
+                                    <RadioButton
+                                        id="rbStoredEnergyYes"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="rbStoredEnergyNo"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
@@ -142,10 +247,13 @@
             </form:FormContainer>
             <form:FormContainer id="_IDGenFormContainer5">
                 <form:formElements>
-                    <form:FormElement id="_IDGenFormElement" label="Plant">
+                    <form:FormElement
+                        id="_IDGenFormElement"
+                        label="Plant"
+                    >
                         <form:fields>
-                            <Input 
-                                id="plantInput" 
+                            <Input
+                                id="plantInput"
                                 value="{submitData>/Plant}"
                                 showValueHelp="true"
                                 valueHelpRequest=".onPlantValueHelpRequest"
@@ -154,31 +262,58 @@
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="vendorNameFormElement" label="Vendor Name">
+                    <form:FormElement
+                        id="vendorNameFormElement"
+                        label="Vendor Name"
+                    >
                         <form:fields>
-                            <Input 
-                                id="vendorNameInput" 
-                                value="{submitData>/VendorName}" 
+                            <Input
+                                id="vendorNameInput"
+                                value="{submitData>/VendorName}"
                                 enabled="true"
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="freightMethodFormElement" label="Freight Method">
+                    <form:FormElement
+                        id="freightMethodFormElement"
+                        label="Freight Method"
+                    >
                         <form:fields>
                             <Select
                                 id="freightMethodInput"
-                                selectedKey="{submitData>/ZFREIGHT_METHOD}">
+                                selectedKey="{submitData>/ZFREIGHT_METHOD}"
+                            >
                                 <items>
-                                    <core:Item id="AirFreight" text="Air Freight" key="AirFreight"/>
-                                    <core:Item id="Rail" text="Rail" key="Rail"/>
-                                    <core:Item id="RoadExpress" text="Road Express" key="RoadExpress"/>
-                                    <core:Item id="RoadGeneral" text="Road General" key="RoadGeneral"/>
-                                    <core:Item id="Ship" text="Ship" key="SHIP"/>
+                                    <core:Item
+                                        id="AirFreight"
+                                        text="Air Freight"
+                                        key="AirFreight"
+                                    />
+                                    <core:Item
+                                        id="Rail"
+                                        text="Rail"
+                                        key="Rail"
+                                    />
+                                    <core:Item
+                                        id="RoadExpress"
+                                        text="Road Express"
+                                        key="RoadExpress"
+                                    />
+                                    <core:Item
+                                        id="RoadGeneral"
+                                        text="Road General"
+                                        key="RoadGeneral"
+                                    />
+                                    <core:Item
+                                        id="Ship"
+                                        text="Ship"
+                                        key="SHIP"
+                                    />
                                 </items>
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="poItemNoFormElement" label="PO Item No">
+                    <!-- <form:FormElement id="poItemNoFormElement" label="PO Item No">
                         <form:fields>
                             <Select
                                 id="poItemNoInput"
@@ -201,26 +336,39 @@
                                 </items>
                             </Select>
                         </form:fields>
-                    </form:FormElement>
-                    <form:FormElement id="dateFormElement" label="Date">
+                    </form:FormElement> -->
+                    <form:FormElement
+                        id="dateFormElement"
+                        label="Date"
+                    >
                         <form:fields>
-                            <Input 
-                                id="dateInput" 
-                                value="{submitData>/Date}" 
+                            <Input
+                                id="dateInput"
+                                value="{submitData>/Date}"
                                 enabled="false"
                             />
                         </form:fields>
                     </form:FormElement>
-                    <form:FormElement id="dangerousGoods" label="Dangerous Goods">
+                    <form:FormElement
+                        id="dangerousGoods"
+                        label="Dangerous Goods"
+                    >
                         <form:fields>
                             <RadioButtonGroup
                                 id="DangerousGoodsRadioGroup"
                                 selectedIndex="{= ${submitData>/ZDANGEROUS_GOODS} === 'Y' ? 0 : 1 }"
                                 columns="2"
-                                select=".onDangerousGoodsChange">
+                                select=".onDangerousGoodsChange"
+                            >
                                 <buttons>
-                                    <RadioButton id="dangerousGoodsGroupYes" text="Yes" />
-                                    <RadioButton id="dangerousGoodsGroupNo" text="No" />
+                                    <RadioButton
+                                        id="dangerousGoodsGroupYes"
+                                        text="Yes"
+                                    />
+                                    <RadioButton
+                                        id="dangerousGoodsGroupNo"
+                                        text="No"
+                                    />
                                 </buttons>
                             </RadioButtonGroup>
                         </form:fields>
@@ -229,11 +377,4 @@
             </form:FormContainer>
         </form:formContainers>
     </form:Form>
-        <!-- <smartForm:GroupElement id="_IDGenGroupElement5" >
-            <smartField:SmartField id="_IDGenSmartField5" value="{ZGM3_CONTACT}">
-                <smartField:configuration>
-							<smartField:Configuration id="_IDGenConfiguration" controlType="dropDownList"/>
-						</smartField:configuration>
-            </smartField:SmartField>
-        </smartForm:GroupElement> -->  
 </mvc:View>
