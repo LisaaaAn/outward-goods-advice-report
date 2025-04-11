@@ -16,15 +16,7 @@ sap.ui.define([
     "use strict";
     return Controller.extend("ui5.ogarpt.controller.formSections.SectionC", {
         onInit:function(){
-            var that = this
-            setTimeout(function() {
-                console.log(that.getView().getModel('plantModel'));
-            }, 2000)
-            
-            // 初始化items模型
-            var oItemsModel = new JSONModel({
-                results: []
-            });
+            const oItemsModel = new JSONModel({ results: [] });
             this.getView().setModel(oItemsModel, "items");
         },
 
@@ -52,7 +44,6 @@ sap.ui.define([
             // 将 0/1 转换为 "Y"/"N"
             oModel.setProperty("/CustomsLetterAttached", selectedIndex === 0 ? "Y" : "N");
         },
-
         onValueHelpRequest: function (oEvent) {
             const oInput = oEvent.getSource();
             var that = this;
@@ -237,8 +228,7 @@ sap.ui.define([
                                 this._filterPlants(sValue);
                             }.bind(this)
                         }),
-                        this._oTable
-                        
+                        this._oTable 
                     ]
                 });
                 this.getView().addDependent(this._plantValueHelpDialog);
@@ -248,22 +238,16 @@ sap.ui.define([
             this._plantValueHelpDialog.open();
         },
         onPurchaseValueHelpRequest: function (oEvent) {
+            const that = this;
             const oInput = oEvent.getSource();
-            var that = this;
-             // 获取当前行并选中它
-             const oTable = this.byId("EditableTable");
-             const oRow = oInput.getParent();
-             if (oRow) {
-                 oTable.setSelectedItem(oRow);
-             }
-            const createTable = function() {
+            const createTable = function () {
                 return new sap.m.Table({
                     mode: "SingleSelectMaster",
                     items: {
                         path: "PurchaseModel>/results",
                         template: new sap.m.ColumnListItem({
                             cells: [
-                                new sap.m.Text({text: "{PurchaseModel>Ebeln}"})
+                                new sap.m.Text({ text: "{PurchaseModel>Ebeln}" })
                                 // new sap.m.Text({text: "{PurchaseModel>Ebelp}"})
                             ]
                         })
@@ -276,22 +260,30 @@ sap.ui.define([
                         //     header: new Text({ text: "PO Item No" })
                         // })
                     ],
-                    selectionChange: function(oEvent2) {
-                        var selectItems = oEvent2.getParameter("listItem");
-                        var selectCells = selectItems.getCells();
-                        // oInput.setValue(selectCells[0].getText());
-                        // 获取选中的物料数据并设置相关信息
+                    selectionChange: function (oEvent2) {
+                        const selectItems = oEvent2.getParameter("listItem");
                         const oContext = selectItems.getBindingContext("PurchaseModel");
-                        const oItemsModel = that.getView().getModel("items");
-                        const oTable = that.byId("EditableTable");
-                        const oSelectedItem = oTable.getSelectedItem();
-
-                        if (oSelectedItem) {
-                            const sPath = oSelectedItem.getBindingContext("items").getPath();
-                            const PurchaseOrderNo = oContext.getProperty("Ebeln");
-                            oItemsModel.setProperty(sPath + "/PurchaseOrderNo", PurchaseOrderNo);
+                        const oSelectedData = oContext.getObject();
+                        if (oSelectedData && oSelectedData.items) {
+                            (oSelectedData.items || []).forEach(oItem => {
+                                const weight = that._computeWeight(oItem.Menge, oItem.Brgew);
+                                that.handleAdd({
+                                    ZDOCUMENT_NO: oItem.Ebeln,
+                                    ZDOCUMENT_ITEM: oItem.Ebelp,
+                                    Unit: oItem.Meins,
+                                    Quantity: oItem.Menge,
+                                    Brgew: oItem.Brgew,
+                                    Weight: weight,
+                                    MaterialNo: oItem.Matnr
+                                });
+                            });
                         }
-
+                        setTimeout(() => {
+                            const aItemList = that.getView().getModel('submitData').getProperty('/NP_ASH2DLVTI');
+                            const nTotalWeight = aItemList.reduce((sum, item) => sum + Number(item.Weight || 0), 0);
+                            that.getView().getModel('submitData').setProperty('/Weight', nTotalWeight );
+                        }, 800)
+                        that.getView().getModel('submitData').setProperty('/PurchasingDoc', oSelectedData.Ebeln);
                         that._purchaseValueHelpDialog.close();
                     }
                 })
@@ -300,38 +292,39 @@ sap.ui.define([
             if (!this._purchaseValueHelpDialog) {
                 this._oTable = createTable();
                 this._purchaseValueHelpDialog = new Dialog({
-                    title: "Choose Purchase Order No",
+                    title: "Choose Purchasing Doc",
                     type: "Standard",
                     state: "None",
                     stretchOnPhone: true,
                     contentWidth: "600px",
                     contentHeight: "400px",
                     buttons: [
-                        new Button({
-                            text: "Confirm",
-                            press: function () {
-                                const oTable = this._purchaseValueHelpDialog.getContent()[1];
-                                const oSelectedItem = oTable.getSelectedItem();
-                                if (oSelectedItem) {
-                                    const oContext = oSelectedItem.getBindingContext("PurchaseModel");
-                                    const sValue = oContext.getProperty("Ebeln");
-                                    oInput.setValue(sValue);
-                                    
-                                    // 获取当前表格的选中行
-                                    const oItemsTable = that.byId("EditableTable");
-                                    const oItemsSelectedItem = oItemsTable.getSelectedItem();
-                                    if (oItemsSelectedItem) {
-                                        const oItemsModel = that.getView().getModel("items");
-                                        
-                                        // 同时更新submitModel中的NP_ASH2DLVTI
-                                        const oSubmitModel = that.getView().getModel("submitData");
-                                        const aData = oItemsModel.getProperty("/results");
-                                        oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
-                                    }
-                                }
-                                this._purchaseValueHelpDialog.close();
-                            }.bind(this)
-                        }),
+                        // new Button({
+                        //     text: "Confirm",
+                        //     press: function () {
+                        //         debugger
+                        //         const oTable = this._purchaseValueHelpDialog.getContent()[1];
+                        //         const oSelectedItem = oTable.getSelectedItem();
+                        //         if (oSelectedItem) {
+                        //             // const oContext = oSelectedItem.getBindingContext("PurchaseModel");
+                        //             // const sValue = oContext.getProperty("Ebeln");
+                        //             // oInput.setValue(sValue);
+
+                        //             // // 获取当前表格的选中行
+                        //             // const oItemsTable = that.byId("EditableTable");
+                        //             // const oItemsSelectedItem = oItemsTable.getSelectedItem();
+                        //             // if (oItemsSelectedItem) {
+                        //             //     const oItemsModel = that.getView().getModel("items");
+
+                        //             //     // 同时更新submitModel中的NP_ASH2DLVTI
+                        //             //     const oSubmitModel = that.getView().getModel("submitData");
+                        //             //     const aData = oItemsModel.getProperty("/results");
+                        //             //     oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+                        //             // }
+                        //         }
+                        //         this._purchaseValueHelpDialog.close();
+                        //     }.bind(this)
+                        // }),
                         new Button({
                             text: "Cancel",
                             press: function () {
@@ -357,14 +350,9 @@ sap.ui.define([
             this._purchaseValueHelpDialog.open();
         },
         onMaterialValueHelpRequest: function (oEvent) {
+            const that = this;
             const oInput = oEvent.getSource();
-            var that = this;
-             // 获取当前行并选中它
-             const oTable = this.byId("EditableTable");
-             const oRow = oInput.getParent();
-             if (oRow) {
-                 oTable.setSelectedItem(oRow);
-             }
+
             const createTable = function() {
                 return new sap.m.Table({
                     mode: "SingleSelectMaster",
@@ -373,9 +361,9 @@ sap.ui.define([
                         template: new sap.m.ColumnListItem({
                             cells: [
                                 new sap.m.Text({text: "{MaterialModel>Matnr}"}),
-                                new sap.m.Text({text: "{MaterialModel>Maktx}"}),
-                                new sap.m.Text({text: "{MaterialModel>Meins}"}),
-                                new sap.m.Text({text: "{MaterialModel>Brgew}"})
+                                // new sap.m.Text({text: "{MaterialModel>Maktx}"}),
+                                // new sap.m.Text({text: "{MaterialModel>Meins}"}),
+                                // new sap.m.Text({text: "{MaterialModel>Brgew}"})
                             ]
                         })
                     },
@@ -383,46 +371,65 @@ sap.ui.define([
                         new sap.m.Column({
                             header: new Text({ text: "Material No" })
                         }),
-                        new sap.m.Column({
-                            header: new Text({ text: "Description" })
-                        }),
-                        new sap.m.Column({
-                            header: new Text({ text: "Base Unit" })
-                        }),
-                        new sap.m.Column({
-                            header: new Text({ text: "Weight Unit" })
-                        })
+                        // new sap.m.Column({
+                        //     header: new Text({ text: "Description" })
+                        // }),
+                        // new sap.m.Column({
+                        //     header: new Text({ text: "Base Unit" })
+                        // }),
+                        // new sap.m.Column({
+                        //     header: new Text({ text: "Weight Unit" })
+                        // })
                     ],
                     selectionChange: function(oEvent2) {
-                        var selectItems = oEvent2.getParameter("listItem");
-                        var selectCells = selectItems.getCells();
-                        // oInput.setValue(selectCells[0].getText());
-                        // 获取选中的物料数据并设置相关信息
+                        const selectItems = oEvent2.getParameter("listItem");
                         const oContext = selectItems.getBindingContext("MaterialModel");
-                        const oItemsModel = that.getView().getModel("items");
-                        const oTable = that.byId("EditableTable");
-                        const oSelectedItem = oTable.getSelectedItem();
-
-                        if (oSelectedItem) {
-                            const sPath = oSelectedItem.getBindingContext("items").getPath();
-                            const Matnr = oContext.getProperty("Matnr");
-                            oItemsModel.setProperty(sPath + "/MaterialNo", Matnr);
-                            const meins = oContext.getProperty("Meins");
-                            oItemsModel.setProperty(sPath + "/Unit", meins);                          
-                            const Brgew = oContext.getProperty("Brgew");
-                            oItemsModel.setProperty(sPath + "/Brgew2", Brgew);
+                        const oSelectedData = oContext.getObject();
+                        if (oSelectedData && oSelectedData.items) {
+                            (oSelectedData.items || []).forEach(oItem => {
+                                const weight = that._computeWeight(oItem.Menge, oItem.Brgew);
+                                that.handleAdd({
+                                    ZDOCUMENT_NO: oItem.Mblnr,
+                                    ZDOCUMENT_ITEM: oItem.Zeile,
+                                    Unit: oItem.Meins,
+                                    Quantity: oItem.Menge,
+                                    Brgew: oItem.Brgew,
+                                    Weight: weight,
+                                    MaterialNo: oItem.Matnr
+                                });
+                            });
                         }
-                        var aInput = oEvent.getSource();
-                        var oBindingContext = aInput.getBindingContext("items");
-                        var aPath = oBindingContext.getPath();
-                        var oData = oItemsModel.getProperty(aPath);
-                        // 获取数量值
-                        var quantity = parseFloat(oData.Quantity) || 0;
-                        var brgew = parseFloat(oData.Brgew2) || 0;
-                        // 计算重量
-                        var weight = quantity * brgew;
-                        // 更新重量字段
-                        oItemsModel.setProperty(aPath + "/Weight", weight);
+                        that.getView().getModel('submitData').setProperty('/MaterialDoc', oSelectedData.Matnr);
+                        
+                        // var selectItems = oEvent2.getParameter("listItem");
+                        // var selectCells = selectItems.getCells();
+                        // // oInput.setValue(selectCells[0].getText());
+                        // // 获取选中的物料数据并设置相关信息
+                        // const oContext = selectItems.getBindingContext("MaterialModel");
+                        // const oItemsModel = that.getView().getModel("items");
+                        // const oTable = that.byId("EditableTable");
+                        // const oSelectedItem = oTable.getSelectedItem();
+
+                        // if (oSelectedItem) {
+                        //     const sPath = oSelectedItem.getBindingContext("items").getPath();
+                        //     const Matnr = oContext.getProperty("Matnr");
+                        //     oItemsModel.setProperty(sPath + "/MaterialNo", Matnr);
+                        //     const meins = oContext.getProperty("Meins");
+                        //     oItemsModel.setProperty(sPath + "/Unit", meins);                          
+                        //     const Brgew = oContext.getProperty("Brgew");
+                        //     oItemsModel.setProperty(sPath + "/Brgew", Brgew);
+                        // }
+                        // var aInput = oEvent.getSource();
+                        // var oBindingContext = aInput.getBindingContext("items");
+                        // var aPath = oBindingContext.getPath();
+                        // var oData = oItemsModel.getProperty(aPath);
+                        // // 获取数量值
+                        // var quantity = parseFloat(oData.Quantity) || 0;
+                        // var brgew = parseFloat(oData.Brgew) || 0;
+                        // // 计算重量
+                        // var weight = quantity * brgew;
+                        // // 更新重量字段
+                        // oItemsModel.setProperty(aPath + "/Weight", weight);
                         that._materialValueHelpDialog.close();
                     }
                 })
@@ -438,41 +445,42 @@ sap.ui.define([
                     contentWidth: "600px",
                     contentHeight: "400px",
                     buttons: [
-                        new Button({
-                            text: "Confirm",
-                            press: function () {
-                                const oTable = this._materialValueHelpDialog.getContent()[1];
-                                const oSelectedItem = oTable.getSelectedItem();
-                                if (oSelectedItem) {
-                                    const oContext = oSelectedItem.getBindingContext("MaterialModel");
-                                    const sValue = oContext.getProperty("Matnr");
-                                    oInput.setValue(sValue);
+                        // new Button({
+                        //     text: "Confirm",
+                        //     press: function () {
+                        //         const oTable = this._materialValueHelpDialog.getContent()[1];
+                        //         const oSelectedItem = oTable.getSelectedItem();
+                        //         if (oSelectedItem) {
+                        //             debugger
+                        //             // const oContext = oSelectedItem.getBindingContext("MaterialModel");
+                        //             // const sValue = oContext.getProperty("Matnr");
+                        //             // oInput.setValue(sValue);
                                     
-                                    // 获取当前表格的选中行
-                                    const oItemsTable = that.byId("EditableTable");
-                                    const oItemsSelectedItem = oItemsTable.getSelectedItem();
-                                    if (oItemsSelectedItem) {
-                                        const oItemsModel = that.getView().getModel("items");
-                                        const sPath = oItemsSelectedItem.getBindingContext("items").getPath();
+                        //             // // 获取当前表格的选中行
+                        //             // const oItemsTable = that.byId("EditableTable");
+                        //             // const oItemsSelectedItem = oItemsTable.getSelectedItem();
+                        //             // if (oItemsSelectedItem) {
+                        //             //     const oItemsModel = that.getView().getModel("items");
+                        //             //     const sPath = oItemsSelectedItem.getBindingContext("items").getPath();
                                         
-                                        // 从MaterialModel中获取单位和描述
-                                        const brgew = oContext.getProperty("Brgew");
-                                        const meins = oContext.getProperty("Meins");
-                                        const maktx = oContext.getProperty("Maktx");
+                        //             //     // 从MaterialModel中获取单位和描述
+                        //             //     const brgew = oContext.getProperty("Brgew");
+                        //             //     const meins = oContext.getProperty("Meins");
+                        //             //     const maktx = oContext.getProperty("Maktx");
                                         
-                                        // 设置值到items模型
-                                        oItemsModel.setProperty(sPath + "/Unit", meins);
-                                        oItemsModel.setProperty(sPath + "/MaterialDesc", maktx);
+                        //             //     // 设置值到items模型
+                        //             //     oItemsModel.setProperty(sPath + "/Unit", meins);
+                        //             //     oItemsModel.setProperty(sPath + "/MaterialDesc", maktx);
                                         
-                                        // 同时更新submitModel中的NP_ASH2DLVTI
-                                        const oSubmitModel = that.getView().getModel("submitData");
-                                        const aData = oItemsModel.getProperty("/results");
-                                        oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
-                                    }
-                                }
-                                this._materialValueHelpDialog.close();
-                            }.bind(this)
-                        }),
+                        //             //     // 同时更新submitModel中的NP_ASH2DLVTI
+                        //             //     const oSubmitModel = that.getView().getModel("submitData");
+                        //             //     const aData = oItemsModel.getProperty("/results");
+                        //             //     oSubmitModel.setProperty("/NP_ASH2DLVTI", aData);
+                        //             // }
+                        //         }
+                        //         this._materialValueHelpDialog.close();
+                        //     }.bind(this)
+                        // }),
                         new Button({
                             text: "Cancel",
                             press: function () {
@@ -541,7 +549,7 @@ sap.ui.define([
             this._oTable.getBinding("items").filter(aFilter)
         },
 
-        handleAdd: function () {
+        handleAdd: function (oInitData = {}) {
             const oModel = this.getView().getModel('items');
             const aData = oModel.getProperty("/results") || [];
             let sNewNo = '10';
@@ -557,7 +565,8 @@ sap.ui.define([
                 POItemNo: "",
                 MaterialNo: "",
                 MaterialDesc: "",
-                Weight: ""
+                Weight: "",
+                ...oInitData
             };
 
             aData.push(oNewRow);
@@ -585,12 +594,25 @@ sap.ui.define([
             var oData = oModel.getProperty(sPath);
             // 获取数量值
             var quantity = parseFloat(oData.Quantity) || 0;
-            var brgew = parseFloat(oData.Brgew2) || 0;
-                        // 计算重量
-                        var weight = quantity * brgew;
-                        // 更新重量字段
-                        oModel.setProperty(sPath + "/Weight", weight);
-            
+            var brgew = parseFloat(oData.Brgew) || 0;
+            // 计算重量
+            var weight = quantity * brgew;
+            // 更新重量字段
+            oModel.setProperty(sPath + "/Weight", weight);
+        },
+        _computeWeight(quantity = 0, brgew = 0) {
+            return (parseFloat(quantity) || 0) * (parseFloat(brgew) || 0);
+        },
+        onWeightChange(oEvent) {
+            // const oInput = oEvent.getSource();
+            // const oBindingContext = oInput.getBindingContext("items");
+            // const sPath = oBindingContext.getPath();
+            // const oModel = this.getView().getModel("items");
+            // const oData = oModel.getProperty(sPath);
+
+            const aItemList = this.getView().getModel('submitData').getProperty('/NP_ASH2DLVTI');
+            const nTotalWeight = aItemList.reduce((sum, item) => sum + Number(item.Weight || 0), 0);
+            this.getView().getModel('submitData').setProperty('/Weight', nTotalWeight );
         }
     });
 });

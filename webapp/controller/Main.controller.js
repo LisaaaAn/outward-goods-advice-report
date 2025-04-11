@@ -7,7 +7,6 @@ sap.ui.define([
   "use strict";
 
   var submitData = {
-    // 第一屏数据开始
     ZTYPE_MOVEMENT: 'Auction item',
     Plant: "",
     VendorNumber: "",
@@ -58,10 +57,6 @@ sap.ui.define([
     }],
     // 退货数据
     NP_ASH2RETURN: [{}]
-
-    // 第一屏数据结束
-    // 第2屏数据开始
-    // 第3屏数据结束
   };
   return BaseController.extend("ui5.ogarpt.controller.Main", {
     onInit: function () {
@@ -74,60 +69,50 @@ sap.ui.define([
       // 测试获取工厂数据
       oPlantModel.read("/PLANTSet", {
         success: function (oData) {
-          console.log("成功获取工厂数据:", oData);
-
           that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "plantModel");
         },
         error: function (oError) {
-          console.error("获取工厂数据失败:", oError);
-          sap.m.MessageToast.show("获取工厂数据失败: " + oError.message);
+          sap.m.MessageToast.show("Failed to get Plant Data:" + oError.message);
         }
       });
       //获取供应商数据
       oPlantModel.read("/VENDORSet", {
         success: function (oData) {
-          console.log("成功获取GYS数据:", oData);
           that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "VendorModel");
         },
         error: function (oError) {
-          console.error("获取供应商数据失败:", oError);
-          sap.m.MessageToast.show("获取供应商数据失败: " + oError.message);
+          sap.m.MessageToast.show("Failed to get Vendor Data:" + oError.message);
         }
       });
-      //获取物料数据
+
+      // 获取物料数据
       oPlantModel.read("/MATNRSet", {
         success: function (oData) {
-          console.log("成功获取物料数据:", oData);
-          that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "MaterialModel");
+          const aResultList = that._groupList(oData?.results, 'Matnr');
+          that.getView().setModel(new sap.ui.model.json.JSONModel({ results: aResultList }), "MaterialModel");
         },
         error: function (oError) {
-          console.error("获取物料数据失败:", oError);
-          sap.m.MessageToast.show("获取物料数据失败: " + oError.message);
+          sap.m.MessageToast.show("Failed to get Material Data:" + oError.message);
         }
       });
 
-      // 测试获取 PO No 数据
+      // 获取 PO 数据
       oPlantModel.read("/PurNoDocSet", {
         success: function (oData) {
-          console.log("成功 PO No 数据:", oData);
-
-          that.getView().setModel(new sap.ui.model.json.JSONModel(oData), "PurchaseModel");
+          // const oGroupedData = (oData?.results || []).reduce((acc, item) => {
+          //   const key = item.Ebeln;
+          //   if (!acc[key]) acc[key] = [];
+          //   acc[key].push(item);
+          //   return acc;
+          // }, {});
+          // const aResultList = Object.entries(oGroupedData).map(([Ebeln, items]) => ({ Ebeln, items }));
+          const aResultList = that._groupList(oData?.results, 'Ebeln');
+          that.getView().setModel(new sap.ui.model.json.JSONModel({ results: aResultList }), "PurchaseModel");
         },
         error: function (oError) {
-          console.error("获取工厂数据失败:", oError);
-          sap.m.MessageToast.show("获取工厂数据失败: " + oError.message);
+          sap.m.MessageToast.show("Failed to get PO Data:" + oError.message);
         }
       });
-
-
-
-      // sap.m.MessageBox.success(`Save successfully!`, {
-      //   actions: MessageBox.Action.OK,
-      //   onClose: function (action) {
-      //     if (action === MessageBox.Action.OK) {
-      //       // sap.m.MessageBox.close()
-      //     }
-      //   }})
     },
 
     onBeforeRendering: function () {
@@ -154,39 +139,6 @@ sap.ui.define([
       })
       this.getView().setBindingContext(oParameterContext);
     },
-    // onAfterRendering: function () {
-    //   const oModel = this.getView().getModel();
-    //   oModel.create("/HEADSet", {
-    //     "DistrChan": "10",
-    //     "Division": "00",
-    //     "DlvType": "LO",
-    //     "Salesorg": "1310",
-    //     "ShipPoint": "1310",
-    //     "ShipTo": "0001000155",
-    //     "ZTYPE_MOVEMENT": "1234567",
-    //     "ZGM3_CONTACT": "1234567",
-    //     "ZGM3_TELEPHONE": "1234567",
-    //     "NP_ASH2DLVTI": [{
-    //       "RefItem": "000010"
-    //     }],
-    //     "NP_ASH2DATES": [{
-    //       "Timetype": "WS GOODS ISSUE  LIKP"
-    //     }
-    //     ],
-    //     "NP_ASH2RETURN": [{}]
-
-    //   }, {
-    //     success: function (data) {
-    //       console.log('HeaderData:', data);
-    //     }.bind(this),
-    //     error: function (oError) {
-    //       console.error("Request failed", oError);
-    //     }
-    //   });
-    // },
-    // onDisplayNotFound: function () {
-    //   this.getRouter().getTargets().display("notFound", { fromTarget: "main" });
-    // },
     handleNavigate: function (evt) {
       const navCon = this.byId("navCon");
       const target = evt.getSource().data("target");
@@ -378,10 +330,10 @@ sap.ui.define([
       } else {
         tableData.forEach((item, index) => {
           // 检查必填字段
-          if (!item.MaterialNo) {
-            allEmptyFields.push(`Line${index + 1}: Material No`);
+          if (!item.ZDOCUMENT_NO) {
+            allEmptyFields.push(`Line${index + 1}: Document No`);
           }
-          if (!item.Quantity) {
+          if (!item.Quantity || (item.Quantity && Number(item.Quantity) === 0)) {
             allEmptyFields.push(`Line${index + 1}: Quantity`);
           }
           if (!item.Unit) {
@@ -415,7 +367,7 @@ sap.ui.define([
           "ZTHIRD_PARTY": submitData.ThirdParty,
           "ZVENDOR_RETREF": submitData.Vendor_Return_Reference,
           "ZSENDER_NAME": submitData.SenderName,
-          "ZWEIGHT": submitData.Weight,
+          "ZWEIGHT": String(submitData.Weight || 0),
           "ZMSDS_ATTACHED": submitData.MSDS_Attached,
           "ZCARRIER_NAME": submitData.ZCARRIER_CONSIGN,
           "ZCUSTOM_LETTER": submitData.CustomsLetterAttached,
@@ -424,8 +376,8 @@ sap.ui.define([
           "ZSPEC_INST": submitData.ZSPEC_INST,
           "ZCARRIER_CONSIGN": submitData.ZCARRIER_CONSIGN,
           "NP_ASH2DLVTI": submitData.NP_ASH2DLVTI.map(item => ({
-            "ZDOC_NO": item.PurchaseOrderNo,
-            "ZDOC_ITEM": item.POItemNo,
+            "ZDOC_NO": item.ZDOCUMENT_NO,
+            "ZDOC_ITEM": item.ZDOCUMENT_ITEM,
             "RefItem": item.Vbeln || "",
             "DlvQty": item.Quantity || "",
             // "ZDOC_NO": item.PurchaseOrderNo || "",
@@ -438,7 +390,9 @@ sap.ui.define([
             "SalesUnit": item.Unit || "",
             // "Unit2": item.Unit2 || "",
             "Plant": submitData.Plant || "",
-            "Brgew": String(item.Weight || 0)
+            "Brgew": String(item.Weight || 0),
+            // "ZDOCUMENT_ITEM": item.ZDOCUMENT_ITEM || "",
+            // "ZDOCUMENT_NO": item.ZDOCUMENT_NO || "" 
           })),
           "NP_ASH2DATES": [{
             "Timetype": "WS GOODS ISSUE  LIKP",
@@ -550,6 +504,15 @@ sap.ui.define([
       } else {
         sap.m.MessageToast.show("Not Filled:  " + allEmptyFields.join("、"));
       }
+    },
+    _groupList(list = [], name) {
+         const oGroupedData = list.reduce((acc, item) => {
+          const key = item[name];
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(item);
+          return acc;
+        }, {});
+      return Object.entries(oGroupedData).map(([value, items]) => ({ [name]: value, items }));
     }
   });
 });

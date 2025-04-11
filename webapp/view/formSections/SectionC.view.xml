@@ -510,7 +510,7 @@
                                 id="PurchasingDoc"
                                 value="{submitData>/PurchasingDoc}"
                                 showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpRequest=".onPurchaseValueHelpRequest"
                                 valueHelpOnly="true"
                             />
                         </form:fields>
@@ -523,9 +523,8 @@
                             <Input
                                 id="MaterialDoc"
                                 value="{submitData>/MaterialDoc}"
-                                enabled="false"
                                 showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpRequest=".onMaterialValueHelpRequest"
                                 valueHelpOnly="true"
                             />
                         </form:fields>
@@ -653,7 +652,6 @@
                             <Input
                                 id="Weight"
                                 value="{submitData>/Weight}"
-                                enabled="false"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -811,7 +809,7 @@
             >
                 <Text
                     id="_IDGenText2"
-                    text="Purchase Order No"
+                    text="Document No"
                 />
             </Column>
             <Column
@@ -822,7 +820,7 @@
             >
                 <Text
                     id="_IDGenText3"
-                    text="PO Item No"
+                    text="Document Item No"
                 />
             </Column>
             <Column
@@ -882,25 +880,23 @@
                     value="{items>Unit}"
                     required="true"
                 />
-                <!-- <Input id="purchaseOrderNoInput" value="{items>PurchaseOrderNo}" /> -->
-                <Input
+                <Input id="purchaseOrderNoInput" value="{items>ZDOCUMENT_NO}" />
+                <!-- <Input
                     id="purchaseOrderNoInput"
                     value="{items>PurchaseOrderNo}"
                     showValueHelp="true"
                     valueHelpRequest=".onPurchaseValueHelpRequest"
                     valueHelpOnly="true"
                     required="true"
-                />
+                /> -->
                 <Input
                     id="poItemNoInputTable"
-                    value="{items>POItemNo}"
+                    value="{items>ZDOCUMENT_ITEM}"
                 />
                 <Input
                     id="materialNoInput"
                     value="{items>MaterialNo}"
-                    showValueHelp="true"
-                    valueHelpRequest=".onMaterialValueHelpRequest"
-                    valueHelpOnly="true"
+                    
                     required="true"
                 />
                 <Input
@@ -911,6 +907,7 @@
                     id="weightInput"
                     value="{items>Weight}"
                     type="Number"
+                    change=".onWeightChange"
                 />
             </ColumnListItem>
         </items>
