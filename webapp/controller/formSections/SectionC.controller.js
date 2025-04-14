@@ -250,23 +250,24 @@ sap.ui.define([
             const that = this;
             const createTable = function () {
                 return new Table({
-                    mode: "SingleSelectMaster",
+                    id: 'PurchasingDocValueHelpTable',
+                    mode: 'SingleSelectMaster',
                     items: {
-                        path: "PurchaseModel>/results",
+                        path: 'PurchaseModel>/results',
                         template: new ColumnListItem({
                             cells: [
-                                new Text({ text: "{PurchaseModel>Ebeln}" })
+                                new Text({ text: '{PurchaseModel>Ebeln}' })
                             ]
                         })
                     },
                     columns: [
                         new Column({
-                            header: new Text({ text: "Purchase Order No" })
+                            header: new Text({ text: 'Purchase Order No' })
                         })
                     ],
                     selectionChange: function (oEvent2) {
-                        const selectItems = oEvent2.getParameter("listItem");
-                        const oContext = selectItems.getBindingContext("PurchaseModel");
+                        const selectItems = oEvent2.getParameter('listItem');
+                        const oContext = selectItems.getBindingContext('PurchaseModel');
                         const oSelectedData = oContext.getObject();
                         if (oSelectedData && oSelectedData.items) {
                             (oSelectedData.items || []).forEach(oItem => {
@@ -293,21 +294,40 @@ sap.ui.define([
             if (!this._purchaseValueHelpDialog) {
                 this._oTable = createTable();
                 this._purchaseValueHelpDialog = new Dialog({
-                    title: "Choose Purchasing Doc",
-                    type: "Standard",
-                    state: "None",
+                    title: 'Choose Purchasing Doc',
+                    type: 'Standard',
+                    state: 'None',
                     stretchOnPhone: true,
-                    contentWidth: "600px",
-                    contentHeight: "400px",
+                    contentWidth: '600px',
+                    contentHeight: '400px',
                     buttons: [
                         new Button({
-                            text: "Confirm",
+                            text: 'Confirm',
                             press: function () {
+                                const aSelectedContexts = this._oTable.getSelectedContexts();
+                                if (aSelectedContexts && aSelectedContexts.length) {
+                                    const oSelectedData = aSelectedContexts[0].getObject();
+                                    (oSelectedData.items || []).forEach(oItem => {
+                                        const weight = that._computeWeight(oItem.Menge, oItem.Brgew);
+                                        that.handleAdd({
+                                            ZDOCUMENT_NO: oItem.Ebeln,
+                                            ZDOCUMENT_ITEM: oItem.Ebelp,
+                                            Unit: oItem.Meins,
+                                            Quantity: oItem.Menge,
+                                            Brgew: oItem.Brgew,
+                                            Weight: weight,
+                                            MaterialNo: oItem.Matnr,
+                                            MaterialDesc: oItem.Txz01
+                                        });
+                                    });
+                                    this.getView().getModel('submitData').setProperty('/PurchasingDoc', oSelectedData.Ebeln);
+                                    this.onWeightChange();
+                                }
                                 this._purchaseValueHelpDialog.close();
                             }.bind(this)
                         }),
                         new Button({
-                            text: "Cancel",
+                            text: 'Cancel',
                             press: function () {
                                 this._purchaseValueHelpDialog.close();
                             }.bind(this)
@@ -386,6 +406,26 @@ sap.ui.define([
                         new Button({
                             text: "Confirm",
                             press: function () {
+                                const aSelectedContexts = this._oTable.getSelectedContexts();
+                                if (aSelectedContexts && aSelectedContexts.length) {
+                                    const oSelectedData = aSelectedContexts[0].getObject();
+                                    if (oSelectedData && oSelectedData.items) {
+                                        (oSelectedData.items || []).forEach(oItem => {
+                                            const weight = this._computeWeight(oItem.Menge, oItem.Brgew);
+                                            this.handleAdd({
+                                                ZDOCUMENT_NO: oItem.Mblnr,
+                                                ZDOCUMENT_ITEM: oItem.Zeile,
+                                                Unit: oItem.Meins,
+                                                Quantity: oItem.Menge,
+                                                Brgew: oItem.Brgew,
+                                                Weight: weight,
+                                                MaterialNo: oItem.Matnr
+                                            });
+                                        });
+                                    }
+                                    this.getView().getModel('submitData').setProperty('/MaterialDoc', oSelectedData.Mblnr);
+                                    this.onWeightChange();
+                                }
                                 this._materialDocValueHelpDialog.close();
                             }.bind(this)
                         }),
@@ -468,7 +508,7 @@ sap.ui.define([
                             oItemsModel.setProperty(sPath + "/Unit", meins);
                             const Brgew = oContext.getProperty("Brgew");
                             oItemsModel.setProperty(sPath + "/Brgew", Brgew);
-                            const Maktx =  oContext.getProperty("Maktx");
+                            const Maktx = oContext.getProperty("Maktx");
                             oItemsModel.setProperty(sPath + "/MaterialDesc", Maktx);
                         }
 
@@ -529,8 +569,18 @@ sap.ui.define([
             if (sValue) {
                 const oName1Filter = this._buildFilter(sValue, 'Name1');
                 const oNoFilter = this._buildFilter(sValue, 'Werks');
-                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
-                aFilters.push(oCombinedFilter);
+                let aTempFilters = [];
+                let oCombinedFilter = null;
+                if (oName1Filter) {
+                    aTempFilters.push(oName1Filter);
+                }
+                if (oNoFilter) {
+                    aTempFilters.push(oNoFilter);
+                }
+                if (aTempFilters) {
+                    oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
+                    aFilters.push(oCombinedFilter);
+                }
             }
             this._oTable.getBinding("items").filter(aFilters);
         },
@@ -540,22 +590,32 @@ sap.ui.define([
             if (sValue) {
                 const oName1Filter = this._buildFilter(sValue, 'Name1');
                 const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
-                aFilters.push(oCombinedFilter);
+                let aTempFilters = [];
+                let oCombinedFilter = null;
+                if (oName1Filter) {
+                    aTempFilters.push(oName1Filter);
+                }
+                if (oNoFilter) {
+                    aTempFilters.push(oNoFilter);
+                }
+                if (aTempFilters) {
+                    oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
+                    aFilters.push(oCombinedFilter);
+                }
             }
             this._oTable.getBinding("items").filter(aFilters);
         },
         _filterPO: function (sValue) {
             const aFilter = this._buildFilter(sValue, 'Ebeln');
-            this._oTable.getBinding("items").filter([aFilter]);
+            this._oTable.getBinding("items").filter(aFilter ? [aFilter] : []);
         },
         _filterMaterialDoc: function (sValue) {
-            const aFilter = this._buildFilter(sValue, 'Matnr');
-            this._oTable.getBinding("items").filter([aFilter]);
+            const aFilter = this._buildFilter(sValue, 'Mblnr');
+            this._oTable.getBinding("items").filter(aFilter ? [aFilter] : []);
         },
         _filterMaterial: function (sValue) {
             const aFilter = this._buildFilter(sValue, 'Matnr');
-            this._oTable.getBinding("items").filter([aFilter]);
+            this._oTable.getBinding("items").filter(aFilter ? [aFilter] : []);
         },
         _buildFilter(sValue, sFieldName) {
             let aFilter = null;
@@ -565,70 +625,17 @@ sap.ui.define([
                 if (sValue.startsWith('*') && sValue.endsWith('*')) {
                     sOperator = FilterOperator.Contains;
                     sResultValue = sValue.slice(1, -1);
-                  } else if (sValue.startsWith('*')) {
+                } else if (sValue.startsWith('*')) {
                     sOperator = FilterOperator.EndsWith;
                     sResultValue = sValue.slice(1);
-                  } else if (sValue.endsWith('*')) {
+                } else if (sValue.endsWith('*')) {
                     sOperator = FilterOperator.StartsWith;
                     sResultValue = sValue.slice(0, -1);
-                  }
+                }
                 aFilter = new Filter(sFieldName, sOperator, sResultValue);
             }
             return aFilter;
         },
-        // _buildFilters(sValue, sFieldName) {
-        //         if (!sValue?.trim()) return null;
-              
-        //         // 预处理：去除首尾空格，转义特殊字符（如需搜索真实*号时）
-        //         const processedValue = sValue.trim().replace(/\\(.)/g, '$1'); // 处理转义符
-        //         if (!processedValue) return null;
-              
-        //         // 解析通配符模式
-        //         const hasLeading = processedValue.startsWith('*');
-        //         const hasTrailing = processedValue.endsWith('*');
-        //         let coreValue = processedValue;
-        //         let baseOperator = FilterOperator.Contains;
-              
-        //         // Step 1: 处理首尾通配符
-        //         if (hasLeading && hasTrailing) {
-        //           coreValue = coreValue.slice(1, -1);
-        //         } else if (hasLeading) {
-        //           coreValue = coreValue.slice(1);
-        //           baseOperator = FilterOperator.EndsWith;
-        //         } else if (hasTrailing) {
-        //           coreValue = coreValue.slice(0, -1);
-        //           baseOperator = FilterOperator.StartsWith;
-        //         }
-              
-        //         // Step 2: 处理中间通配符（支持多*号分割）
-        //         const segments = coreValue.split('*').filter(s => s.length > 0);
-                
-        //         // 构造基础过滤器
-        //         let filters = [];
-        //         if (segments.length === 0) { // 处理纯**的情况
-        //           return null; 
-        //         } else if (segments.length === 1) { // 无中间通配符
-        //           filters.push(new Filter(sFieldName, baseOperator, segments));
-        //         } else { // 存在中间通配符
-        //           const containFilters = segments.map(s => new Filter({
-        //             path: sFieldName,
-        //             operator: FilterOperator.Contains,
-        //             value: s,
-        //             caseSensitive: false
-        //           }));
-                  
-        //           // 组合逻辑：基础操作符 + 中间Contains的AND组合
-        //           const baseFilter = new Filter(sFieldName, baseOperator, segments);
-        //           const middleFilters = new Filter({ filters: containFilters, and: true });
-                  
-        //           filters = [baseFilter, middleFilters];
-        //         }
-              
-        //         // 处理首尾逻辑与中间条件的AND组合
-        //         return filters.length > 1 
-        //           ? new Filter({ filters: filters, and: true }) 
-        //           : filters;
-        // },
         handleAdd: function (oInitData = {}) {
             const oModel = this.getView().getModel('items');
             const aItemList = oModel.getProperty("/results") || [];

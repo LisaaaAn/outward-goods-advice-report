@@ -253,8 +253,18 @@ sap.ui.define([
             if (sValue) {
                 const oName1Filter = this._buildFilter(sValue, 'Name1');
                 const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
-                aFilters.push(oCombinedFilter);
+                let aTempFilters = [];
+                let oCombinedFilter = null;
+                if (oName1Filter) {
+                    aTempFilters.push(oName1Filter);
+                }
+                if(oNoFilter) {
+                    aTempFilters.push(oNoFilter);
+                }
+                if (aTempFilters) {
+                    oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
+                    aFilters.push(oCombinedFilter);
+                }
             }
             this._oTable.getBinding("items").filter(aFilters);
         },
