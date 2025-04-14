@@ -238,33 +238,44 @@ sap.ui.define([
             // 打开对话框
             this._plantValueHelpDialog.open();
         },
-
         _filterPlants: function (sValue) {
-            const aFilter = [];
+            const aFilters = [];
             if (sValue) {
-                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
-                const oNoFilter = new Filter("Werks", FilterOperator.Contains, sValue);
-                const oCombinedFilter = new Filter({
-                    filters: [oName1Filter, oNoFilter],
-                    and: false
-                });
-                aFilter.push(oCombinedFilter);
+                const oName1Filter = this._buildFilter(sValue, 'Name1');
+                const oNoFilter = this._buildFilter(sValue, 'Werks');
+                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
+                aFilters.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter);
+            this._oTable.getBinding("items").filter(aFilters);
         },
-
         _filterVendors: function (sValue) {
-            const aFilter = [];
+            const aFilters = [];
             if (sValue) {
-                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
-                const oNoFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
-                const oCombinedFilter = new Filter({
-                    filters: [oName1Filter, oNoFilter],
-                    and: false
-                });
-                aFilter.push(oCombinedFilter);
+                const oName1Filter = this._buildFilter(sValue, 'Name1');
+                const oNoFilter = this._buildFilter(sValue, 'Kunnr');
+                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
+                aFilters.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter);
+            this._oTable.getBinding("items").filter(aFilters);
+        },
+        _buildFilter(sValue, sFieldName) {
+            let aFilter = null;
+            if (sValue) {
+                let sResultValue = sValue;
+                let sOperator = FilterOperator.Contains;
+                if (sValue.startsWith('*') && sValue.endsWith('*')) {
+                    sOperator = FilterOperator.Contains;
+                    sResultValue = sValue.slice(1, -1);
+                  } else if (sValue.startsWith('*')) {
+                    sOperator = FilterOperator.EndsWith;
+                    sResultValue = sValue.slice(1);
+                  } else if (sValue.endsWith('*')) {
+                    sOperator = FilterOperator.StartsWith;
+                    sResultValue = sValue.slice(0, -1);
+                  }
+                aFilter = new Filter(sFieldName, sOperator, sResultValue);
+            }
+            return aFilter;
         },
         handleAdd: function () {
             const oModel = this.getView().getModel('items');

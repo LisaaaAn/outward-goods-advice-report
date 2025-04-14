@@ -8,7 +8,8 @@ sap.ui.define([
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
     "sap/m/Table",
-    "sap/m/Column"
+    "sap/m/Column",
+    "sap/m/ColumnListItem"
 ], function (
     JSONModel,
     Dialog,
@@ -19,7 +20,8 @@ sap.ui.define([
     Filter,
     FilterOperator,
     Table,
-    Column
+    Column,
+    ColumnListItem
 ) {
     "use strict";
     return Controller.extend("ui5.ogarpt.controller.formSections.SectionC", {
@@ -27,7 +29,6 @@ sap.ui.define([
             const oItemsModel = new JSONModel({ results: [] });
             this.getView().setModel(oItemsModel, "items");
         },
-
         onStoredEnergyChange: function (oEvent) {
             const selectedIndex = oEvent.getParameter("selectedIndex");
             const oModel = this.getView().getModel("submitData");
@@ -248,24 +249,20 @@ sap.ui.define([
         onPurchasingDocValueHelpRequest: function () {
             const that = this;
             const createTable = function () {
-                return new sap.m.Table({
+                return new Table({
                     mode: "SingleSelectMaster",
                     items: {
                         path: "PurchaseModel>/results",
-                        template: new sap.m.ColumnListItem({
+                        template: new ColumnListItem({
                             cells: [
-                                new sap.m.Text({ text: "{PurchaseModel>Ebeln}" })
-                                // new sap.m.Text({text: "{PurchaseModel>Ebelp}"})
+                                new Text({ text: "{PurchaseModel>Ebeln}" })
                             ]
                         })
                     },
                     columns: [
-                        new sap.m.Column({
+                        new Column({
                             header: new Text({ text: "Purchase Order No" })
                         })
-                        // new sap.m.Column({
-                        //     header: new Text({ text: "PO Item No" })
-                        // })
                     ],
                     selectionChange: function (oEvent2) {
                         const selectItems = oEvent2.getParameter("listItem");
@@ -286,12 +283,8 @@ sap.ui.define([
                                 });
                             });
                         }
-                        setTimeout(() => {
-                            const aItemList = that.getView().getModel('submitData').getProperty('/NP_ASH2DLVTI');
-                            const nTotalWeight = aItemList.reduce((sum, item) => sum + Number(item.Weight || 0), 0);
-                            that.getView().getModel('submitData').setProperty('/Weight', nTotalWeight);
-                        }, 800)
                         that.getView().getModel('submitData').setProperty('/PurchasingDoc', oSelectedData.Ebeln);
+                        that.onWeightChange();
                         that._purchaseValueHelpDialog.close();
                     }
                 })
@@ -307,6 +300,12 @@ sap.ui.define([
                     contentWidth: "600px",
                     contentHeight: "400px",
                     buttons: [
+                        new Button({
+                            text: "Confirm",
+                            press: function () {
+                                this._purchaseValueHelpDialog.close();
+                            }.bind(this)
+                        }),
                         new Button({
                             text: "Cancel",
                             press: function () {
@@ -333,15 +332,14 @@ sap.ui.define([
         },
         onMaterialDocValueHelpRequest: function () {
             const that = this;
-
             const createTable = function () {
                 return new Table({
                     mode: "SingleSelectMaster",
                     items: {
-                        path: "MaterialModel>/results",
-                        template: new sap.m.ColumnListItem({
+                        path: "MaterialDocModel>/results",
+                        template: new ColumnListItem({
                             cells: [
-                                new sap.m.Text({ text: "{MaterialModel>Mblnr}" })
+                                new Text({ text: "{MaterialDocModel>Mblnr}" })
                             ]
                         })
                     },
@@ -352,7 +350,7 @@ sap.ui.define([
                     ],
                     selectionChange: function (oEvent2) {
                         const selectItems = oEvent2.getParameter("listItem");
-                        const oContext = selectItems.getBindingContext("MaterialModel");
+                        const oContext = selectItems.getBindingContext("MaterialDocModel");
                         const oSelectedData = oContext.getObject();
                         if (oSelectedData && oSelectedData.items) {
                             (oSelectedData.items || []).forEach(oItem => {
@@ -369,14 +367,15 @@ sap.ui.define([
                             });
                         }
                         that.getView().getModel('submitData').setProperty('/MaterialDoc', oSelectedData.Mblnr);
-                        that._materialValueHelpDialog.close();
+                        that.onWeightChange();
+                        that._materialDocValueHelpDialog.close();
                     }
                 })
             }
             // 创建对话框
-            if (!this._materialValueHelpDialog) {
+            if (!this._materialDocValueHelpDialog) {
                 this._oTable = createTable();
-                this._materialValueHelpDialog = new Dialog({
+                this._materialDocValueHelpDialog = new Dialog({
                     title: "Choose Material Doc",
                     type: "Standard",
                     state: "None",
@@ -385,9 +384,15 @@ sap.ui.define([
                     contentHeight: "400px",
                     buttons: [
                         new Button({
+                            text: "Confirm",
+                            press: function () {
+                                this._materialDocValueHelpDialog.close();
+                            }.bind(this)
+                        }),
+                        new Button({
                             text: "Cancel",
                             press: function () {
-                                this._materialValueHelpDialog.close();
+                                this._materialDocValueHelpDialog.close();
                             }.bind(this)
                         })
                     ],
@@ -402,6 +407,116 @@ sap.ui.define([
                         this._oTable
                     ]
                 });
+                this.getView().addDependent(this._materialDocValueHelpDialog);
+            }
+
+            // 打开对话框
+            this._materialDocValueHelpDialog.open();
+        },
+
+        onMaterialValueHelpRequest: function (oEvent) {
+            const that = this;
+            const oInput = oEvent.getSource();
+
+            // 获取当前行并选中它
+            const oTable = this.byId("EditableTable");
+            const oRow = oInput.getParent();
+            if (oRow) {
+                oTable.setSelectedItem(oRow);
+            }
+
+            const createTable = function () {
+                return new Table({
+                    mode: "SingleSelectMaster",
+                    items: {
+                        path: "MaterialModel>/results",
+                        template: new ColumnListItem({
+                            cells: [
+                                new Text({ text: "{MaterialModel>Matnr}" }),
+                                new Text({ text: "{MaterialModel>Maktx}" }),
+                                new Text({ text: "{MaterialModel>Meins}" }),
+                                new Text({ text: "{MaterialModel>Brgew}" })
+                            ]
+                        })
+                    },
+                    columns: [
+                        new Column({
+                            header: new Text({ text: "Material No" })
+                        }),
+                        new Column({
+                            header: new Text({ text: "Description" })
+                        }),
+                        new Column({
+                            header: new Text({ text: "Base Unit" })
+                        }),
+                        new Column({
+                            header: new Text({ text: "Weight Unit" })
+                        })
+                    ],
+                    selectionChange: function (oEvent2) {
+                        const selectItems = oEvent2.getParameter("listItem");
+                        const oContext = selectItems.getBindingContext("MaterialModel");
+                        const oItemsModel = that.getView().getModel("items");
+                        const oTable = that.byId("EditableTable");
+                        const oSelectedItem = oTable.getSelectedItem();
+
+                        if (oSelectedItem) {
+                            const sPath = oSelectedItem.getBindingContext("items").getPath();
+                            const Matnr = oContext.getProperty("Matnr");
+                            oItemsModel.setProperty(sPath + "/MaterialNo", Matnr);
+                            const meins = oContext.getProperty("Meins");
+                            oItemsModel.setProperty(sPath + "/Unit", meins);
+                            const Brgew = oContext.getProperty("Brgew");
+                            oItemsModel.setProperty(sPath + "/Brgew", Brgew);
+                            const Maktx =  oContext.getProperty("Maktx");
+                            oItemsModel.setProperty(sPath + "/MaterialDesc", Maktx);
+                        }
+
+                        const aInput = oEvent.getSource();
+                        const oBindingContext = aInput.getBindingContext("items");
+                        const aPath = oBindingContext.getPath();
+                        const oData = oItemsModel.getProperty(aPath);
+                        const weight = that._computeWeight(oData.Quantity, oData.Brgew);
+                        oItemsModel.setProperty(aPath + "/Weight", weight);
+                        that._materialValueHelpDialog.close();
+                    }
+                })
+            }
+            // 创建对话框
+            if (!this._materialValueHelpDialog) {
+                this._oTable = createTable();
+                this._materialValueHelpDialog = new Dialog({
+                    title: "Choose Material",
+                    type: "Standard",
+                    state: "None",
+                    stretchOnPhone: true,
+                    contentWidth: "600px",
+                    contentHeight: "400px",
+                    buttons: [
+                        new Button({
+                            text: "Confirm",
+                            press: function () {
+                                this._materialValueHelpDialog.close();
+                            }.bind(this)
+                        }),
+                        new Button({
+                            text: "Cancel",
+                            press: function () {
+                                this._materialValueHelpDialog.close();
+                            }.bind(this)
+                        })
+                    ],
+                    content: [
+                        new Input({
+                            placeholder: "Enter Material No",
+                            liveChange: function (oEvent) {
+                                const sValue = oEvent.getSource().getValue();
+                                this._filterMaterial(sValue);
+                            }.bind(this)
+                        }),
+                        this._oTable
+                    ]
+                });
                 this.getView().addDependent(this._materialValueHelpDialog);
             }
 
@@ -410,53 +525,109 @@ sap.ui.define([
         },
 
         _filterPlants: function (sValue) {
-            const aFilter = [];
+            const aFilters = [];
             if (sValue) {
-                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
-                const oNoFilter = new Filter("Werks", FilterOperator.Contains, sValue);
-                const oCombinedFilter = new Filter({
-                    filters: [oName1Filter, oNoFilter],
-                    and: false
-                });
-                aFilter.push(oCombinedFilter);
+                const oName1Filter = this._buildFilter(sValue, 'Name1');
+                const oNoFilter = this._buildFilter(sValue, 'Werks');
+                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
+                aFilters.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter);
+            this._oTable.getBinding("items").filter(aFilters);
         },
 
         _filterVendors: function (sValue) {
-            const aFilter = [];
+            const aFilters = [];
             if (sValue) {
-                const oName1Filter = new Filter("Name1", FilterOperator.Contains, sValue);
-                const oNoFilter = new Filter("Kunnr", FilterOperator.Contains, sValue);
-                const oCombinedFilter = new Filter({
-                    filters: [oName1Filter, oNoFilter],
-                    and: false
-                });
-                aFilter.push(oCombinedFilter);
+                const oName1Filter = this._buildFilter(sValue, 'Name1');
+                const oNoFilter = this._buildFilter(sValue, 'Kunnr');
+                const oCombinedFilter = new Filter({ filters: [oName1Filter, oNoFilter], and: false });
+                aFilters.push(oCombinedFilter);
             }
-            this._oTable.getBinding("items").filter(aFilter);
+            this._oTable.getBinding("items").filter(aFilters);
         },
-
         _filterPO: function (sValue) {
-            const aFilter = [];
-            if (sValue) {
-                aFilter.push(new Filter("Ebeln", FilterOperator.Contains, sValue));
-            }
-            this._oTable.getBinding("items").filter(aFilter);
+            const aFilter = this._buildFilter(sValue, 'Ebeln');
+            this._oTable.getBinding("items").filter([aFilter]);
         },
         _filterMaterialDoc: function (sValue) {
-            const aFilter = [];
-            if (sValue) {
-                aFilter.push(new Filter("Mblnr", FilterOperator.Contains, sValue));
-            }
-            this._oTable.getBinding("items").filter(aFilter);
+            const aFilter = this._buildFilter(sValue, 'Matnr');
+            this._oTable.getBinding("items").filter([aFilter]);
         },
-        // _filterMaterial: function (sValue) {
-        //     const aFilter = [];
-        //     if (sValue) {
-        //         aFilter.push(new Filter("Matnr", FilterOperator.Contains, sValue))
-        //     }
-        //     this._oTable.getBinding("items").filter(aFilter)
+        _filterMaterial: function (sValue) {
+            const aFilter = this._buildFilter(sValue, 'Matnr');
+            this._oTable.getBinding("items").filter([aFilter]);
+        },
+        _buildFilter(sValue, sFieldName) {
+            let aFilter = null;
+            if (sValue) {
+                let sResultValue = sValue;
+                let sOperator = FilterOperator.Contains;
+                if (sValue.startsWith('*') && sValue.endsWith('*')) {
+                    sOperator = FilterOperator.Contains;
+                    sResultValue = sValue.slice(1, -1);
+                  } else if (sValue.startsWith('*')) {
+                    sOperator = FilterOperator.EndsWith;
+                    sResultValue = sValue.slice(1);
+                  } else if (sValue.endsWith('*')) {
+                    sOperator = FilterOperator.StartsWith;
+                    sResultValue = sValue.slice(0, -1);
+                  }
+                aFilter = new Filter(sFieldName, sOperator, sResultValue);
+            }
+            return aFilter;
+        },
+        // _buildFilters(sValue, sFieldName) {
+        //         if (!sValue?.trim()) return null;
+              
+        //         // 预处理：去除首尾空格，转义特殊字符（如需搜索真实*号时）
+        //         const processedValue = sValue.trim().replace(/\\(.)/g, '$1'); // 处理转义符
+        //         if (!processedValue) return null;
+              
+        //         // 解析通配符模式
+        //         const hasLeading = processedValue.startsWith('*');
+        //         const hasTrailing = processedValue.endsWith('*');
+        //         let coreValue = processedValue;
+        //         let baseOperator = FilterOperator.Contains;
+              
+        //         // Step 1: 处理首尾通配符
+        //         if (hasLeading && hasTrailing) {
+        //           coreValue = coreValue.slice(1, -1);
+        //         } else if (hasLeading) {
+        //           coreValue = coreValue.slice(1);
+        //           baseOperator = FilterOperator.EndsWith;
+        //         } else if (hasTrailing) {
+        //           coreValue = coreValue.slice(0, -1);
+        //           baseOperator = FilterOperator.StartsWith;
+        //         }
+              
+        //         // Step 2: 处理中间通配符（支持多*号分割）
+        //         const segments = coreValue.split('*').filter(s => s.length > 0);
+                
+        //         // 构造基础过滤器
+        //         let filters = [];
+        //         if (segments.length === 0) { // 处理纯**的情况
+        //           return null; 
+        //         } else if (segments.length === 1) { // 无中间通配符
+        //           filters.push(new Filter(sFieldName, baseOperator, segments));
+        //         } else { // 存在中间通配符
+        //           const containFilters = segments.map(s => new Filter({
+        //             path: sFieldName,
+        //             operator: FilterOperator.Contains,
+        //             value: s,
+        //             caseSensitive: false
+        //           }));
+                  
+        //           // 组合逻辑：基础操作符 + 中间Contains的AND组合
+        //           const baseFilter = new Filter(sFieldName, baseOperator, segments);
+        //           const middleFilters = new Filter({ filters: containFilters, and: true });
+                  
+        //           filters = [baseFilter, middleFilters];
+        //         }
+              
+        //         // 处理首尾逻辑与中间条件的AND组合
+        //         return filters.length > 1 
+        //           ? new Filter({ filters: filters, and: true }) 
+        //           : filters;
         // },
         handleAdd: function (oInitData = {}) {
             const oModel = this.getView().getModel('items');
@@ -490,18 +661,13 @@ sap.ui.define([
             oSubmitModel.setProperty("/NP_ASH2DLVTI", aResultList);
         },
         onQuantityChange: function (oEvent) {
-            var oInput = oEvent.getSource();
-            var oBindingContext = oInput.getBindingContext("items");
-            var sPath = oBindingContext.getPath();
-            var oModel = this.getView().getModel("items");
-            var oData = oModel.getProperty(sPath);
-            // 获取数量值
-            var quantity = parseFloat(oData.Quantity) || 0;
-            var brgew = parseFloat(oData.Brgew) || 0;
-            // 计算重量
-            var weight = quantity * brgew;
-            // 更新重量字段
+            const oBindingContext = oEvent.getSource().getBindingContext("items");
+            const sPath = oBindingContext.getPath();
+            const oModel = this.getView().getModel("items");
+            const oData = oModel.getProperty(sPath);
+            const weight = this._computeWeight(oData.Quantity, oData.Brgew);
             oModel.setProperty(sPath + "/Weight", weight);
+            this.onWeightChange();
         },
         onWeightChange() {
             const aItemList = this.getView().getModel('submitData').getProperty('/NP_ASH2DLVTI');

@@ -893,10 +893,16 @@
                     id="poItemNoInputTable"
                     value="{items>ZDOCUMENT_ITEM}"
                 />
-                <Input
+                <!-- <Input
                     id="materialNoInput"
                     value="{items>MaterialNo}"
-                    
+                    required="true"
+                /> -->
+                <Input id="materialNoInput" 
+                    value="{items>MaterialNo}" 
+                    showValueHelp="true"
+                    valueHelpRequest=".onMaterialValueHelpRequest"
+                    valueHelpOnly="true"
                     required="true"
                 />
                 <Input

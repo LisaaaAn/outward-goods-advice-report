@@ -70,7 +70,7 @@ sap.ui.define([
       const that = this;
 
       // JSONModel
-      this.getView().setModel(new JSONModel(oInitSubmitData), "submitData");
+      this.getView().setModel(new JSONModel(jQuery.extend(true, {}, oInitSubmitData)), "submitData");
 
       // oDataModel
       const oDataModel = new ODataModel("/sap/opu/odata/sap/ZIM_OGA_SRV/");
@@ -99,10 +99,10 @@ sap.ui.define([
       oDataModel.read("/MaterialSet", {
         success: function (oData) {
           const aResultList = that._groupList(oData?.results, 'Mblnr');
-          that.getView().setModel(new JSONModel({ results: aResultList }), "MaterialModel");
+          that.getView().setModel(new JSONModel({ results: aResultList }), "MaterialDocModel");
         },
         error: function (oError) {
-          MessageToast.show("Failed to get Material Data:" + oError.message);
+          MessageToast.show("Failed to get Material Doc Data:" + oError.message);
         }
       });
 
@@ -118,16 +118,14 @@ sap.ui.define([
       });
 
       // 获取 Material 数据
-      // oDataModel.read("/MATNRSet", {
-      //   success: function (oData) {
-      //     debugger
-      //     const aResultList = that._groupList(oData?.results, 'Matnr');
-      //     that.getView().setModel(new JSONModel({ results: aResultList }), "MaterialModel");
-      //   },
-      //   error: function (oError) {
-      //     MessageToast.show("Failed to get Material Data:" + oError.message);
-      //   }
-      // });
+      oDataModel.read("/MATNRSet", {
+        success: function (oData) {
+          that.getView().setModel(new JSONModel(oData), "MaterialModel");
+        },
+        error: function (oError) {
+          MessageToast.show("Failed to get Material Data:" + oError.message);
+        }
+      });
     },
 
     onBeforeRendering: function () {
@@ -306,6 +304,7 @@ sap.ui.define([
                   if (action === MessageBox.Action.OK) {
                     // 重置表单数据
                     oSubmitModel.setData(oInitSubmitData);
+                    that.byId('_IDGenXMLView2').getModel('items').setProperty('/results', []);
                     // 回到第一页
                     const oFormStateModel = that.getView().getModel("formState");
                     oFormStateModel.setProperty("/currentStep", 1);
