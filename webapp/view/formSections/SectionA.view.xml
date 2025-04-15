@@ -3,8 +3,6 @@
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:form="sap.ui.layout.form"
-    xmlns:smartForm="sap.ui.comp.smartform"
-    xmlns:smartField="sap.ui.comp.smartfield"
     controllerName="ui5.ogarpt.controller.formSections.SectionA"
 >
     <form:Form
@@ -147,7 +145,7 @@
                                 id="vendorNumberInput"
                                 value="{submitData>/VendorNumber}"
                                 showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpRequest=".onVendorValueHelpRequest"
                                 valueHelpOnly="true"
                                 required="true"
                             />
@@ -183,30 +181,6 @@
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <!-- <form:FormElement id="_IDGenFormElement5" label="Purchasing Doc">
-                        <form:fields>
-                            <Input 
-                                id="purchasingDocInput" 
-                                value="{submitData>/PurchasingDoc}" 
-                                enabled="false"
-                                showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
-                                valueHelpOnly="true"
-                            />
-                        </form:fields>
-                    </form:FormElement>
-                    <form:FormElement id="_IDGenFormElement6" label="Material Doc No">
-                        <form:fields>                
-                            <Input 
-                                id="materialDocNoInput" 
-                                value="{submitData>/MaterialDoc}" 
-                                enabled="false"
-                                showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
-                                valueHelpOnly="true"
-                            />
-                        </form:fields>
-                    </form:FormElement> -->
                     <form:FormElement
                         id="_IDGenFormElement06"
                         label="Mat.Doc.year"
@@ -270,7 +244,6 @@
                             <Input
                                 id="vendorNameInput"
                                 value="{submitData>/VendorName}"
-                                enabled="true"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -313,30 +286,6 @@
                             </Select>
                         </form:fields>
                     </form:FormElement>
-                    <!-- <form:FormElement id="poItemNoFormElement" label="PO Item No">
-                        <form:fields>
-                            <Select
-                                id="poItemNoInput"
-                                selectedKey="{submitData>/Material}"
-                                enabled="false"
-                                >
-                                <items>
-                                </items>
-                            </Select>
-                        </form:fields>
-                    </form:FormElement>
-                    <form:FormElement id="materialDocItemNoFormElement" label="Material Doc Item No">
-                        <form:fields>                            
-                            <Select
-                                id="materialDocItemNoInput"
-                                selectedKey="{submitData>/MaterialItem}"
-                                enabled="false"
-                                >
-                                <items>
-                                </items>
-                            </Select>
-                        </form:fields>
-                    </form:FormElement> -->
                     <form:FormElement
                         id="dateFormElement"
                         label="Date"

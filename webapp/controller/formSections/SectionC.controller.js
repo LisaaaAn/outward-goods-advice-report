@@ -61,40 +61,40 @@ sap.ui.define(
           selectedIndex === 0 ? 'Y' : 'N'
         );
       },
-      onValueHelpRequest: function (oEvent) {
+      onVendorValueHelpRequest: function (oEvent) {
         const oInput = oEvent.getSource();
-        var that = this;
+        const that = this;
         const createTable = function () {
-          return new sap.m.Table({
+          return new Table({
             mode: 'SingleSelectMaster',
             items: {
               path: 'VendorModel>/results',
-              template: new sap.m.ColumnListItem({
+              template: new ColumnListItem({
                 cells: [
-                  new sap.m.Text({ text: '{VendorModel>Kunnr}' }),
-                  new sap.m.Text({ text: '{VendorModel>Name1}' }),
-                  new sap.m.Text({ text: '{VendorModel>Land1}' }),
-                  new sap.m.Text({ text: '{VendorModel>Stras}' }),
+                  new Text({ text: '{VendorModel>Kunnr}' }),
+                  new Text({ text: '{VendorModel>Name1}' }),
+                  new Text({ text: '{VendorModel>Land1}' }),
+                  new Text({ text: '{VendorModel>Stras}' }),
                 ],
               }),
             },
             columns: [
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'No' }),
               }),
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'Name' }),
               }),
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'Country' }),
               }),
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'Address' }),
               }),
             ],
             selectionChange: function (oEvent2) {
-              var selectItems = oEvent2.getParameter('listItem');
-              var selectCells = selectItems.getCells();
+              const selectItems = oEvent2.getParameter('listItem');
+              const selectCells = selectItems.getCells();
               oInput.setValue(selectCells[0].getText());
               // 获取选中的供应商数据并设置相关信息
               const oContext = selectItems.getBindingContext('VendorModel');
@@ -107,15 +107,15 @@ sap.ui.define(
               oSubmitModel.setProperty('/ZVENDOR_TELEPHONE', ZVENDOR_TELEPHONE);
               const ZVENDOR_FAX = oContext.getProperty('Telfx');
               oSubmitModel.setProperty('/ZVENDOR_FAX', ZVENDOR_FAX);
-              that._VendorValueHelpDialog.close();
+              that._oVendorValueHelpDialog.close();
             },
           });
         };
         // 创建对话框
-        if (!this._VendorValueHelpDialog) {
-          this._oTable = createTable();
-          this._VendorValueHelpDialog = new Dialog({
-            title: 'Select Vendor',
+        if (!this._oVendorValueHelpDialog) {
+          this._oVendorVHTable = createTable();
+          this._oVendorValueHelpDialog = new Dialog({
+            title: 'Choose Vendor',
             type: 'Standard',
             state: 'None',
             stretchOnPhone: true,
@@ -125,71 +125,87 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const oTable = this._VendorValueHelpDialog.getContent()[1];
+                  const oTable = this._oVendorValueHelpDialog.getContent()[1];
                   const oSelectedItem = oTable.getSelectedItem();
                   if (oSelectedItem) {
                     const oContext =
                       oSelectedItem.getBindingContext('VendorModel');
-                    const sValue = oContext.getProperty('lifnr');
-                    oInput.setValue(sValue);
-                    // 获取供应商名称信息并设置到 submitData
-                    const oSubmitModel = this.getView().getModel('submitData');
-                    const plantAddress = oContext.getProperty('Name1');
-                    oSubmitModel.setProperty('/VendorName', plantAddress);
+                    const oSubmitModel = that.getView().getModel('submitData');
+                    const VendorName = oContext.getProperty('Name1');
+                    oSubmitModel.setProperty('/VendorName', VendorName);
+                    const VendorAddress1 = oContext.getProperty('Stras');
+                    oSubmitModel.setProperty('/VendorAddress1', VendorAddress1);
+                    const ZVENDOR_TELEPHONE = oContext.getProperty('Telf1');
+                    oSubmitModel.setProperty(
+                      '/ZVENDOR_TELEPHONE',
+                      ZVENDOR_TELEPHONE
+                    );
+                    const ZVENDOR_FAX = oContext.getProperty('Telfx');
+                    oSubmitModel.setProperty('/ZVENDOR_FAX', ZVENDOR_FAX);
                   }
-                  this._VendorValueHelpDialog.close();
+                  this._oVendorValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
                 text: 'Cancel',
                 press: function () {
-                  this._VendorValueHelpDialog.close();
+                  this._oVendorValueHelpDialog.close();
                 }.bind(this),
               }),
             ],
             content: [
               new Input({
-                placeholder: 'Enter Vendor number or name',
+                placeholder: 'Enter Vendor No or Name',
                 liveChange: function (oEvent) {
                   const sValue = oEvent.getSource().getValue();
                   this._filterVendors(sValue);
                 }.bind(this),
               }),
-              this._oTable,
+              this._oVendorVHTable,
             ],
           });
 
-          this.getView().addDependent(this._VendorValueHelpDialog);
+          this.getView().addDependent(this._oVendorValueHelpDialog);
         }
 
+        // this._oVendorValueHelpDialog.attachAfterOpen(
+        //   function () {
+        //     if (this._oVendorValueHelpDialog) {
+        //       const oInput = this._oVendorValueHelpDialog.getContent()[0];
+        //       oInput.setValue('');
+        //     }
+        //     this._filterVendors('');
+        //   }.bind(this)
+        // );
+
         // 打开对话框
-        this._VendorValueHelpDialog.open();
+        this._oVendorValueHelpDialog.open();
       },
 
       onPlantValueHelpRequest: function (oEvent) {
         const oInput = oEvent.getSource();
         var that = this;
         const createTable = function () {
-          return new sap.m.Table({
+          return new Table({
             mode: 'SingleSelectMaster',
             items: {
               path: 'plantModel>/results',
-              template: new sap.m.ColumnListItem({
+              template: new ColumnListItem({
                 cells: [
-                  new sap.m.Text({ text: '{plantModel>Werks}' }),
-                  new sap.m.Text({ text: '{plantModel>Name1}' }),
-                  new sap.m.Text({ text: '{plantModel>Stras}' }),
+                  new Text({ text: '{plantModel>Werks}' }),
+                  new Text({ text: '{plantModel>Name1}' }),
+                  new Text({ text: '{plantModel>Stras}' }),
                 ],
               }),
             },
             columns: [
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'No' }),
               }),
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'Name' }),
               }),
-              new sap.m.Column({
+              new Column({
                 header: new Text({ text: 'Address' }),
               }),
             ],
@@ -202,15 +218,15 @@ sap.ui.define(
               const oSubmitModel = that.getView().getModel('submitData');
               const plantAddress = oContext.getProperty('Stras');
               oSubmitModel.setProperty('/plantAddress1', plantAddress);
-              that._plantValueHelpDialog.close();
+              that._oPlantValueHelpDialog.close();
             },
           });
         };
 
         // 创建对话框
-        if (!this._plantValueHelpDialog) {
-          this._oTable = createTable();
-          this._plantValueHelpDialog = new Dialog({
+        if (!this._oPlantValueHelpDialog) {
+          this._oPlantVHTable = createTable();
+          this._oPlantValueHelpDialog = new Dialog({
             title: 'Choose Plant',
             type: 'Standard',
             state: 'None',
@@ -221,46 +237,56 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const oTable = this._plantValueHelpDialog.getContent()[1];
+                  const oTable = this._oPlantValueHelpDialog.getContent()[1];
                   const oSelectedItem = oTable.getSelectedItem();
                   if (oSelectedItem) {
                     const oContext =
                       oSelectedItem.getBindingContext('plantModel');
-                    const sValue = oContext.getProperty('Werks');
-                    oInput.setValue(sValue);
+                    const oSubmitModel = that.getView().getModel('submitData');
+                    const plantAddress = oContext.getProperty('Stras');
+                    oSubmitModel.setProperty('/plantAddress1', plantAddress);
                   }
-                  this._plantValueHelpDialog.close();
+                  this._oPlantValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
                 text: 'Cancel',
                 press: function () {
-                  this._plantValueHelpDialog.close();
+                  this._oPlantValueHelpDialog.close();
                 }.bind(this),
               }),
             ],
             content: [
               new Input({
-                placeholder: 'Enter Plant name',
+                placeholder: 'Enter Plant No or Name',
                 liveChange: function (oEvent) {
                   const sValue = oEvent.getSource().getValue();
                   this._filterPlants(sValue);
                 }.bind(this),
               }),
-              this._oTable,
+              this._oPlantVHTable,
             ],
           });
-          this.getView().addDependent(this._plantValueHelpDialog);
+          this.getView().addDependent(this._oPlantValueHelpDialog);
         }
 
+        // this._oPlantValueHelpDialog.attachAfterOpen(
+        //   function () {
+        //     if (this._oPlantValueHelpDialog) {
+        //       const oInput = this._oPlantValueHelpDialog.getContent()[0];
+        //       oInput.setValue('');
+        //     }
+        //     this._filterVendors('');
+        //   }.bind(this)
+        // );
+
         // 打开对话框
-        this._plantValueHelpDialog.open();
+        this._oPlantValueHelpDialog.open();
       },
       onPurchasingDocValueHelpRequest: function () {
         const that = this;
         const createTable = function () {
           return new Table({
-            id: 'PurchasingDocValueHelpTable',
             mode: 'SingleSelectMaster',
             items: {
               path: 'PurchaseModel>/results',
@@ -297,14 +323,14 @@ sap.ui.define(
                 .getModel('submitData')
                 .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
               that.onWeightChange();
-              that._purchaseValueHelpDialog.close();
+              that._oPurchasingDocValueHelpDialog.close();
             },
           });
         };
         // 创建对话框
-        if (!this._purchaseValueHelpDialog) {
-          this._oTable = createTable();
-          this._purchaseValueHelpDialog = new Dialog({
+        if (!this._oPurchasingDocValueHelpDialog) {
+          this._oPurchasingDocVHTable = createTable();
+          this._oPurchasingDocValueHelpDialog = new Dialog({
             title: 'Choose Purchasing Doc',
             type: 'Standard',
             state: 'None',
@@ -315,7 +341,8 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const aSelectedContexts = this._oTable.getSelectedContexts();
+                  const aSelectedContexts =
+                    this._oPurchasingDocVHTable.getSelectedContexts();
                   if (aSelectedContexts && aSelectedContexts.length) {
                     const oSelectedData = aSelectedContexts[0].getObject();
                     (oSelectedData.items || []).forEach((oItem) => {
@@ -339,13 +366,13 @@ sap.ui.define(
                       .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
                     this.onWeightChange();
                   }
-                  this._purchaseValueHelpDialog.close();
+                  this._oPurchasingDocValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
                 text: 'Cancel',
                 press: function () {
-                  this._purchaseValueHelpDialog.close();
+                  this._oPurchasingDocValueHelpDialog.close();
                 }.bind(this),
               }),
             ],
@@ -354,17 +381,17 @@ sap.ui.define(
                 placeholder: 'Enter Purchase Order No',
                 liveChange: function (oEvent) {
                   const sValue = oEvent.getSource().getValue();
-                  this._filterPO(sValue);
+                  this._filterPurchasingDocs(sValue);
                 }.bind(this),
               }),
-              this._oTable,
+              this._oPurchasingDocVHTable,
             ],
           });
-          this.getView().addDependent(this._purchaseValueHelpDialog);
+          this.getView().addDependent(this._oPurchasingDocValueHelpDialog);
         }
 
         // 打开对话框
-        this._purchaseValueHelpDialog.open();
+        this._oPurchasingDocValueHelpDialog.open();
       },
       onMaterialDocValueHelpRequest: function () {
         const that = this;
@@ -407,14 +434,14 @@ sap.ui.define(
                 .getModel('submitData')
                 .setProperty('/MaterialDoc', oSelectedData.Mblnr);
               that.onWeightChange();
-              that._materialDocValueHelpDialog.close();
+              that._oMaterialDocValueHelpDialog.close();
             },
           });
         };
         // 创建对话框
-        if (!this._materialDocValueHelpDialog) {
-          this._oTable = createTable();
-          this._materialDocValueHelpDialog = new Dialog({
+        if (!this._oMaterialDocValueHelpDialog) {
+          this._oMaterialDocVHTable = createTable();
+          this._oMaterialDocValueHelpDialog = new Dialog({
             title: 'Choose Material Doc',
             type: 'Standard',
             state: 'None',
@@ -425,7 +452,8 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const aSelectedContexts = this._oTable.getSelectedContexts();
+                  const aSelectedContexts =
+                    this._oMaterialDocVHTable.getSelectedContexts();
                   if (aSelectedContexts && aSelectedContexts.length) {
                     const oSelectedData = aSelectedContexts[0].getObject();
                     if (oSelectedData && oSelectedData.items) {
@@ -451,13 +479,13 @@ sap.ui.define(
                       .setProperty('/MaterialDoc', oSelectedData.Mblnr);
                     this.onWeightChange();
                   }
-                  this._materialDocValueHelpDialog.close();
+                  this._oMaterialDocValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
                 text: 'Cancel',
                 press: function () {
-                  this._materialDocValueHelpDialog.close();
+                  this._oMaterialDocValueHelpDialog.close();
                 }.bind(this),
               }),
             ],
@@ -466,17 +494,17 @@ sap.ui.define(
                 placeholder: 'Enter Material Doc No',
                 liveChange: function (oEvent) {
                   const sValue = oEvent.getSource().getValue();
-                  this._filterMaterialDoc(sValue);
+                  this._filterMaterialDocs(sValue);
                 }.bind(this),
               }),
-              this._oTable,
+              this._oMaterialDocVHTable,
             ],
           });
-          this.getView().addDependent(this._materialDocValueHelpDialog);
+          this.getView().addDependent(this._oMaterialDocValueHelpDialog);
         }
 
         // 打开对话框
-        this._materialDocValueHelpDialog.open();
+        this._oMaterialDocValueHelpDialog.open();
       },
 
       onMaterialValueHelpRequest: function (oEvent) {
@@ -547,14 +575,14 @@ sap.ui.define(
               const oData = oItemsModel.getProperty(aPath);
               const weight = that._computeWeight(oData.Quantity, oData.Brgew);
               oItemsModel.setProperty(aPath + '/Weight', weight);
-              that._materialValueHelpDialog.close();
+              that._oMaterialValueHelpDialog.close();
             },
           });
         };
         // 创建对话框
-        if (!this._materialValueHelpDialog) {
-          this._oTable = createTable();
-          this._materialValueHelpDialog = new Dialog({
+        if (!this._oMaterialValueHelpDialog) {
+          this._oMaterialVHTable = createTable();
+          this._oMaterialValueHelpDialog = new Dialog({
             title: 'Choose Material',
             type: 'Standard',
             state: 'None',
@@ -565,13 +593,13 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  this._materialValueHelpDialog.close();
+                  this._oMaterialValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
                 text: 'Cancel',
                 press: function () {
-                  this._materialValueHelpDialog.close();
+                  this._oMaterialValueHelpDialog.close();
                 }.bind(this),
               }),
             ],
@@ -580,17 +608,17 @@ sap.ui.define(
                 placeholder: 'Enter Material No',
                 liveChange: function (oEvent) {
                   const sValue = oEvent.getSource().getValue();
-                  this._filterMaterial(sValue);
+                  this._filterMaterials(sValue);
                 }.bind(this),
               }),
-              this._oTable,
+              this._oMaterialVHTable,
             ],
           });
-          this.getView().addDependent(this._materialValueHelpDialog);
+          this.getView().addDependent(this._oMaterialValueHelpDialog);
         }
 
         // 打开对话框
-        this._materialValueHelpDialog.open();
+        this._oMaterialValueHelpDialog.open();
       },
 
       _filterPlants: function (sValue) {
@@ -611,7 +639,7 @@ sap.ui.define(
             aFilters.push(oCombinedFilter);
           }
         }
-        this._oTable.getBinding('items').filter(aFilters);
+        this._oPlantVHTable.getBinding('items').filter(aFilters);
       },
 
       _filterVendors: function (sValue) {
@@ -632,20 +660,27 @@ sap.ui.define(
             aFilters.push(oCombinedFilter);
           }
         }
-        this._oTable.getBinding('items').filter(aFilters);
+        this._oVendorVHTable.getBinding('items').filter(aFilters);
       },
-      _filterPO: function (sValue) {
+      _filterPurchasingDocs: function (sValue) {
         const aFilter = this._buildFilter(sValue, 'Ebeln');
-        this._oTable.getBinding('items').filter(aFilter ? [aFilter] : []);
+        this._oPurchasingDocVHTable
+          .getBinding('items')
+          .filter(aFilter ? [aFilter] : []);
       },
-      _filterMaterialDoc: function (sValue) {
+      _filterMaterialDocs: function (sValue) {
         const aFilter = this._buildFilter(sValue, 'Mblnr');
-        this._oTable.getBinding('items').filter(aFilter ? [aFilter] : []);
+        this._oMaterialDocVHTable
+          .getBinding('items')
+          .filter(aFilter ? [aFilter] : []);
       },
-      _filterMaterial: function (sValue) {
+      _filterMaterials: function (sValue) {
         const aFilter = this._buildFilter(sValue, 'Matnr');
-        this._oTable.getBinding('items').filter(aFilter ? [aFilter] : []);
+        this._oMaterialVHTable
+          .getBinding('items')
+          .filter(aFilter ? [aFilter] : []);
       },
+      /** 通过输入值和属性名构建 Filter */
       _buildFilter(sValue, sFieldName) {
         let aFilter = null;
         if (sValue) {

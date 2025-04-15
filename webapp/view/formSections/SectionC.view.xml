@@ -191,7 +191,7 @@
                                 id="vendorNumberInput2"
                                 value="{submitData>/VendorNumber}"
                                 showValueHelp="true"
-                                valueHelpRequest=".onValueHelpRequest"
+                                valueHelpRequest=".onVendorValueHelpRequest"
                                 valueHelpOnly="true"
                                 required="true"
                             />
@@ -890,23 +890,10 @@
                     id="purchaseOrderNoInput"
                     value="{items>ZDOCUMENT_NO}"
                 />
-                <!-- <Input
-                    id="purchaseOrderNoInput"
-                    value="{items>PurchaseOrderNo}"
-                    showValueHelp="true"
-                    valueHelpRequest=".onPurchasingDocValueHelpRequest"
-                    valueHelpOnly="true"
-                    required="true"
-                /> -->
                 <Input
                     id="poItemNoInputTable"
                     value="{items>ZDOCUMENT_ITEM}"
                 />
-                <!-- <Input
-                    id="materialNoInput"
-                    value="{items>MaterialNo}"
-                    required="true"
-                /> -->
                 <Input
                     id="materialNoInput"
                     value="{items>MaterialNo}"
