@@ -886,7 +886,10 @@
                     value="{items>Unit}"
                     required="true"
                 />
-                <Input id="purchaseOrderNoInput" value="{items>ZDOCUMENT_NO}" />
+                <Input
+                    id="purchaseOrderNoInput"
+                    value="{items>ZDOCUMENT_NO}"
+                />
                 <!-- <Input
                     id="purchaseOrderNoInput"
                     value="{items>PurchaseOrderNo}"
@@ -904,8 +907,9 @@
                     value="{items>MaterialNo}"
                     required="true"
                 /> -->
-                <Input id="materialNoInput" 
-                    value="{items>MaterialNo}" 
+                <Input
+                    id="materialNoInput"
+                    value="{items>MaterialNo}"
                     showValueHelp="true"
                     valueHelpRequest=".onMaterialValueHelpRequest"
                     valueHelpOnly="true"

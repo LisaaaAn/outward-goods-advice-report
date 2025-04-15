@@ -1,10 +1,10 @@
-specVersion: "3.2"
+specVersion: '3.2'
 metadata:
   name: ui5.ogarpt
 type: application
 framework:
   name: SAPUI5
-  version: "1.133.0"
+  version: '1.133.0'
   libraries:
     - name: sap.f
     - name: sap.m
@@ -23,4 +23,4 @@ server:
           - path: /sap
             url: https://vhicwds4ci.sap.gm3global.com:44300/
             strictSSR: false
-            client: "110"
+            client: '110'

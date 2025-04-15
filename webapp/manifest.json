@@ -58,9 +58,7 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleName": "ui5.ogarpt.i18n.i18n",
-          "supportedLocales": [
-            ""
-          ],
+          "supportedLocales": [""],
           "fallbackLocale": ""
         }
       },
