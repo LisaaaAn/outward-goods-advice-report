@@ -328,6 +328,7 @@
                             <Input
                                 id="plantAddr1"
                                 value="{submitData>/plantAddress1}"
+                                enabled="false"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -351,6 +352,7 @@
                             <Input
                                 id="plantAddr3"
                                 value="{submitData>/plantAddress3}"
+                                enabled="false"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -362,6 +364,7 @@
                             <Input
                                 id="plantAddr4"
                                 value="{submitData>/plantAddress4}"
+                                enabled="false"
                             />
                         </form:fields>
                     </form:FormElement>
@@ -817,6 +820,7 @@
                 minScreenWidth="Tablet"
                 demandPopin="true"
                 hAlign="Center"
+                width="160px"
             >
                 <Text
                     id="_IDGenText3"
@@ -828,6 +832,7 @@
                 minScreenWidth="Tablet"
                 demandPopin="true"
                 hAlign="Center"
+                width="160px"
             >
                 <Text
                     id="_IDGenText4"
@@ -839,6 +844,7 @@
                 minScreenWidth="Tablet"
                 demandPopin="true"
                 hAlign="Center"
+                width="140px"
             >
                 <Text
                     id="_IDGenText6"

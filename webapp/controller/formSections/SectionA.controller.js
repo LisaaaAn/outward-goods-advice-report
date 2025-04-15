@@ -111,13 +111,20 @@ sap.ui.define([
                                 const oSelectedItem = oTable.getSelectedItem();
                                 if (oSelectedItem) {
                                     const oContext = oSelectedItem.getBindingContext("VendorModel");
-                                    const sValue = oContext.getProperty("lifnr");
-                                    oInput.setValue(sValue);
-                                    // 获取供应商名称信息并设置到 submitData
-                                    
-                                    const oSubmitModel = this.getView().getModel("submitData");
-                                    const plantAddress = oContext.getProperty("Name1"); // 使用工厂名称作为地址
-                                    oSubmitModel.setProperty("/VendorName", plantAddress);
+                                    // const sValue = oContext.getProperty("lifnr");
+                                    // oInput.setValue(sValue);
+                                    // const oSubmitModel = this.getView().getModel("submitData");
+                                    // const plantAddress = oContext.getProperty("Name1"); // 使用工厂名称作为地址
+                                    // oSubmitModel.setProperty("/VendorName", plantAddress);
+                                    const oSubmitModel = that.getView().getModel("submitData");
+                                    const VendorName = oContext.getProperty("Name1");                                
+                                    oSubmitModel.setProperty("/VendorName", VendorName);
+                                    const VendorAddress1 = oContext.getProperty("Stras");
+                                    oSubmitModel.setProperty("/VendorAddress1", VendorAddress1);
+                                    const ZVENDOR_TELEPHONE = oContext.getProperty("Telf1");
+                                    oSubmitModel.setProperty("/ZVENDOR_TELEPHONE", ZVENDOR_TELEPHONE);
+                                    const ZVENDOR_FAX = oContext.getProperty("Telfx");
+                                    oSubmitModel.setProperty("/ZVENDOR_FAX", ZVENDOR_FAX);
                                 }
                                 this._VendorValueHelpDialog.close();
                             }.bind(this)
@@ -207,8 +214,9 @@ sap.ui.define([
                                 const oSelectedItem = oTable.getSelectedItem();
                                 if (oSelectedItem) {
                                     const oContext = oSelectedItem.getBindingContext("plantModel");
-                                    const sValue = oContext.getProperty("Werks");
-                                    oInput.setValue(sValue);
+                                    const oSubmitModel = that.getView().getModel("submitData");
+                                    const plantAddress = oContext.getProperty("Stras");                               
+                                    oSubmitModel.setProperty("/plantAddress1", plantAddress);
                                 }
                                 this._plantValueHelpDialog.close();
                             }.bind(this)

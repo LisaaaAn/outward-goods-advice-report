@@ -382,7 +382,8 @@ sap.ui.define([
                                     Quantity: oItem.Menge,
                                     Brgew: oItem.Brgew,
                                     Weight: weight,
-                                    MaterialNo: oItem.Matnr
+                                    MaterialNo: oItem.Matnr,
+                                    MaterialDesc: oItem.Maktx
                                 });
                             });
                         }
@@ -419,7 +420,8 @@ sap.ui.define([
                                                 Quantity: oItem.Menge,
                                                 Brgew: oItem.Brgew,
                                                 Weight: weight,
-                                                MaterialNo: oItem.Matnr
+                                                MaterialNo: oItem.Matnr,
+                                                MaterialDesc: oItem.Maktx
                                             });
                                         });
                                     }
@@ -481,10 +483,12 @@ sap.ui.define([
                     },
                     columns: [
                         new Column({
-                            header: new Text({ text: "Material No" })
+                            header: new Text({ text: "Material No" }),
+                            width: '200px'
                         }),
                         new Column({
-                            header: new Text({ text: "Description" })
+                            header: new Text({ text: "Description" }),
+                            width: '200px'
                         }),
                         new Column({
                             header: new Text({ text: "Base Unit" })

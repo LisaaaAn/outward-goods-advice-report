@@ -17,8 +17,8 @@ sap.ui.define([
     Plant: "",
     VendorNumber: "",
     VendorName: "",
-    ZFREIGHT_CHARGED_TO: "",
-    ZFREIGHT_METHOD: "",
+    ZFREIGHT_CHARGED_TO: "SENDER",
+    ZFREIGHT_METHOD: "AirFreight",
     PurchasingDoc: "",
     PoItem: "",
     MaterialDoc: "",
@@ -254,6 +254,7 @@ sap.ui.define([
           "ZGM3_FAX": submitData.ZGM3_FAX,
           "ZGM3_EMAIL": submitData.ZGM3_EMAIL,
           "ZVENDOR_CONTACT": submitData.ZVENDOR_CONTACT,
+          "ZVENDOR_TELEPHONE": submitData.ZVENDOR_TELEPHONE,
           "ZVENDOR_FAX": submitData.ZVENDOR_FAX,
           "ZVENDOR_EMAIL": submitData.ZVENDOR_EMAIL,
           "ZFREIGHT_CHARGED_TO": submitData.ZFREIGHT_CHARGED_TO,
@@ -308,8 +309,7 @@ sap.ui.define([
                     // 回到第一页
                     const oFormStateModel = that.getView().getModel("formState");
                     oFormStateModel.setProperty("/currentStep", 1);
-                    const navCon = that.byId("navCon");
-                    navCon.to(that.byId("p1"), "slide");
+                    window.location.reload();
                   }
                 }
               });
