@@ -194,15 +194,14 @@ sap.ui.define(
               selectionChange: function (oEvent2) {
                 const aSelectItems = oEvent2.getParameter('listItem');
                 const aSelectCells = aSelectItems.getCells();
-                const sPlantName = aSelectCells[0].getText();
-                oInput.setValue(sPlantName);
+                oInput.setValue(aSelectCells[0].getText());
 
                 // 回显地址信息
                 const oData = aSelectItems
                   .getBindingContext('plantModel')
                   .getObject();
                 const oSubmitModel = that.getView().getModel('submitData');
-                oSubmitModel.setProperty('/plantAddress1', sPlantName);
+                oSubmitModel.setProperty('/plantAddress1', oData.Name1);
                 oSubmitModel.setProperty('/plantAddress2', oData.Stras);
                 oSubmitModel.setProperty(
                   '/plantAddress3',
@@ -241,7 +240,7 @@ sap.ui.define(
                         .getObject();
                       const oSubmitModel =
                         this.getView().getModel('submitData');
-                      oSubmitModel.setProperty('/plantAddress1', oData.Bwkey);
+                      oSubmitModel.setProperty('/plantAddress1', oData.Name1);
                       oSubmitModel.setProperty('/plantAddress2', oData.Stras);
                       oSubmitModel.setProperty(
                         '/plantAddress3',
