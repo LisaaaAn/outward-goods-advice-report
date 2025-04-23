@@ -292,7 +292,7 @@
                         <form:fields>
                             <Input
                                 id="carrierName"
-                                value="{submitData>/ZCARRIER_CONSIGN}"
+                                value="{submitData>/ZCARRIER_NAME}"
                             />
                         </form:fields>
                     </form:FormElement>

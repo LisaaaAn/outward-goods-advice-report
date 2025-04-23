@@ -295,11 +295,11 @@ sap.ui.define(
             ZSENDER_NAME: submitData.SenderName,
             ZWEIGHT: String(submitData.Weight || 0),
             ZMSDS_ATTACHED: submitData.MSDS_Attached,
-            ZCARRIER_NAME: submitData.ZCARRIER_CONSIGN,
             ZCUSTOM_LETTER: submitData.CustomsLetterAttached,
             ZDANGEROUS_GOODS: submitData.ZDANGEROUS_GOODS,
             ZSTORED_ENERGY: submitData.ZSTORED_ENERGY,
             ZSPEC_INST: submitData.ZSPEC_INST,
+            ZCARRIER_NAME: submitData.ZCARRIER_NAME,
             ZCARRIER_CONSIGN: submitData.ZCARRIER_CONSIGN,
             NP_ASH2DLVTI: submitData.NP_ASH2DLVTI.map((item) => ({
               ZDOC_NO: item.ZDOCUMENT_NO,
