@@ -45,92 +45,92 @@
                                     <core:Item
                                         id="item2"
                                         text="Cash Sale Record Number"
-                                        key="CASH_SALE"
+                                        key="Cash Sale Record Number"
                                     />
                                     <core:Item
                                         id="item3"
-                                        text="Credit – Do Not Replace"
-                                        key="CREDIT_NO_REPLACE"
+                                        text="Credit - Do Not Replace"
+                                        key="Credit - Do Not Replace"
                                     />
                                     <core:Item
                                         id="item4"
                                         text="On Load"
-                                        key="ON_LOAD"
+                                        key="On Load"
                                     />
                                     <core:Item
                                         id="item5"
-                                        text="Other – Free Text"
-                                        key="OTHER_FREE_TEXT"
+                                        text="Other - Free Text"
+                                        key="Other - Free Text"
                                     />
                                     <core:Item
                                         id="item6"
-                                        text="Over Supplied – Return for Credit"
-                                        key="OVER_SUPPLIED"
+                                        text="Over Supplied - Return for Credit"
+                                        key="Over Supplied - Return for Credit"
                                     />
                                     <core:Item
                                         id="item7"
-                                        text="Parts Exchange – Service Exchange"
-                                        key="PARTS_EXCHANGE"
+                                        text="Parts Exchange - Service Exchange"
+                                        key="Parts Exchange - Service Exchange"
                                     />
                                     <core:Item
                                         id="item8"
                                         text="Property Returned"
-                                        key="PROPERTY_RETURNED"
+                                        key="Property Returned"
                                     />
                                     <core:Item
                                         id="item9"
                                         text="Refill and Return"
-                                        key="REFILL_RETURN"
+                                        key="Refill and Return"
                                     />
                                     <core:Item
                                         id="item10"
                                         text="Remanufactured Part Returned"
-                                        key="REMANUFACTURED"
+                                        key="Remanufactured Part Returned"
                                     />
                                     <core:Item
                                         id="item11"
                                         text="Repair and Return"
-                                        key="REPAIR_RETURN"
+                                        key="Repair and Return"
                                     />
                                     <core:Item
                                         id="item12"
                                         text="Replace with Items as Ordered"
-                                        key="REPLACE_ORDERED"
+                                        key="Replace with Items as Ordered"
                                     />
                                     <core:Item
                                         id="item13"
                                         text="Return to Vendor"
-                                        key="RETURN_VENDOR"
+                                        key="Return to Vendor"
                                     />
                                     <core:Item
                                         id="item14"
                                         text="Return for Exchange"
-                                        key="RETURN_EXCHANGE"
+                                        key="Return for Exchange"
                                     />
                                     <core:Item
                                         id="item15"
                                         text="Scrap"
-                                        key="SCRAP"
+                                        key="Scrap"
                                     />
                                     <core:Item
                                         id="item16"
                                         text="Stock Transfer with a material document number"
-                                        key="STOCK_TRANSFER_DOC"
+                                        key="Stock Transfer with a material document number"
                                     />
                                     <core:Item
                                         id="item17"
                                         text="Stock Transfer with no material document number"
-                                        key="STOCK_TRANSFER_NO_DOC"
+                                        key="Stock Transfer with no material document number"
                                     />
                                     <core:Item
                                         id="item18"
                                         text="Warranty"
-                                        key="WARRANTY"
+                                        key="Warranty"
                                     />
                                     <core:Item
                                         id="item19"
                                         text="Waste Removal"
-                                        key="WASTE_REMOVAL"
+                                        key="Waste Removal"
                                     />
                                 </items>
                             </Select>
