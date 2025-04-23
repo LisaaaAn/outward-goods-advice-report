@@ -192,14 +192,26 @@ sap.ui.define(
                 }),
               ],
               selectionChange: function (oEvent2) {
-                var selectItems = oEvent2.getParameter('listItem');
-                var selectCells = selectItems.getCells();
-                oInput.setValue(selectCells[0].getText());
-                // 获取选中的工厂数据并设置地址
-                const oContext = selectItems.getBindingContext('plantModel');
+                const aSelectItems = oEvent2.getParameter('listItem');
+                const aSelectCells = aSelectItems.getCells();
+                const sPlantName = aSelectCells[0].getText();
+                oInput.setValue(sPlantName);
+
+                // 回显地址信息
+                const oData = aSelectItems
+                  .getBindingContext('plantModel')
+                  .getObject();
                 const oSubmitModel = that.getView().getModel('submitData');
-                const plantAddress = oContext.getProperty('Stras');
-                oSubmitModel.setProperty('/plantAddress1', plantAddress);
+                oSubmitModel.setProperty('/plantAddress1', sPlantName);
+                oSubmitModel.setProperty('/plantAddress2', oData.Stras);
+                oSubmitModel.setProperty(
+                  '/plantAddress3',
+                  `${oData.Pstlz}/${oData.Ort01}`
+                );
+                oSubmitModel.setProperty(
+                  '/plantAddress4',
+                  `${oData.Land1}/${oData.Regio}`
+                );
                 that._oPlantValueHelpDialog.close();
               },
             });
@@ -221,14 +233,24 @@ sap.ui.define(
                   press: function () {
                     const oTable = this._oPlantValueHelpDialog.getContent()[1];
                     const oSelectedItem = oTable.getSelectedItem();
+
                     if (oSelectedItem) {
-                      const oContext =
-                        oSelectedItem.getBindingContext('plantModel');
-                      const oSubmitModel = that
-                        .getView()
-                        .getModel('submitData');
-                      const plantAddress = oContext.getProperty('Stras');
-                      oSubmitModel.setProperty('/plantAddress1', plantAddress);
+                      // 回显地址信息
+                      const oData = oSelectedItem
+                        .getBindingContext('plantModel')
+                        .getObject();
+                      const oSubmitModel =
+                        this.getView().getModel('submitData');
+                      oSubmitModel.setProperty('/plantAddress1', oData.Bwkey);
+                      oSubmitModel.setProperty('/plantAddress2', oData.Stras);
+                      oSubmitModel.setProperty(
+                        '/plantAddress3',
+                        `${oData.Pstlz}/${oData.Ort01}`
+                      );
+                      oSubmitModel.setProperty(
+                        '/plantAddress4',
+                        `${oData.Land1}/${oData.Regio}`
+                      );
                     }
                     this._oPlantValueHelpDialog.close();
                   }.bind(this),
