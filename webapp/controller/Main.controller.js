@@ -311,6 +311,7 @@ sap.ui.define(
               Plant: submitData.Plant || '',
               Brgew: String(item.Weight || 0),
               ShortText: item.MaterialDesc,
+              Gewei: item.Gewei,
             })),
             NP_ASH2DATES: [
               {

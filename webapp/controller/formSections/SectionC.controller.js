@@ -316,6 +316,7 @@ sap.ui.define(
                     Weight: weight,
                     MaterialNo: oItem.Matnr,
                     MaterialDesc: oItem.Txz01,
+                    Gewei: oItem.Gewei,
                   });
                 });
               }
@@ -360,6 +361,7 @@ sap.ui.define(
                         Weight: weight,
                         MaterialNo: oItem.Matnr,
                         MaterialDesc: oItem.Txz01,
+                        Gewei: oItem.Gewei,
                       });
                     });
                     this.getView()
@@ -427,6 +429,7 @@ sap.ui.define(
                     Weight: weight,
                     MaterialNo: oItem.Matnr,
                     MaterialDesc: oItem.Maktx,
+                    Gewei: oItem.Gewei,
                   });
                 });
               }
@@ -472,6 +475,7 @@ sap.ui.define(
                           Weight: weight,
                           MaterialNo: oItem.Matnr,
                           MaterialDesc: oItem.Maktx,
+                          Gewei: oItem.Gewei,
                         });
                       });
                     }
@@ -568,6 +572,8 @@ sap.ui.define(
                 oItemsModel.setProperty(sPath + '/Brgew', Brgew);
                 const Maktx = oContext.getProperty('Maktx');
                 oItemsModel.setProperty(sPath + '/MaterialDesc', Maktx);
+                const Gewei = oContext.getProperty('Gewei');
+                oItemsModel.setProperty(sPath + '/Gewei', Gewei);
               }
 
               const aInput = oEvent.getSource();
