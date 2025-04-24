@@ -310,6 +310,7 @@ sap.ui.define(
               SalesUnit: item.Unit || '',
               Plant: submitData.Plant || '',
               Brgew: String(item.Weight || 0),
+              ShortText: item.MaterialDesc,
             })),
             NP_ASH2DATES: [
               {
