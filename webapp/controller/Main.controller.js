@@ -98,6 +98,10 @@ sap.ui.define(
 
         // 获取 Material Doc 数据
         oDataModel.read('/MaterialSet', {
+          urlParameters: {
+            $top: 20,
+            $filter: `Mjahr eq '${new Date().getFullYear()}'`,
+          },
           success: function (oData) {
             const aResultList = that._groupList(oData?.results, 'Mblnr');
             that
@@ -132,6 +136,9 @@ sap.ui.define(
 
         // 获取 Material 数据
         oDataModel.read('/MATNRSet', {
+          urlParameters: {
+            $top: 20,
+          },
           success: function (oData) {
             that.getView().setModel(new JSONModel(oData), 'MaterialModel');
           },

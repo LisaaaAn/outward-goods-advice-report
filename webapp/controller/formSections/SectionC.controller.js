@@ -11,6 +11,8 @@ sap.ui.define(
     'sap/m/Table',
     'sap/m/Column',
     'sap/m/ColumnListItem',
+    'sap/ui/model/odata/v2/ODataModel',
+    'sap/m/MessageToast',
   ],
   function (
     JSONModel,
@@ -23,9 +25,12 @@ sap.ui.define(
     FilterOperator,
     Table,
     Column,
-    ColumnListItem
+    ColumnListItem,
+    ODataModel,
+    MessageToast
   ) {
     'use strict';
+    let oTimer = null;
     return Controller.extend('ui5.ogarpt.controller.formSections.SectionC', {
       onInit: function () {
         const oItemsModel = new JSONModel({ results: [] });
@@ -676,16 +681,67 @@ sap.ui.define(
           .filter(aFilter ? [aFilter] : []);
       },
       _filterMaterialDocs: function (sValue) {
-        const aFilter = this._buildFilter(sValue, 'Mblnr');
-        this._oMaterialDocVHTable
-          .getBinding('items')
-          .filter(aFilter ? [aFilter] : []);
+        // const aFilter = this._buildFilter(sValue, 'Mblnr');
+        // this._oMaterialDocVHTable
+        //   .getBinding('items')
+        //   .filter(aFilter ? [aFilter] : []);
+        const that = this;
+        const debouncedFetch = this._debounce((sValue) => {
+          const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
+          let urlParameters = {
+            $filter: `Mjahr eq '${new Date().getFullYear()}' and Mblnr eq '${sValue}'`,
+          };
+          if (!sValue) urlParameters.$top = 20;
+          oDataModel.read('/MaterialSet', {
+            urlParameters,
+            success: function (oData) {
+              const aResultList = that._groupList(oData?.results, 'Mblnr');
+              that
+                .getView()
+                .setModel(
+                  new JSONModel({ results: aResultList }),
+                  'MaterialDocModel'
+                );
+            },
+            error: function (oError) {
+              MessageToast.show(
+                'Failed to get Material Doc Data:' + oError.message
+              );
+            },
+          });
+        });
+        debouncedFetch(sValue);
       },
       _filterMaterials: function (sValue) {
-        const aFilter = this._buildFilter(sValue, 'Matnr');
-        this._oMaterialVHTable
-          .getBinding('items')
-          .filter(aFilter ? [aFilter] : []);
+        // const aFilter = this._buildFilter(sValue, 'Matnr');
+        // this._oMaterialVHTable
+        //   .getBinding('items')
+        //   .filter(aFilter ? [aFilter] : []);
+        // const aFilters = [
+        //   new sap.ui.model.Filter(
+        //     'Matnr',
+        //     sap.ui.model.FilterOperator.Contains,
+        //     sValue
+        //   ),
+        // ];
+        const that = this;
+        const debouncedFetch = this._debounce((sValue) => {
+          const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
+          let urlParameters = { $filter: `Matnr eq '${sValue}'` };
+          if (!sValue) urlParameters.$top = 20;
+          oDataModel.read('/MATNRSet', {
+            urlParameters,
+            success: function (oData) {
+              that.getView().setModel(new JSONModel(oData), 'MaterialModel');
+            },
+            error: function (oError) {
+              MessageToast.show(
+                'Failed to get Material Data:' + oError.message
+              );
+            },
+          });
+        });
+        debouncedFetch(sValue);
       },
       /** 通过输入值和属性名构建 Filter */
       _buildFilter(sValue, sFieldName) {
@@ -767,6 +823,26 @@ sap.ui.define(
           ...oItem,
           Vbeln: `${iIndex + 1}0`,
         }));
+      },
+      _groupList(list = [], name) {
+        const oGroupedData = list.reduce((acc, item) => {
+          const key = item[name];
+          if (!acc[key]) acc[key] = [];
+          acc[key].push(item);
+          return acc;
+        }, {});
+        return Object.entries(oGroupedData).map(([value, items]) => ({
+          [name]: value,
+          items,
+        }));
+      },
+      _debounce(func, delay = 800) {
+        return function (...args) {
+          clearTimeout(oTimer);
+          oTimer = setTimeout(() => {
+            func.apply(this, args);
+          }, delay);
+        };
       },
     });
   }
