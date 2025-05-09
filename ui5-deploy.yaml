@@ -23,6 +23,6 @@ builder:
           name: YY1_CreateOGAR
           description: Create Outward Goods Advice Report
           package: ZIM_COGAR
-          transport: DS4K901849
+          transport: DS4K901877
         exclude:
           - /test/

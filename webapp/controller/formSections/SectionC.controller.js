@@ -13,6 +13,8 @@ sap.ui.define(
     'sap/m/ColumnListItem',
     'sap/ui/model/odata/v2/ODataModel',
     'sap/m/MessageToast',
+    'sap/m/Page',
+    'sap/m/Bar',
   ],
   function (
     JSONModel,
@@ -27,7 +29,9 @@ sap.ui.define(
     Column,
     ColumnListItem,
     ODataModel,
-    MessageToast
+    MessageToast,
+    Page,
+    Bar
   ) {
     'use strict';
     let oTimer = null;
@@ -159,14 +163,31 @@ sap.ui.define(
               }),
             ],
             content: [
-              new Input({
-                placeholder: 'Enter Vendor No or Name',
-                liveChange: function (oEvent) {
-                  const sValue = oEvent.getSource().getValue();
-                  this._filterVendors(sValue);
-                }.bind(this),
+              new Page({
+                id: 'vendorDialogContentPage2',
+                busyIndicatorDelay: 0,
+                customHeader: new Bar({
+                  contentMiddle: [
+                    new Input({
+                      id: 'vendorNoInput2',
+                      placeholder: 'Enter Vendor No',
+                      liveChange: function (oEvent) {
+                        const sValue = oEvent.getSource().getValue();
+                        this._filterVendors(sValue, 'Kunnr');
+                      }.bind(this),
+                    }),
+                    new Input({
+                      id: 'vendorNameInput2',
+                      placeholder: 'Enter Vendor Name',
+                      liveChange: function (oEvent) {
+                        const sValue = oEvent.getSource().getValue();
+                        this._filterVendors(sValue, 'Name1');
+                      }.bind(this),
+                    }),
+                  ],
+                }),
+                content: [this._oVendorVHTable],
               }),
-              this._oVendorVHTable,
             ],
           });
 
@@ -273,14 +294,31 @@ sap.ui.define(
               }),
             ],
             content: [
-              new Input({
-                placeholder: 'Enter Plant No or Name',
-                liveChange: function (oEvent) {
-                  const sValue = oEvent.getSource().getValue();
-                  this._filterPlants(sValue);
-                }.bind(this),
+              new Page({
+                id: 'plantDialogContentPage2',
+                busyIndicatorDelay: 0,
+                customHeader: new Bar({
+                  contentMiddle: [
+                    new Input({
+                      id: 'plantNoInput2',
+                      placeholder: 'Enter Plant No',
+                      liveChange: function () {
+                        // const sValue = oEvent.getSource().getValue();
+                        this._filterPlants();
+                      }.bind(this),
+                    }),
+                    new Input({
+                      id: 'plantNameInput2',
+                      placeholder: 'Enter Plant Name',
+                      liveChange: function () {
+                        // const sValue = oEvent.getSource().getValue();
+                        this._filterPlants();
+                      }.bind(this),
+                    }),
+                  ],
+                }),
+                content: [this._oPlantVHTable],
               }),
-              this._oPlantVHTable,
             ],
           });
           this.getView().addDependent(this._oPlantValueHelpDialog);
@@ -309,28 +347,56 @@ sap.ui.define(
               const selectItems = oEvent2.getParameter('listItem');
               const oContext = selectItems.getBindingContext('PurchaseModel');
               const oSelectedData = oContext.getObject();
-              if (oSelectedData && oSelectedData.items) {
-                (oSelectedData.items || []).forEach((oItem) => {
-                  const weight = that._computeWeight(oItem.Menge, oItem.Brgew);
-                  that.handleAdd({
-                    ZDOCUMENT_NO: oItem.Ebeln,
-                    ZDOCUMENT_ITEM: oItem.Ebelp,
-                    Unit: oItem.Meins,
-                    Quantity: oItem.Menge,
-                    Brgew: oItem.Brgew,
-                    Weight: weight,
-                    MaterialNo: oItem.Matnr,
-                    MaterialDesc: oItem.Txz01,
-                    Gewei: oItem.Gewei,
-                  });
-                });
-              }
-              that
-                .getView()
-                .getModel('submitData')
-                .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
-              that.onWeightChange();
-              that._oPurchasingDocValueHelpDialog.close();
+              const oPage = sap.ui.getCore().byId('pdDialogContentPage');
+
+              let aItemList = oSelectedData.items || [];
+              const oDataModel = new ODataModel(
+                '/sap/opu/odata/sap/ZIM_OGA_SRV/'
+              );
+              let urlParameters = {
+                $filter: `Ebeln eq '${oSelectedData.Ebeln}'`,
+              };
+              oPage.setBusy(true);
+              oDataModel.read('/PurNoDocSet', {
+                urlParameters,
+                success: function (oData) {
+                  oPage.setBusy(false);
+                  if ((oData?.results || []).length > aItemList.length) {
+                    aItemList = oData.results;
+                  }
+                  if (aItemList.length) {
+                    aItemList.forEach((oItem) => {
+                      const weight = that._computeWeight(
+                        oItem.Menge,
+                        oItem.Brgew
+                      );
+                      that.handleAdd({
+                        ZDOCUMENT_NO: oItem.Ebeln,
+                        ZDOCUMENT_ITEM: oItem.Ebelp,
+                        Unit: oItem.Meins,
+                        Quantity: oItem.Menge,
+                        Brgew: oItem.Brgew,
+                        Weight: weight,
+                        MaterialNo: oItem.Matnr,
+                        MaterialDesc: oItem.Txz01,
+                        Gewei: oItem.Gewei,
+                      });
+                    });
+                  }
+                  that
+                    .getView()
+                    .getModel('submitData')
+                    .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
+                  that.onWeightChange();
+                  that._oPurchasingDocValueHelpDialog.close();
+                },
+                error: function (oError) {
+                  oPage.setBusy(false);
+                  MessageToast.show(
+                    'Failed to get PO item data:' + oError.message
+                  );
+                },
+              });
             },
           });
         };
@@ -348,33 +414,63 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
+                  const oPage = sap.ui.getCore().byId('pdDialogContentPage');
                   const aSelectedContexts =
                     this._oPurchasingDocVHTable.getSelectedContexts();
                   if (aSelectedContexts && aSelectedContexts.length) {
                     const oSelectedData = aSelectedContexts[0].getObject();
-                    (oSelectedData.items || []).forEach((oItem) => {
-                      const weight = that._computeWeight(
-                        oItem.Menge,
-                        oItem.Brgew
-                      );
-                      that.handleAdd({
-                        ZDOCUMENT_NO: oItem.Ebeln,
-                        ZDOCUMENT_ITEM: oItem.Ebelp,
-                        Unit: oItem.Meins,
-                        Quantity: oItem.Menge,
-                        Brgew: oItem.Brgew,
-                        Weight: weight,
-                        MaterialNo: oItem.Matnr,
-                        MaterialDesc: oItem.Txz01,
-                        Gewei: oItem.Gewei,
-                      });
+
+                    let aItemList = oSelectedData.items || [];
+                    const oDataModel = new ODataModel(
+                      '/sap/opu/odata/sap/ZIM_OGA_SRV/'
+                    );
+                    let urlParameters = {
+                      $filter: `Ebeln eq '${oSelectedData.Ebeln}'`,
+                    };
+                    oPage.setBusy(true);
+                    oDataModel.read('/PurNoDocSet', {
+                      urlParameters,
+                      success: function (oData) {
+                        if ((oData?.results || []).length > aItemList.length) {
+                          aItemList = oData.results;
+                        }
+                        oPage.setBusy(false);
+
+                        if (aItemList.length) {
+                          aItemList.forEach((oItem) => {
+                            const weight = that._computeWeight(
+                              oItem.Menge,
+                              oItem.Brgew
+                            );
+                            that.handleAdd({
+                              ZDOCUMENT_NO: oItem.Ebeln,
+                              ZDOCUMENT_ITEM: oItem.Ebelp,
+                              Unit: oItem.Meins,
+                              Quantity: oItem.Menge,
+                              Brgew: oItem.Brgew,
+                              Weight: weight,
+                              MaterialNo: oItem.Matnr,
+                              MaterialDesc: oItem.Txz01,
+                              Gewei: oItem.Gewei,
+                            });
+                          });
+                        }
+                        that
+                          .getView()
+                          .getModel('submitData')
+                          .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
+                        that.onWeightChange();
+                        that._oPurchasingDocValueHelpDialog.close();
+                      },
+                      error: function (oError) {
+                        oPage.setBusy(false);
+                        MessageToast.show(
+                          'Failed to get Purchasing Doc item data:' +
+                            oError.message
+                        );
+                      },
                     });
-                    this.getView()
-                      .getModel('submitData')
-                      .setProperty('/PurchasingDoc', oSelectedData.Ebeln);
-                    this.onWeightChange();
                   }
-                  this._oPurchasingDocValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
@@ -385,14 +481,22 @@ sap.ui.define(
               }),
             ],
             content: [
-              new Input({
-                placeholder: 'Enter Purchase Order No',
-                liveChange: function (oEvent) {
-                  const sValue = oEvent.getSource().getValue();
-                  this._filterPurchasingDocs(sValue);
-                }.bind(this),
+              new Page({
+                id: 'pdDialogContentPage',
+                busyIndicatorDelay: 0,
+                customHeader: new Bar({
+                  contentMiddle: [
+                    new Input({
+                      placeholder: 'Enter Purchase Order No',
+                      liveChange: function (oEvent) {
+                        const sValue = oEvent.getSource().getValue();
+                        this._filterPurchasingDocs(sValue);
+                      }.bind(this),
+                    }),
+                  ],
+                }),
+                content: [this._oPurchasingDocVHTable],
               }),
-              this._oPurchasingDocVHTable,
             ],
           });
           this.getView().addDependent(this._oPurchasingDocValueHelpDialog);
@@ -422,28 +526,56 @@ sap.ui.define(
               const oContext =
                 selectItems.getBindingContext('MaterialDocModel');
               const oSelectedData = oContext.getObject();
-              if (oSelectedData && oSelectedData.items) {
-                (oSelectedData.items || []).forEach((oItem) => {
-                  const weight = that._computeWeight(oItem.Menge, oItem.Brgew);
-                  that.handleAdd({
-                    ZDOCUMENT_NO: oItem.Mblnr,
-                    ZDOCUMENT_ITEM: oItem.Zeile,
-                    Unit: oItem.Meins,
-                    Quantity: oItem.Menge,
-                    Brgew: oItem.Brgew,
-                    Weight: weight,
-                    MaterialNo: oItem.Matnr,
-                    MaterialDesc: oItem.Maktx,
-                    Gewei: oItem.Gewei,
-                  });
-                });
-              }
-              that
-                .getView()
-                .getModel('submitData')
-                .setProperty('/MaterialDoc', oSelectedData.Mblnr);
-              that.onWeightChange();
-              that._oMaterialDocValueHelpDialog.close();
+              const oPage = sap.ui.getCore().byId('mdDialogContentPage');
+
+              let aItemList = oSelectedData.items || [];
+              const oDataModel = new ODataModel(
+                '/sap/opu/odata/sap/ZIM_OGA_SRV/'
+              );
+              let urlParameters = {
+                $filter: `Mblnr eq '${oSelectedData.Mblnr}'`,
+                $top: 500,
+              };
+              oPage.setBusy(true);
+              oDataModel.read('/MaterialSet', {
+                urlParameters,
+                success: function (oData) {
+                  oPage.setBusy(false);
+                  if ((oData?.results || []).length > aItemList.length) {
+                    aItemList = oData?.results;
+                  }
+                  if (aItemList.length) {
+                    aItemList.forEach((oItem) => {
+                      const weight = that._computeWeight(
+                        oItem.Menge,
+                        oItem.Brgew
+                      );
+                      that.handleAdd({
+                        ZDOCUMENT_NO: oItem.Mblnr,
+                        ZDOCUMENT_ITEM: oItem.Zeile,
+                        Unit: oItem.Meins,
+                        Quantity: oItem.Menge,
+                        Brgew: oItem.Brgew,
+                        Weight: weight,
+                        MaterialNo: oItem.Matnr,
+                        MaterialDesc: oItem.Maktx,
+                        Gewei: oItem.Gewei,
+                      });
+                    });
+                  }
+                  that
+                    .getView()
+                    .getModel('submitData')
+                    .setProperty('/MaterialDoc', oSelectedData.Mblnr);
+                  that.onWeightChange();
+                  that._oMaterialDocValueHelpDialog.close();
+                },
+                error: function (oError) {
+                  MessageToast.show(
+                    'Failed to get Material Doc Item Data:' + oError.message
+                  );
+                },
+              });
             },
           });
         };
@@ -461,35 +593,64 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
+                  const oPage = sap.ui.getCore().byId('mdDialogContentPage');
                   const aSelectedContexts =
                     this._oMaterialDocVHTable.getSelectedContexts();
                   if (aSelectedContexts && aSelectedContexts.length) {
                     const oSelectedData = aSelectedContexts[0].getObject();
-                    if (oSelectedData && oSelectedData.items) {
-                      (oSelectedData.items || []).forEach((oItem) => {
-                        const weight = this._computeWeight(
-                          oItem.Menge,
-                          oItem.Brgew
+
+                    let aItemList = oSelectedData.items || [];
+                    const oDataModel = new ODataModel(
+                      '/sap/opu/odata/sap/ZIM_OGA_SRV/'
+                    );
+                    let urlParameters = {
+                      $filter: `Mblnr eq '${oSelectedData.Mblnr}'`,
+                      $top: 500,
+                    };
+                    oPage.setBusy(true);
+                    oDataModel.read('/MaterialSet', {
+                      urlParameters,
+                      success: function (oData) {
+                        oPage.setBusy(false);
+                        if ((oData?.results || []).length > aItemList.length) {
+                          aItemList = oData?.results;
+                        }
+
+                        if (aItemList.length) {
+                          aItemList.forEach((oItem) => {
+                            const weight = that._computeWeight(
+                              oItem.Menge,
+                              oItem.Brgew
+                            );
+                            that.handleAdd({
+                              ZDOCUMENT_NO: oItem.Mblnr,
+                              ZDOCUMENT_ITEM: oItem.Zeile,
+                              Unit: oItem.Meins,
+                              Quantity: oItem.Menge,
+                              Brgew: oItem.Brgew,
+                              Weight: weight,
+                              MaterialNo: oItem.Matnr,
+                              MaterialDesc: oItem.Maktx,
+                              Gewei: oItem.Gewei,
+                            });
+                          });
+                        }
+                        that
+                          .getView()
+                          .getModel('submitData')
+                          .setProperty('/MaterialDoc', oSelectedData.Mblnr);
+                        that.onWeightChange();
+                        that._oMaterialDocValueHelpDialog.close();
+                      },
+                      error: function (oError) {
+                        oPage.setBusy(false);
+                        MessageToast.show(
+                          'Failed to get Material Doc item data:' +
+                            oError.message
                         );
-                        this.handleAdd({
-                          ZDOCUMENT_NO: oItem.Mblnr,
-                          ZDOCUMENT_ITEM: oItem.Zeile,
-                          Unit: oItem.Meins,
-                          Quantity: oItem.Menge,
-                          Brgew: oItem.Brgew,
-                          Weight: weight,
-                          MaterialNo: oItem.Matnr,
-                          MaterialDesc: oItem.Maktx,
-                          Gewei: oItem.Gewei,
-                        });
-                      });
-                    }
-                    this.getView()
-                      .getModel('submitData')
-                      .setProperty('/MaterialDoc', oSelectedData.Mblnr);
-                    this.onWeightChange();
+                      },
+                    });
                   }
-                  this._oMaterialDocValueHelpDialog.close();
                 }.bind(this),
               }),
               new Button({
@@ -500,14 +661,22 @@ sap.ui.define(
               }),
             ],
             content: [
-              new Input({
-                placeholder: 'Enter Material Doc No',
-                liveChange: function (oEvent) {
-                  const sValue = oEvent.getSource().getValue();
-                  this._filterMaterialDocs(sValue);
-                }.bind(this),
+              new Page({
+                id: 'mdDialogContentPage',
+                busyIndicatorDelay: 0,
+                customHeader: new Bar({
+                  contentMiddle: [
+                    new Input({
+                      placeholder: 'Enter Material Doc No',
+                      liveChange: function (oEvent) {
+                        const sValue = oEvent.getSource().getValue();
+                        this._filterMaterialDocs(sValue);
+                      }.bind(this),
+                    }),
+                  ],
+                }),
+                content: [this._oMaterialDocVHTable],
               }),
-              this._oMaterialDocVHTable,
             ],
           });
           this.getView().addDependent(this._oMaterialDocValueHelpDialog);
@@ -616,14 +785,22 @@ sap.ui.define(
               }),
             ],
             content: [
-              new Input({
-                placeholder: 'Enter Material No',
-                liveChange: function (oEvent) {
-                  const sValue = oEvent.getSource().getValue();
-                  this._filterMaterials(sValue);
-                }.bind(this),
+              new Page({
+                id: 'materialDialogContentPage',
+                busyIndicatorDelay: 0,
+                customHeader: new Bar({
+                  contentMiddle: [
+                    new Input({
+                      placeholder: 'Enter Material No',
+                      liveChange: function (oEvent) {
+                        const sValue = oEvent.getSource().getValue();
+                        this._filterMaterials(sValue);
+                      }.bind(this),
+                    }),
+                  ],
+                }),
+                content: [this._oMaterialVHTable],
               }),
-              this._oMaterialVHTable,
             ],
           });
           this.getView().addDependent(this._oMaterialValueHelpDialog);
@@ -633,52 +810,116 @@ sap.ui.define(
         this._oMaterialValueHelpDialog.open();
       },
 
-      _filterPlants: function (sValue) {
+      _filterPlants: function () {
+        const sNoValue = sap.ui.getCore().byId('plantNoInput2').getValue();
+        const sNameValue = sap.ui.getCore().byId('plantNameInput2').getValue();
         const aFilters = [];
-        if (sValue) {
-          const oName1Filter = this._buildFilter(sValue, 'Name1');
-          const oNoFilter = this._buildFilter(sValue, 'Werks');
-          let aTempFilters = [];
-          let oCombinedFilter = null;
-          if (oName1Filter) {
-            aTempFilters.push(oName1Filter);
-          }
-          if (oNoFilter) {
-            aTempFilters.push(oNoFilter);
-          }
-          if (aTempFilters) {
-            oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
-            aFilters.push(oCombinedFilter);
-          }
-        }
+        const oName1Filter = this._buildFilter(sNameValue, 'Name1');
+        const oNoFilter = this._buildFilter(sNoValue, 'Werks');
+        let aTempList = [];
+        if (oName1Filter) aTempList.push(oName1Filter);
+        if (oNoFilter) aTempList.push(oNoFilter);
+        const oCombinedFilter = new Filter({
+          filters: aTempList,
+          and: true,
+        });
+        aFilters.push(oCombinedFilter);
         this._oPlantVHTable.getBinding('items').filter(aFilters);
       },
+      _filterVendors: function (sValue, sFieldName) {
+        // const aFilters = [];
+        // if (sValue) {
+        //   const oName1Filter = this._buildFilter(sValue, 'Name1');
+        //   const oNoFilter = this._buildFilter(sValue, 'Kunnr');
+        //   let aTempFilters = [];
+        //   let oCombinedFilter = null;
+        //   if (oName1Filter) {
+        //     aTempFilters.push(oName1Filter);
+        //   }
+        //   if (oNoFilter) {
+        //     aTempFilters.push(oNoFilter);
+        //   }
+        //   if (aTempFilters) {
+        //     oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
+        //     aFilters.push(oCombinedFilter);
+        //   }
+        // }
+        // this._oVendorVHTable.getBinding('items').filter(aFilters);
+        const debouncedFetch = this._debounce(() => {
+          let sNoValue = '';
+          let sNameValue = '';
 
-      _filterVendors: function (sValue) {
-        const aFilters = [];
-        if (sValue) {
-          const oName1Filter = this._buildFilter(sValue, 'Name1');
-          const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-          let aTempFilters = [];
-          let oCombinedFilter = null;
-          if (oName1Filter) {
-            aTempFilters.push(oName1Filter);
+          let urlParameters = { $filter: `${sFieldName} eq '${sValue}'` };
+
+          if (sFieldName === 'Kunnr') {
+            sNoValue = sValue;
+            sNameValue = sap.ui.getCore().byId('vendorNameInput2').getValue();
+            // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
+            if (sNoValue.length === 9) {
+              urlParameters.$filter = `(Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
+            }
+            if (sNameValue) {
+              urlParameters.$filter += ` and Name1 eq ${sNameValue}`;
+            }
+          } else {
+            sNameValue = sValue;
+            sNoValue = sap.ui.getCore().byId('vendorNoInput2').getValue();
+            let sNoFilter = ` and Kunnr eq ${sNoValue}`;
+            // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
+            if (sNoValue.length === 9) {
+              sNoFilter = ` and (Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
+            }
+            if (sNoValue) {
+              urlParameters.$filter += sNoFilter;
+            }
           }
-          if (oNoFilter) {
-            aTempFilters.push(oNoFilter);
-          }
-          if (aTempFilters) {
-            oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
-            aFilters.push(oCombinedFilter);
-          }
-        }
-        this._oVendorVHTable.getBinding('items').filter(aFilters);
+
+          const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
+
+          oDataModel.read('/VENDORSet', {
+            urlParameters,
+            success: function (oData) {
+              that.getView().setModel(new JSONModel(oData), 'VendorModel');
+            },
+            error: function (oError) {
+              MessageToast.show('Failed to get Vendor data:' + oError.message);
+            },
+          });
+        });
+        debouncedFetch();
       },
       _filterPurchasingDocs: function (sValue) {
-        const aFilter = this._buildFilter(sValue, 'Ebeln');
-        this._oPurchasingDocVHTable
-          .getBinding('items')
-          .filter(aFilter ? [aFilter] : []);
+        // const aFilter = this._buildFilter(sValue, 'Ebeln');
+        // this._oPurchasingDocVHTable
+        //   .getBinding('items')
+        //   .filter(aFilter ? [aFilter] : []);
+        const that = this;
+        const debouncedFetch = this._debounce((sValue) => {
+          const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
+          let urlParameters = {
+            $filter: `Ebeln eq '${sValue}'`,
+          };
+          // 处理特殊长度（9位会因后端自动加星号导致字段超长）
+          if (sValue.length === 9) {
+            urlParameters.$filter = `Ebeln eq '*${sValue}' or Ebeln eq '${sValue}*'`;
+          }
+          oDataModel.read('/PurNoDocSet', {
+            urlParameters,
+            success: function (oData) {
+              const aResultList = that._groupList(oData?.results, 'Ebeln');
+              that
+                .getView()
+                .setModel(
+                  new JSONModel({ results: aResultList }),
+                  'PurchaseModel'
+                );
+            },
+            error: function (oError) {
+              MessageToast.show('Failed to get PO data:' + oError.message);
+            },
+          });
+        });
+        debouncedFetch(sValue);
       },
       _filterMaterialDocs: function (sValue) {
         // const aFilter = this._buildFilter(sValue, 'Mblnr');
@@ -688,10 +929,17 @@ sap.ui.define(
         const that = this;
         const debouncedFetch = this._debounce((sValue) => {
           const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
-          let urlParameters = {
-            $filter: `Mjahr eq '${new Date().getFullYear()}' and Mblnr eq '${sValue}'`,
-          };
-          if (!sValue) urlParameters.$top = 20;
+          let urlParameters = { $filter: `Mblnr eq '${sValue}'` };
+
+          if (sValue) {
+            // 处理特殊长度（9位会因后端自动加星号导致字段超长）
+            if (sValue.length === 9) {
+              urlParameters.$filter = `Mblnr eq '*${sValue}' or Mblnr eq '${sValue}*'`;
+            }
+          } else {
+            urlParameters.$filter = `Mjahr eq '${new Date().getFullYear()}'`;
+          }
+
           oDataModel.read('/MaterialSet', {
             urlParameters,
             success: function (oData) {
@@ -705,7 +953,7 @@ sap.ui.define(
             },
             error: function (oError) {
               MessageToast.show(
-                'Failed to get Material Doc Data:' + oError.message
+                'Failed to get Material Doc data:' + oError.message
               );
             },
           });
@@ -728,7 +976,7 @@ sap.ui.define(
         const debouncedFetch = this._debounce((sValue) => {
           const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
           let urlParameters = { $filter: `Matnr eq '${sValue}'` };
-          if (!sValue) urlParameters.$top = 20;
+          if (!sValue) urlParameters.$top = 500;
           oDataModel.read('/MATNRSet', {
             urlParameters,
             success: function (oData) {
@@ -736,7 +984,7 @@ sap.ui.define(
             },
             error: function (oError) {
               MessageToast.show(
-                'Failed to get Material Data:' + oError.message
+                'Failed to get Material data:' + oError.message
               );
             },
           });

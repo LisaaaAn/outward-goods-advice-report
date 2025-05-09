@@ -74,7 +74,10 @@ sap.ui.define(
         );
 
         // oDataModel
-        const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
+        const oDataModel = new ODataModel({
+          serviceUrl: '/sap/opu/odata/sap/ZIM_OGA_SRV/',
+          useBatch: false,
+        });
 
         // 获取 Plant 数据
         oDataModel.read('/PLANTSet', {
@@ -82,7 +85,7 @@ sap.ui.define(
             that.getView().setModel(new JSONModel(oData), 'plantModel');
           },
           error: function (oError) {
-            MessageToast.show('Failed to get Plant Data:' + oError.message);
+            MessageToast.show('Failed to get Plant data:' + oError.message);
           },
         });
 
@@ -92,15 +95,15 @@ sap.ui.define(
             that.getView().setModel(new JSONModel(oData), 'VendorModel');
           },
           error: function (oError) {
-            MessageToast.show('Failed to get Vendor Data:' + oError.message);
+            MessageToast.show('Failed to get Vendor data:' + oError.message);
           },
         });
 
         // 获取 Material Doc 数据
         oDataModel.read('/MaterialSet', {
           urlParameters: {
-            $top: 20,
             $filter: `Mjahr eq '${new Date().getFullYear()}'`,
+            $top: 500,
           },
           success: function (oData) {
             const aResultList = that._groupList(oData?.results, 'Mblnr');
@@ -113,13 +116,16 @@ sap.ui.define(
           },
           error: function (oError) {
             MessageToast.show(
-              'Failed to get Material Doc Data:' + oError.message
+              'Failed to get Material Doc data:' + oError.message
             );
           },
         });
 
         // 获取 Purchasing Doc 数据
         oDataModel.read('/PurNoDocSet', {
+          urlParameters: {
+            $top: 500,
+          },
           success: function (oData) {
             const aResultList = that._groupList(oData?.results, 'Ebeln');
             that
@@ -130,24 +136,23 @@ sap.ui.define(
               );
           },
           error: function (oError) {
-            MessageToast.show('Failed to get PO Data:' + oError.message);
+            MessageToast.show('Failed to get PO data:' + oError.message);
           },
         });
 
         // 获取 Material 数据
         oDataModel.read('/MATNRSet', {
           urlParameters: {
-            $top: 20,
+            $top: 500,
           },
           success: function (oData) {
             that.getView().setModel(new JSONModel(oData), 'MaterialModel');
           },
           error: function (oError) {
-            MessageToast.show('Failed to get Material Data:' + oError.message);
+            MessageToast.show('Failed to get Material data:' + oError.message);
           },
         });
       },
-
       onBeforeRendering: function () {
         const today = new Date();
         const dateModel = new JSONModel({

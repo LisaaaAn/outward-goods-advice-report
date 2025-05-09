@@ -10,6 +10,10 @@ sap.ui.define(
     'sap/m/Table',
     'sap/m/Column',
     'sap/m/ColumnListItem',
+    'sap/ui/model/odata/v2/ODataModel',
+    'sap/ui/model/json/JSONModel',
+    'sap/m/Page',
+    'sap/m/Bar',
   ],
   function (
     BaseController,
@@ -21,9 +25,14 @@ sap.ui.define(
     FilterOperator,
     Table,
     Column,
-    ColumnListItem
+    ColumnListItem,
+    ODataModel,
+    JSONModel,
+    Page,
+    Bar
   ) {
     'use strict';
+    let oTimer = null;
     return BaseController.extend(
       'ui5.ogarpt.controller.formSections.SectionA',
       {
@@ -146,14 +155,31 @@ sap.ui.define(
                 }),
               ],
               content: [
-                new Input({
-                  placeholder: 'Enter Vendor No or Name',
-                  liveChange: function (oEvent) {
-                    const sValue = oEvent.getSource().getValue();
-                    this._filterVendors(sValue);
-                  }.bind(this),
+                new Page({
+                  id: 'vendorDialogContentPage',
+                  busyIndicatorDelay: 0,
+                  customHeader: new Bar({
+                    contentMiddle: [
+                      new Input({
+                        id: 'vendorNoInput',
+                        placeholder: 'Enter Vendor No',
+                        liveChange: function (oEvent) {
+                          const sValue = oEvent.getSource().getValue();
+                          this._filterVendors(sValue, 'Kunnr');
+                        }.bind(this),
+                      }),
+                      new Input({
+                        id: 'vendorNameInput',
+                        placeholder: 'Enter Vendor Name',
+                        liveChange: function (oEvent) {
+                          const sValue = oEvent.getSource().getValue();
+                          this._filterVendors(sValue, 'Name1');
+                        }.bind(this),
+                      }),
+                    ],
+                  }),
+                  content: [this._oVendorVHTable],
                 }),
-                this._oVendorVHTable,
               ],
             });
 
@@ -262,14 +288,31 @@ sap.ui.define(
                 }),
               ],
               content: [
-                new Input({
-                  placeholder: 'Enter Plant No or Name',
-                  liveChange: function (oEvent) {
-                    const sValue = oEvent.getSource().getValue();
-                    this._filterPlants(sValue);
-                  }.bind(this),
+                new Page({
+                  id: 'plantDialogContentPage',
+                  busyIndicatorDelay: 0,
+                  customHeader: new Bar({
+                    contentMiddle: [
+                      new Input({
+                        id: 'plantNoInput',
+                        placeholder: 'Enter Plant No',
+                        liveChange: function () {
+                          // const sValue = oEvent.getSource().getValue();
+                          this._filterPlants();
+                        }.bind(this),
+                      }),
+                      new Input({
+                        id: 'plantNameInput',
+                        placeholder: 'Enter Plant Name',
+                        liveChange: function () {
+                          // const sValue = oEvent.getSource().getValue();
+                          this._filterPlants();
+                        }.bind(this),
+                      }),
+                    ],
+                  }),
+                  content: [this._oPlantVHTable],
                 }),
-                this._oPlantVHTable,
               ],
             });
             this.getView().addDependent(this._oPlantValueHelpDialog);
@@ -278,41 +321,91 @@ sap.ui.define(
           // 打开对话框
           this._oPlantValueHelpDialog.open();
         },
-        _filterPlants: function (sValue) {
+        _filterPlants: function () {
+          const sNoValue = sap.ui.getCore().byId('plantNoInput').getValue();
+          const sNameValue = sap.ui.getCore().byId('plantNameInput').getValue();
           const aFilters = [];
-          if (sValue) {
-            const oName1Filter = this._buildFilter(sValue, 'Name1');
-            const oNoFilter = this._buildFilter(sValue, 'Werks');
-            const oCombinedFilter = new Filter({
-              filters: [oName1Filter, oNoFilter],
-              and: false,
-            });
-            aFilters.push(oCombinedFilter);
-          }
+          const oName1Filter = this._buildFilter(sNameValue, 'Name1');
+          const oNoFilter = this._buildFilter(sNoValue, 'Werks');
+          let aTempList = [];
+          if (oName1Filter) aTempList.push(oName1Filter);
+          if (oNoFilter) aTempList.push(oNoFilter);
+          const oCombinedFilter = new Filter({
+            filters: aTempList,
+            and: true,
+          });
+          aFilters.push(oCombinedFilter);
           this._oPlantVHTable.getBinding('items').filter(aFilters);
         },
-        _filterVendors: function (sValue) {
-          const aFilters = [];
-          if (sValue) {
-            const oName1Filter = this._buildFilter(sValue, 'Name1');
-            const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-            let aTempFilters = [];
-            let oCombinedFilter = null;
-            if (oName1Filter) {
-              aTempFilters.push(oName1Filter);
+        _filterVendors: function (sValue, sFieldName) {
+          // const aFilters = [];
+          // if (sValue) {
+          //   const oName1Filter = this._buildFilter(sValue, 'Name1');
+          //   const oNoFilter = this._buildFilter(sValue, 'Kunnr');
+          //   let aTempFilters = [];
+          //   let oCombinedFilter = null;
+          //   if (oName1Filter) {
+          //     aTempFilters.push(oName1Filter);
+          //   }
+          //   if (oNoFilter) {
+          //     aTempFilters.push(oNoFilter);
+          //   }
+          //   if (aTempFilters) {
+          //     oCombinedFilter = new Filter({
+          //       filters: aTempFilters,
+          //       and: false,
+          //     });
+          //     aFilters.push(oCombinedFilter);
+          //   }
+          // }
+          // this._oVendorVHTable.getBinding('items').filter(aFilters);
+          const that = this;
+          const debouncedFetch = this._debounce(() => {
+            let sNoValue = '';
+            let sNameValue = '';
+
+            let urlParameters = { $filter: `${sFieldName} eq '${sValue}'` };
+
+            if (sFieldName === 'Kunnr') {
+              sNoValue = sValue;
+              sNameValue = sap.ui.getCore().byId('vendorNameInput').getValue();
+              // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
+              if (sNoValue.length === 9) {
+                urlParameters.$filter = `(Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
+              }
+              if (sNameValue) {
+                urlParameters.$filter += ` and Name1 eq ${sNameValue}`;
+              }
+            } else {
+              sNameValue = sValue;
+              sNoValue = sap.ui.getCore().byId('vendorNoInput').getValue();
+              let sNoFilter = ` and Kunnr eq ${sNoValue}`;
+              // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
+              if (sNoValue.length === 9) {
+                sNoFilter = ` and (Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
+              }
+              if (sNoValue) {
+                urlParameters.$filter += sNoFilter;
+              }
             }
-            if (oNoFilter) {
-              aTempFilters.push(oNoFilter);
-            }
-            if (aTempFilters) {
-              oCombinedFilter = new Filter({
-                filters: aTempFilters,
-                and: false,
-              });
-              aFilters.push(oCombinedFilter);
-            }
-          }
-          this._oVendorVHTable.getBinding('items').filter(aFilters);
+
+            const oDataModel = new ODataModel(
+              '/sap/opu/odata/sap/ZIM_OGA_SRV/'
+            );
+
+            oDataModel.read('/VENDORSet', {
+              urlParameters,
+              success: function (oData) {
+                that.getView().setModel(new JSONModel(oData), 'VendorModel');
+              },
+              error: function (oError) {
+                MessageToast.show(
+                  'Failed to get Vendor data:' + oError.message
+                );
+              },
+            });
+          });
+          debouncedFetch();
         },
         _buildFilter(sValue, sFieldName) {
           let aFilter = null;
@@ -332,6 +425,14 @@ sap.ui.define(
             aFilter = new Filter(sFieldName, sOperator, sResultValue);
           }
           return aFilter;
+        },
+        _debounce(func, delay = 800) {
+          return function (...args) {
+            clearTimeout(oTimer);
+            oTimer = setTimeout(() => {
+              func.apply(this, args);
+            }, delay);
+          };
         },
       }
     );
