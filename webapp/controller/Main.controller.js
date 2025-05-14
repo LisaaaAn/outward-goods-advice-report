@@ -171,9 +171,7 @@ sap.ui.define(
         // 打开空白表单页
         const oModel = this.getView().getModel();
         const oParameterContext = oModel.createEntry('/HEADSet', {
-          properties: {
-            ZTYPE_MOVEMENT: 'Auction item',
-          },
+          properties: {},
         });
         this.getView().setBindingContext(oParameterContext);
       },
@@ -337,8 +335,10 @@ sap.ui.define(
 
           console.log('Submit Data:', JSON.stringify(oData, null, 2));
 
+          this.byId('p2').setBusy(true);
           oModel.create('/HEADSet', oData, {
             success: function (data) {
+              that.byId('p2').setBusy(false);
               if (data.Delivery) {
                 MessageBox.success(
                   `Save successfully! \n Document No: ${data.Delivery}`,
@@ -380,6 +380,7 @@ sap.ui.define(
               }
             }.bind(this),
             error: function (oError) {
+              that.byId('p2').setBusy(false);
               console.error('Error:', oError);
               MessageBox.error('Save failed：' + oError.message);
             },

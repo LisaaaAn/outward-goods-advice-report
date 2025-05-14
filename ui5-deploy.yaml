@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
 
-specVersion: "3.1"
+specVersion: '3.1'
 metadata:
   name: ZCreateOGAReport
 type: application
@@ -15,14 +15,15 @@ builder:
       configuration:
         log: 5
         target:
-          url: https://vhicwds4ci.sap.gm3global.com:44300
-          client: '100',
+          url: https://10.11.2.28:44300
+          client: '100'
+        strictSSL: false
         customParams:
           saml2: disabled
         app:
           name: YY1_CreateOGAR
           description: Create Outward Goods Advice Report
           package: ZIM_COGAR
-          transport: DS4K901877
+          transport: DS4K901939
         exclude:
           - /test/

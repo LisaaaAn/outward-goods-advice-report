@@ -14,6 +14,7 @@ sap.ui.define(
     'sap/ui/model/json/JSONModel',
     'sap/m/Page',
     'sap/m/Bar',
+    'sap/m/MessageToast',
   ],
   function (
     BaseController,
@@ -29,7 +30,8 @@ sap.ui.define(
     ODataModel,
     JSONModel,
     Page,
-    Bar
+    Bar,
+    MessageToast
   ) {
     'use strict';
     let oTimer = null;
@@ -59,6 +61,7 @@ sap.ui.define(
           var that = this;
           const createTable = function () {
             return new Table({
+              id: 'VendorTable',
               mode: 'SingleSelectMaster',
               items: {
                 path: 'VendorModel>/results',
@@ -121,7 +124,7 @@ sap.ui.define(
                 new Button({
                   text: 'Confirm',
                   press: function () {
-                    const oTable = this._oVendorValueHelpDialog.getContent()[1];
+                    const oTable = sap.ui.getCore().byId('VendorTable');
                     const oSelectedItem = oTable.getSelectedItem();
                     if (oSelectedItem) {
                       const oContext =
@@ -195,6 +198,7 @@ sap.ui.define(
           var that = this;
           const createTable = function () {
             return new Table({
+              id: 'PlantTable',
               mode: 'SingleSelectMaster',
               items: {
                 path: 'plantModel>/results',
@@ -256,7 +260,7 @@ sap.ui.define(
                 new Button({
                   text: 'Confirm',
                   press: function () {
-                    const oTable = this._oPlantValueHelpDialog.getContent()[1];
+                    const oTable = sap.ui.getCore().byId('PlantTable');
                     const oSelectedItem = oTable.getSelectedItem();
 
                     if (oSelectedItem) {
@@ -338,27 +342,6 @@ sap.ui.define(
           this._oPlantVHTable.getBinding('items').filter(aFilters);
         },
         _filterVendors: function (sValue, sFieldName) {
-          // const aFilters = [];
-          // if (sValue) {
-          //   const oName1Filter = this._buildFilter(sValue, 'Name1');
-          //   const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-          //   let aTempFilters = [];
-          //   let oCombinedFilter = null;
-          //   if (oName1Filter) {
-          //     aTempFilters.push(oName1Filter);
-          //   }
-          //   if (oNoFilter) {
-          //     aTempFilters.push(oNoFilter);
-          //   }
-          //   if (aTempFilters) {
-          //     oCombinedFilter = new Filter({
-          //       filters: aTempFilters,
-          //       and: false,
-          //     });
-          //     aFilters.push(oCombinedFilter);
-          //   }
-          // }
-          // this._oVendorVHTable.getBinding('items').filter(aFilters);
           const that = this;
           const debouncedFetch = this._debounce(() => {
             let sNoValue = '';
@@ -374,12 +357,12 @@ sap.ui.define(
                 urlParameters.$filter = `(Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
               }
               if (sNameValue) {
-                urlParameters.$filter += ` and Name1 eq ${sNameValue}`;
+                urlParameters.$filter += ` and Name1 eq '${sNameValue}'`;
               }
             } else {
               sNameValue = sValue;
               sNoValue = sap.ui.getCore().byId('vendorNoInput').getValue();
-              let sNoFilter = ` and Kunnr eq ${sNoValue}`;
+              let sNoFilter = ` and Kunnr eq '${sNoValue}'`;
               // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
               if (sNoValue.length === 9) {
                 sNoFilter = ` and (Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
@@ -402,6 +385,9 @@ sap.ui.define(
                 MessageToast.show(
                   'Failed to get Vendor data:' + oError.message
                 );
+                that
+                  .getView()
+                  .setModel(new JSONModel({ results: [] }), 'VendorModel');
               },
             });
           });

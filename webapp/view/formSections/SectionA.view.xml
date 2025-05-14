@@ -33,8 +33,6 @@
                             <Select
                                 id="_IDGenSelect"
                                 selectedKey="{submitData>/ZTYPE_MOVEMENT}"
-                                change=".onTypeMovementChange"
-                                required="true"
                             >
                                 <items>
                                     <core:Item

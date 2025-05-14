@@ -75,6 +75,7 @@ sap.ui.define(
         const that = this;
         const createTable = function () {
           return new Table({
+            id: 'VendorTable2',
             mode: 'SingleSelectMaster',
             items: {
               path: 'VendorModel>/results',
@@ -134,7 +135,7 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const oTable = this._oVendorValueHelpDialog.getContent()[1];
+                  const oTable = sap.ui.getCore().byId('VendorTable2');
                   const oSelectedItem = oTable.getSelectedItem();
                   if (oSelectedItem) {
                     const oContext =
@@ -203,6 +204,7 @@ sap.ui.define(
         var that = this;
         const createTable = function () {
           return new Table({
+            id: 'PlantTable2',
             mode: 'SingleSelectMaster',
             items: {
               path: 'plantModel>/results',
@@ -264,8 +266,9 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
-                  const oTable = this._oPlantValueHelpDialog.getContent()[1];
+                  const oTable = sap.ui.getCore().byId('PlantTable2');
                   const oSelectedItem = oTable.getSelectedItem();
+
                   if (oSelectedItem) {
                     // 回显地址信息
                     const oData = oSelectedItem
@@ -827,24 +830,7 @@ sap.ui.define(
         this._oPlantVHTable.getBinding('items').filter(aFilters);
       },
       _filterVendors: function (sValue, sFieldName) {
-        // const aFilters = [];
-        // if (sValue) {
-        //   const oName1Filter = this._buildFilter(sValue, 'Name1');
-        //   const oNoFilter = this._buildFilter(sValue, 'Kunnr');
-        //   let aTempFilters = [];
-        //   let oCombinedFilter = null;
-        //   if (oName1Filter) {
-        //     aTempFilters.push(oName1Filter);
-        //   }
-        //   if (oNoFilter) {
-        //     aTempFilters.push(oNoFilter);
-        //   }
-        //   if (aTempFilters) {
-        //     oCombinedFilter = new Filter({ filters: aTempFilters, and: false });
-        //     aFilters.push(oCombinedFilter);
-        //   }
-        // }
-        // this._oVendorVHTable.getBinding('items').filter(aFilters);
+        const that = this;
         const debouncedFetch = this._debounce(() => {
           let sNoValue = '';
           let sNameValue = '';
@@ -859,12 +845,12 @@ sap.ui.define(
               urlParameters.$filter = `(Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
             }
             if (sNameValue) {
-              urlParameters.$filter += ` and Name1 eq ${sNameValue}`;
+              urlParameters.$filter += ` and Name1 eq '${sNameValue}'`;
             }
           } else {
             sNameValue = sValue;
             sNoValue = sap.ui.getCore().byId('vendorNoInput2').getValue();
-            let sNoFilter = ` and Kunnr eq ${sNoValue}`;
+            let sNoFilter = ` and Kunnr eq '${sNoValue}'`;
             // 处理 No 特殊长度（9位会因后端自动加星号导致字段超长）
             if (sNoValue.length === 9) {
               sNoFilter = ` and (Kunnr eq '*${sNoValue}' or Kunnr eq '${sNoValue}*')`;
@@ -883,16 +869,15 @@ sap.ui.define(
             },
             error: function (oError) {
               MessageToast.show('Failed to get Vendor data:' + oError.message);
+              that
+                .getView()
+                .setModel(new JSONModel({ results: [] }), 'VendorModel');
             },
           });
         });
         debouncedFetch();
       },
       _filterPurchasingDocs: function (sValue) {
-        // const aFilter = this._buildFilter(sValue, 'Ebeln');
-        // this._oPurchasingDocVHTable
-        //   .getBinding('items')
-        //   .filter(aFilter ? [aFilter] : []);
         const that = this;
         const debouncedFetch = this._debounce((sValue) => {
           const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
@@ -916,6 +901,9 @@ sap.ui.define(
             },
             error: function (oError) {
               MessageToast.show('Failed to get PO data:' + oError.message);
+              that
+                .getView()
+                .setModel(new JSONModel({ results: [] }), 'PurchaseModel');
             },
           });
         });
@@ -955,23 +943,15 @@ sap.ui.define(
               MessageToast.show(
                 'Failed to get Material Doc data:' + oError.message
               );
+              that
+                .getView()
+                .setModel(new JSONModel({ results: [] }), 'MaterialDocModel');
             },
           });
         });
         debouncedFetch(sValue);
       },
       _filterMaterials: function (sValue) {
-        // const aFilter = this._buildFilter(sValue, 'Matnr');
-        // this._oMaterialVHTable
-        //   .getBinding('items')
-        //   .filter(aFilter ? [aFilter] : []);
-        // const aFilters = [
-        //   new sap.ui.model.Filter(
-        //     'Matnr',
-        //     sap.ui.model.FilterOperator.Contains,
-        //     sValue
-        //   ),
-        // ];
         const that = this;
         const debouncedFetch = this._debounce((sValue) => {
           const oDataModel = new ODataModel('/sap/opu/odata/sap/ZIM_OGA_SRV/');
@@ -986,6 +966,9 @@ sap.ui.define(
               MessageToast.show(
                 'Failed to get Material data:' + oError.message
               );
+              that
+                .getView()
+                .setModel(new JSONModel({ results: [] }), 'MaterialModel');
             },
           });
         });
@@ -1041,6 +1024,7 @@ sap.ui.define(
         oModel.setProperty('/results', aResultList);
         const oSubmitModel = this.getView().getModel('submitData');
         oSubmitModel.setProperty('/NP_ASH2DLVTI', aResultList);
+        this.onWeightChange();
       },
       onQuantityChange: function (oEvent) {
         const oBindingContext = oEvent.getSource().getBindingContext('items');
