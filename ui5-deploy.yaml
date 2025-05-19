@@ -1,5 +1,4 @@
 # yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
-
 specVersion: '3.1'
 metadata:
   name: ZCreateOGAReport
@@ -15,9 +14,8 @@ builder:
       configuration:
         log: 5
         target:
-          url: https://10.11.2.28:44300
+          url: https://vhicwws1wd01.sap.gm3global.com:44380/
           client: '100'
-        strictSSL: false
         customParams:
           saml2: disabled
         app:

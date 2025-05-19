@@ -21,6 +21,6 @@ server:
         ignoreCertError: true
         backend:
           - path: /sap
-            url: https://10.11.2.28:44300/
+            url: https://10.11.2.27:44300/
             strictSSR: false
             client: '110'

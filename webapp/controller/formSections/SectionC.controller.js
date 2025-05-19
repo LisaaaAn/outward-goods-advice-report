@@ -751,14 +751,15 @@ sap.ui.define(
                 oItemsModel.setProperty(sPath + '/MaterialDesc', Maktx);
                 const Gewei = oContext.getProperty('Gewei');
                 oItemsModel.setProperty(sPath + '/Gewei', Gewei);
+
+                const oData = oItemsModel.getProperty(sPath);
+                const weight = that._computeWeight(oData.Quantity, oData.Brgew);
+                oItemsModel.setProperty(sPath + '/Weight', weight);
+                setTimeout(() => {
+                  that.onWeightChange();
+                }, 500);
               }
 
-              const aInput = oEvent.getSource();
-              const oBindingContext = aInput.getBindingContext('items');
-              const aPath = oBindingContext.getPath();
-              const oData = oItemsModel.getProperty(aPath);
-              const weight = that._computeWeight(oData.Quantity, oData.Brgew);
-              oItemsModel.setProperty(aPath + '/Weight', weight);
               that._oMaterialValueHelpDialog.close();
             },
           });
@@ -777,6 +778,7 @@ sap.ui.define(
               new Button({
                 text: 'Confirm',
                 press: function () {
+                  this.onWeightChange();
                   this._oMaterialValueHelpDialog.close();
                 }.bind(this),
               }),
