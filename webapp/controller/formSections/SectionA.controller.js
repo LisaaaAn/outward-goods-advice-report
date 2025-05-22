@@ -63,9 +63,9 @@ sap.ui.define(
             return new Table({
               id: 'VendorTable',
               mode: 'SingleSelectMaster',
-              // growing: true,
-              // growingThreshold: 10,
-              // growingScrollToLoad: true,
+              growing: true,
+              growingThreshold: 100,
+              growingScrollToLoad: true,
               items: {
                 path: 'VendorModel>/results',
                 template: new ColumnListItem({
@@ -203,6 +203,9 @@ sap.ui.define(
             return new Table({
               id: 'PlantTable',
               mode: 'SingleSelectMaster',
+              growing: true,
+              growingThreshold: 100,
+              growingScrollToLoad: true,
               items: {
                 path: 'plantModel>/results',
                 template: new ColumnListItem({

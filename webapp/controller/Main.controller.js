@@ -321,7 +321,7 @@ sap.ui.define(
               Plant: submitData.Plant || '',
               Brgew: String(item.Weight || 0),
               ShortText: item.MaterialDesc,
-              Gewei: item.Gewei,
+              Gewei: item.Gewei || 'KG',
             })),
             NP_ASH2DATES: [
               {
@@ -339,9 +339,20 @@ sap.ui.define(
           oModel.create('/HEADSet', oData, {
             success: function (data) {
               that.byId('p2').setBusy(false);
+              let sMessage = '';
               if (data.Delivery) {
+                const aMessageList = data.NP_ASH2RETURN?.results || [];
+                if (aMessageList.find((oItem) => oItem.Type === 'E')) {
+                  aMessageList.forEach((oItem) => {
+                    if (oItem.Type !== 'S' && oItem.Message) {
+                      sMessage += '\n' + oItem.Message;
+                    }
+                  });
+                  sMessage && (sMessage = '\n\n Warnings: ' + sMessage);
+                }
+
                 MessageBox.success(
-                  `Save successfully! \n Document No: ${data.Delivery}`,
+                  `Save successfully! \n Document No: ${data.Delivery} ${sMessage}`,
                   {
                     actions: MessageBox.Action.OK,
                     onClose: function (action) {

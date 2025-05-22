@@ -77,6 +77,9 @@ sap.ui.define(
           return new Table({
             id: 'VendorTable2',
             mode: 'SingleSelectMaster',
+            growing: true,
+            growingThreshold: 100,
+            growingScrollToLoad: true,
             items: {
               path: 'VendorModel>/results',
               template: new ColumnListItem({
@@ -206,6 +209,9 @@ sap.ui.define(
           return new Table({
             id: 'PlantTable2',
             mode: 'SingleSelectMaster',
+            growing: true,
+            growingThreshold: 100,
+            growingScrollToLoad: true,
             items: {
               path: 'plantModel>/results',
               template: new ColumnListItem({
@@ -335,6 +341,9 @@ sap.ui.define(
         const createTable = function () {
           return new Table({
             mode: 'SingleSelectMaster',
+            growing: true,
+            growingThreshold: 100,
+            growingScrollToLoad: true,
             items: {
               path: 'PurchaseModel>/results',
               template: new ColumnListItem({
@@ -513,6 +522,9 @@ sap.ui.define(
         const createTable = function () {
           return new Table({
             mode: 'SingleSelectMaster',
+            growing: true,
+            growingThreshold: 100,
+            growingScrollToLoad: true,
             items: {
               path: 'MaterialDocModel>/results',
               template: new ColumnListItem({
@@ -703,6 +715,9 @@ sap.ui.define(
         const createTable = function () {
           return new Table({
             mode: 'SingleSelectMaster',
+            growing: true,
+            growingThreshold: 100,
+            growingScrollToLoad: true,
             items: {
               path: 'MaterialModel>/results',
               template: new ColumnListItem({
